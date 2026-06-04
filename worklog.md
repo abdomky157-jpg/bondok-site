@@ -90,12 +90,51 @@ Unresolved Issues / Risks:
 2. Agent-browser connection timeout issues (environment limitation, not code issue)
 3. Some external images may load slowly depending on CDN
 
+---
+Task ID: 4
+Agent: Main Agent
+Task: Add customer database table and admin panel customers section
+
+Work Log:
+- Added `SiteCustomer` model to Prisma schema with fields: id, name, phone (unique), email, address, governorate, totalOrders, totalSpent, lastOrderAt, notes, createdAt, updatedAt
+- Ran `bun run db:push` to sync schema with SQLite database
+- Created `/api/admin/customers/route.ts` — GET (list all, admin only) + POST (create new, admin only)
+- Created `/api/admin/customers/[id]/route.ts` — GET (single) + PUT (update) + DELETE, all admin only
+- Added phone uniqueness check on create/update (409 conflict if duplicate)
+- Modified `/api/admin/orders/route.ts` POST handler: after creating an order, automatically creates or updates customer record:
+  - New phone → creates customer with totalOrders=1, totalSpent=order total
+  - Existing phone → increments totalOrders, adds to totalSpent, updates lastOrderAt and address
+- Added `CustomersTab` component to AdminPanel.tsx with:
+  - 4 summary stats cards: total customers, total revenue, average spend, repeat customers
+  - Search bar (by name, phone, email, governorate)
+  - Sort dropdown: newest, most orders, most spent
+  - Customer list with expandable rows showing full details
+  - Badge system: VIP (>=5000 spent), متكرر (repeat buyer), Top (>=5 orders)
+  - Avatar with Crown icon for VIP customers
+  - Customer detail view: phone, email, governorate, address, order count, total spent, registration date, last order
+  - Notes section for admin notes about customers
+  - Edit/Delete/WhatsApp action buttons
+  - "عميل جديد" button to manually add customers
+  - CustomerForm modal for add/edit with validation
+  - Read-only stats display in edit mode
+- Added "العملاء" tab with Users icon between الطلبات and المنتجات tabs
+- Updated worklog.md with progress
+
+Stage Summary:
+- SiteCustomer database table created and synced
+- Full CRUD API for customer management
+- Automatic customer creation/update on every order placement
+- Customers section in secret admin panel with stats, search, sort, badges, and full management
+- Access: Alt+Shift+K → password 160835 → "العملاء" tab
+- 0 lint errors
+
+Unresolved Issues / Risks:
+- No existing orders in DB to backfill (0 orders), customers will accumulate from new orders
+- Customer phone format not validated (accepts any string)
+
 Priority Recommendations for Next Phase:
-1. Add more product images optimization (WebP conversion)
-2. Implement WhatsApp floating button with animation
-3. Add loading skeletons for better perceived performance
-4. Improve mobile navigation drawer with slide-in animation
-5. Add product quick-view gallery in ProductModal
-6. Implement dark/light theme toggle
-7. Add product comparison feature
-8. Add customer reviews integration with admin management
+1. Add customer phone validation (Egyptian format)
+2. Add customer export to CSV/Excel
+3. Add WhatsApp broadcast to customers from admin panel
+4. Add customer order history in expanded view
+5. Add customer loyalty points system

@@ -95,6 +95,40 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    // ─── Auto-create or update customer record ──────────────────
+    const cleanPhone = phone.trim();
+    const existingCustomer = await db.siteCustomer.findUnique({ where: { phone: cleanPhone } });
+    const addressParts = address.trim().split(",").map(s => s.trim()).filter(Boolean);
+    const governorate = addressParts[0] || "";
+
+    if (existingCustomer) {
+      // Update existing customer
+      await db.siteCustomer.update({
+        where: { phone: cleanPhone },
+        data: {
+          name: name.trim(),
+          totalOrders: { increment: 1 },
+          totalSpent: { increment: serverTotal },
+          lastOrderAt: new Date(),
+          address: address.trim(),
+          governorate: governorate,
+        },
+      });
+    } else {
+      // Create new customer
+      await db.siteCustomer.create({
+        data: {
+          name: name.trim(),
+          phone: cleanPhone,
+          address: address.trim(),
+          governorate: governorate,
+          totalOrders: 1,
+          totalSpent: serverTotal,
+          lastOrderAt: new Date(),
+        },
+      });
+    }
+
     return NextResponse.json(order, { status: 201 });
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : "Unknown error";

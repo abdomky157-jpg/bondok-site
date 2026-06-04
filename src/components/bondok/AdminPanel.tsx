@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { X, Save, Plus, Trash2, Upload, ChevronDown, ChevronUp, Loader2, Image, Palette, Type, Package, Settings, ShoppingBag } from "lucide-react";
+import { X, Save, Plus, Trash2, Upload, ChevronDown, ChevronUp, Loader2, Image, Palette, Type, Package, Settings, ShoppingBag, Users, Phone, Mail, MapPin, Calendar, Search, Edit3, Eye, UserPlus, TrendingUp, DollarSign, ShoppingCart, Clock, MessageSquare, Star, Crown, ChevronLeft } from "lucide-react";
 import { useSiteData } from "@/context/SiteContext";
 
 // ===== Admin Panel Component =====
@@ -12,6 +12,7 @@ export default function AdminPanel({ onClose }: { onClose: () => void }) {
 
   const tabs = [
     { id: "orders", label: "الطلبات", icon: <ShoppingBag size={16} /> },
+    { id: "customers", label: "العملاء", icon: <Users size={16} /> },
     { id: "products", label: "المنتجات", icon: <Package size={16} /> },
     { id: "bundles", label: "الباقات", icon: <Package size={16} /> },
     { id: "settings", label: "النصوص", icon: <Type size={16} /> },
@@ -53,6 +54,7 @@ export default function AdminPanel({ onClose }: { onClose: () => void }) {
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-6" key={tab + loading}>
           {tab === "orders" && <OrdersTab />}
+          {tab === "customers" && <CustomersTab />}
           {tab === "products" && <ProductsTab onRefresh={refresh} />}
           {tab === "bundles" && <BundlesTab onRefresh={refresh} />}
           {tab === "settings" && <SettingsTab type="text" />}
@@ -553,6 +555,454 @@ function SettingsTab({ type }: { type: "text" | "image" | "color" }) {
       )}
     </div>
   );
+}
+
+// ===== Customers Tab =====
+function CustomersTab() {
+  const [customers, setCustomers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [editingCustomer, setEditingCustomer] = useState<any>(null);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [sortBy, setSortBy] = useState<"newest" | "mostOrders" | "mostSpent">("newest");
+
+  const load = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/admin/customers", { headers: adminHeaders() });
+      const data = await res.json();
+      if (data.error === "Unauthorized") { setCustomers([]); return; }
+      setCustomers(Array.isArray(data) ? data : []);
+    } catch {
+      setCustomers([]);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => { load(); }, []);
+
+  // Filter and sort
+  const filtered = customers
+    .filter((c: any) => {
+      if (!search.trim()) return true;
+      const q = search.toLowerCase();
+      return c.name.toLowerCase().includes(q) || c.phone.includes(q) || (c.email || "").toLowerCase().includes(q) || (c.governorate || "").includes(q);
+    })
+    .sort((a: any, b: any) => {
+      if (sortBy === "mostOrders") return (b.totalOrders || 0) - (a.totalOrders || 0);
+      if (sortBy === "mostSpent") return (b.totalSpent || 0) - (a.totalSpent || 0);
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+
+  // Stats
+  const totalCustomers = customers.length;
+  const totalRevenue = customers.reduce((sum: number, c: any) => sum + (c.totalSpent || 0), 0);
+  const avgSpent = totalCustomers > 0 ? Math.round(totalRevenue / totalCustomers) : 0;
+  const repeatCustomers = customers.filter((c: any) => (c.totalOrders || 0) > 1).length;
+
+  const saveCustomer = async (data: any) => {
+    setSaving(true);
+    try {
+      if (data.id) {
+        const res = await fetch(`/api/admin/customers/${data.id}`, {
+          method: "PUT",
+          headers: adminHeaders(),
+          body: JSON.stringify(data),
+        });
+        if (res.status === 409) {
+          alert("رقم التليفون مسجل بالفعل عند عميل آخر");
+          setSaving(false);
+          return;
+        }
+      } else {
+        const res = await fetch("/api/admin/customers", {
+          method: "POST",
+          headers: adminHeaders(),
+          body: JSON.stringify(data),
+        });
+        if (res.status === 409) {
+          alert("رقم التليفون مسجل بالفعل");
+          setSaving(false);
+          return;
+        }
+      }
+      await load();
+      setEditingCustomer(null);
+      setShowAddForm(false);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const deleteCustomer = async (id: number, name: string) => {
+    if (!confirm(`هل أنت متأكد من حذف العميل "${name}"؟\nالعمل لن يتم حذفه.`)) return;
+    await fetch(`/api/admin/customers/${id}`, { method: "DELETE", headers: adminHeaders() });
+    load();
+  };
+
+  const formatDate = (date: string | null) => {
+    if (!date) return "—";
+    return new Date(date).toLocaleDateString("ar-EG", { year: "numeric", month: "short", day: "numeric" });
+  };
+
+  const formatDateTime = (date: string | null) => {
+    if (!date) return "—";
+    return new Date(date).toLocaleDateString("ar-EG", { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+  };
+
+  if (loading) return <div className="flex justify-center py-20"><Loader2 className="animate-spin text-gold-400" size={32} /></div>;
+
+  return (
+    <div>
+      {/* Stats Cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+        <div className="p-3 rounded-xl border border-gold-500/20 text-center" style={{ background: "rgba(45,27,17,.5)" }}>
+          <Users size={20} className="text-gold-400 mx-auto mb-1" />
+          <p className="text-gold-400 font-bold text-lg">{totalCustomers}</p>
+          <p className="text-gold-100/40 text-xs">إجمالي العملاء</p>
+        </div>
+        <div className="p-3 rounded-xl border border-gold-500/20 text-center" style={{ background: "rgba(45,27,17,.5)" }}>
+          <DollarSign size={20} className="text-green-400 mx-auto mb-1" />
+          <p className="text-green-400 font-bold text-lg">{totalRevenue.toLocaleString()}</p>
+          <p className="text-gold-100/40 text-xs">إجمالي المبيعات (ج.م)</p>
+        </div>
+        <div className="p-3 rounded-xl border border-gold-500/20 text-center" style={{ background: "rgba(45,27,17,.5)" }}>
+          <TrendingUp size={20} className="text-blue-400 mx-auto mb-1" />
+          <p className="text-blue-400 font-bold text-lg">{avgSpent.toLocaleString()}</p>
+          <p className="text-gold-100/40 text-xs">متوسط الإنفاق</p>
+        </div>
+        <div className="p-3 rounded-xl border border-gold-500/20 text-center" style={{ background: "rgba(45,27,17,.5)" }}>
+          <Crown size={20} className="text-purple-400 mx-auto mb-1" />
+          <p className="text-purple-400 font-bold text-lg">{repeatCustomers}</p>
+          <p className="text-gold-100/40 text-xs">عملاء متكررين</p>
+        </div>
+      </div>
+
+      {/* Search + Actions */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-4">
+        <div className="relative flex-1">
+          <Search size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gold-400/50" />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="بحث بالاسم، رقم التليفون، المحافظة..."
+            className="w-full pr-9 pl-3 py-2.5 rounded-xl bg-wood-950/50 border border-gold-500/20 text-gold-100 text-sm placeholder-gold-100/30 focus:border-gold-500/50 focus:outline-none"
+          />
+        </div>
+        <div className="flex gap-2">
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as any)}
+            className="px-3 py-2.5 rounded-xl bg-wood-950/50 border border-gold-500/20 text-gold-100 text-sm focus:border-gold-500/50 focus:outline-none"
+          >
+            <option value="newest">الأحدث</option>
+            <option value="mostOrders">الأكثر طلبات</option>
+            <option value="mostSpent">الأكثر إنفاقاً</option>
+          </select>
+          <button
+            onClick={() => setShowAddForm(true)}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap"
+            style={{ background: "linear-gradient(135deg,#D4A44C,#A07020)", color: "#1A0F0A" }}
+          >
+            <UserPlus size={14} /> عميل جديد
+          </button>
+        </div>
+      </div>
+
+      {/* Results count */}
+      <div className="flex items-center justify-between mb-3">
+        <span className="text-gold-300 text-sm">{filtered.length} عميل{filtered.length !== 1 ? "" : ""}</span>
+        {search && <button onClick={() => setSearch("")} className="text-gold-400/50 text-xs hover:text-gold-400">مسح البحث</button>}
+      </div>
+
+      {/* Customer List */}
+      {filtered.length === 0 ? (
+        <div className="text-center py-16">
+          <Users size={56} className="text-gold-500/20 mx-auto mb-4" />
+          <p className="text-gold-100/30 text-lg font-playfair mb-2">
+            {customers.length === 0 ? "لا يوجد عملاء بعد" : "لا توجد نتائج للبحث"}
+          </p>
+          <p className="text-gold-100/20 text-sm">
+            {customers.length === 0 ? "العملاء هيتسجلو تلقائياً لما يعملوا طلب" : "جرب كلمة بحث تانية"}
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-2.5">
+          {filtered.map((customer: any) => {
+            const isExpanded = expandedId === customer.id;
+            const isRepeat = (customer.totalOrders || 0) > 1;
+            const isVip = (customer.totalSpent || 0) >= 5000;
+            const isTop = (customer.totalOrders || 0) >= 5;
+
+            return (
+              <div
+                key={customer.id}
+                className="rounded-xl border border-gold-500/20 overflow-hidden transition-all"
+                style={{
+                  background: isExpanded ? "rgba(212,164,76,.08)" : "rgba(45,27,17,.5)",
+                  borderColor: isExpanded ? "rgba(212,164,76,.35)" : "rgba(212,164,76,.2)",
+                }}
+              >
+                {/* Customer Header */}
+                <div className="p-4 cursor-pointer" onClick={() => setExpandedId(isExpanded ? null : customer.id)}>
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start gap-3 flex-1 min-w-0">
+                      {/* Avatar */}
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold ${
+                        isVip ? "bg-purple-500/20 text-purple-400 border border-purple-500/30" :
+                        isRepeat ? "bg-gold-500/20 text-gold-400 border border-gold-500/30" :
+                        "bg-wood-950 text-gold-100/40 border border-gold-500/20"
+                      }`}>
+                        {isVip ? <Crown size={16} /> : customer.name.charAt(0)}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-playfair text-gold-300 font-bold text-sm">{customer.name}</span>
+                          {isVip && <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/20 text-purple-400 border border-purple-500/30">VIP</span>}
+                          {isRepeat && !isVip && <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-gold-500/20 text-gold-400 border border-gold-500/30">متكرر</span>}
+                          {isTop && <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-green-500/20 text-green-400 border border-green-500/30">Top</span>}
+                        </div>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <span className="text-gold-100/40 text-xs flex items-center gap-1" dir="ltr">
+                            <Phone size={10} /> {customer.phone}
+                          </span>
+                          {customer.governorate && (
+                            <span className="text-gold-100/30 text-xs flex items-center gap-1">
+                              <MapPin size={10} /> {customer.governorate}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                      <span className="text-gold-400 font-bold text-sm">{(customer.totalSpent || 0).toLocaleString()} ج.م</span>
+                      <div className="flex items-center gap-3 text-xs text-gold-100/30">
+                        <span className="flex items-center gap-1"><ShoppingCart size={10} /> {customer.totalOrders || 0} طلب</span>
+                        {isExpanded ? <ChevronUp size={14} className="text-gold-400/50" /> : <ChevronDown size={14} className="text-gold-400/50" />}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Expanded Details */}
+                {isExpanded && (
+                  <div className="border-t border-gold-500/10 p-4 space-y-4">
+                    {/* Info Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <InfoItem icon={<Phone size={13} />} label="التليفون" value={customer.phone} dir="ltr" />
+                      {customer.email && <InfoItem icon={<Mail size={13} />} label="البريد" value={customer.email} />}
+                      {customer.governorate && <InfoItem icon={<MapPin size={13} />} label="المحافظة" value={customer.governorate} />}
+                      {customer.address && <InfoItem icon={<MapPin size={13} />} label="العنوان" value={customer.address} />}
+                      <InfoItem icon={<ShoppingCart size={13} />} label="عدد الطلبات" value={`${customer.totalOrders || 0} طلب`} />
+                      <InfoItem icon={<DollarSign size={13} />} label="إجمالي الإنفاق" value={`${(customer.totalSpent || 0).toLocaleString()} ج.م`} />
+                      <InfoItem icon={<Calendar size={13} />} label="تاريخ التسجيل" value={formatDate(customer.createdAt)} />
+                      <InfoItem icon={<Clock size={13} />} label="آخر طلب" value={formatDateTime(customer.lastOrderAt)} />
+                    </div>
+
+                    {/* Notes */}
+                    {customer.notes && (
+                      <div className="p-3 rounded-lg border border-gold-500/10" style={{ background: "rgba(45,27,17,.3)" }}>
+                        <div className="flex items-center gap-1 text-gold-400/60 text-xs mb-1">
+                          <MessageSquare size={11} /> ملاحظات
+                        </div>
+                        <p className="text-gold-100/50 text-sm">{customer.notes}</p>
+                      </div>
+                    )}
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-2 pt-2 border-t border-gold-500/10">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setEditingCustomer({ ...customer }); }}
+                        className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs border border-gold-500/20 text-gold-400 hover:bg-gold-500/10 transition"
+                      >
+                        <Edit3 size={12} /> تعديل
+                      </button>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); deleteCustomer(customer.id, customer.name); }}
+                        className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs border border-red-500/20 text-red-400 hover:bg-red-500/10 transition"
+                      >
+                        <Trash2 size={12} /> حذف
+                      </button>
+                      {customer.phone && (
+                        <a
+                          href={`https://wa.me/${customer.phone.replace(/^0/, "20")}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs border border-green-500/20 text-green-400 hover:bg-green-500/10 transition mr-auto"
+                        >
+                          <Phone size={12} /> واتساب
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Add/Edit Customer Modal */}
+      {(showAddForm || editingCustomer) && (
+        <CustomerForm
+          customer={editingCustomer || { name: "", phone: "", email: "", address: "", governorate: "", notes: "" }}
+          saving={saving}
+          onSave={saveCustomer}
+          onCancel={() => { setShowAddForm(false); setEditingCustomer(null); }}
+        />
+      )}
+    </div>
+  );
+}
+
+function InfoItem({ icon, label, value, dir }: { icon: React.ReactNode; label: string; value: string; dir?: string }) {
+  return (
+    <div className="flex items-center gap-2 p-2 rounded-lg" style={{ background: "rgba(45,27,17,.3)" }}>
+      <span className="text-gold-400/50">{icon}</span>
+      <div className="min-w-0">
+        <p className="text-gold-100/30 text-[10px]">{label}</p>
+        <p className="text-gold-200/70 text-xs truncate" dir={dir as any}>{value || "—"}</p>
+      </div>
+    </div>
+  );
+}
+
+function CustomerForm({ customer, saving, onSave, onCancel }: { customer: any; saving: boolean; onSave: (d: any) => void; onCancel: () => void }) {
+  const [form, setForm] = useState({ ...customer });
+  const set = (k: string, v: any) => setForm({ ...form, [k]: v });
+
+  return (
+    <div className="fixed inset-0 z-[2100] flex items-center justify-center bg-black/80 p-4">
+      <div className="w-full max-w-lg rounded-2xl p-6 border border-gold-500/30" style={{ background: "#1A0F0A" }}>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="font-playfair text-lg font-bold text-gold-400">
+            {form.id ? "تعديل بيانات العميل" : "إضافة عميل جديد"}
+          </h3>
+          <button onClick={onCancel} className="text-gold-400 hover:text-gold-200"><X size={20} /></button>
+        </div>
+
+        <div className="space-y-4">
+          <div>
+            <label className="block text-gold-400 text-xs mb-1">الاسم *</label>
+            <input
+              type="text"
+              value={form.name || ""}
+              onChange={(e) => set("name", e.target.value)}
+              placeholder="اسم العميل"
+              className="w-full px-3 py-2.5 rounded-lg bg-wood-950/50 border border-gold-500/20 text-gold-100 text-sm focus:border-gold-500/50 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-gold-400 text-xs mb-1">رقم التليفون *</label>
+            <input
+              type="text"
+              value={form.phone || ""}
+              onChange={(e) => set("phone", e.target.value)}
+              placeholder="01xxxxxxxxx"
+              dir="ltr"
+              className="w-full px-3 py-2.5 rounded-lg bg-wood-950/50 border border-gold-500/20 text-gold-100 text-sm focus:border-gold-500/50 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-gold-400 text-xs mb-1">البريد الإلكتروني</label>
+            <input
+              type="email"
+              value={form.email || ""}
+              onChange={(e) => set("email", e.target.value)}
+              placeholder="email@example.com"
+              dir="ltr"
+              className="w-full px-3 py-2.5 rounded-lg bg-wood-950/50 border border-gold-500/20 text-gold-100 text-sm focus:border-gold-500/50 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-gold-400 text-xs mb-1">المحافظة</label>
+            <input
+              type="text"
+              value={form.governorate || ""}
+              onChange={(e) => set("governorate", e.target.value)}
+              placeholder="القاهرة"
+              className="w-full px-3 py-2.5 rounded-lg bg-wood-950/50 border border-gold-500/20 text-gold-100 text-sm focus:border-gold-500/50 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-gold-400 text-xs mb-1">العنوان</label>
+            <input
+              type="text"
+              value={form.address || ""}
+              onChange={(e) => set("address", e.target.value)}
+              placeholder="تفاصيل العنوان"
+              className="w-full px-3 py-2.5 rounded-lg bg-wood-950/50 border border-gold-500/20 text-gold-100 text-sm focus:border-gold-500/50 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-gold-400 text-xs mb-1">ملاحظات</label>
+            <textarea
+              value={form.notes || ""}
+              onChange={(e) => set("notes", e.target.value)}
+              placeholder="ملاحظات عن العميل..."
+              rows={3}
+              className="w-full px-3 py-2.5 rounded-lg bg-wood-950/50 border border-gold-500/20 text-gold-100 text-sm focus:border-gold-500/50 focus:outline-none resize-none"
+            />
+          </div>
+
+          {/* Read-only stats when editing */}
+          {form.id && (
+            <div className="p-3 rounded-lg border border-gold-500/10" style={{ background: "rgba(45,27,17,.3)" }}>
+              <p className="text-gold-400/60 text-xs mb-2">إحصائيات العميل</p>
+              <div className="grid grid-cols-3 gap-2 text-center">
+                <div>
+                  <p className="text-gold-400 font-bold">{form.totalOrders || 0}</p>
+                  <p className="text-gold-100/30 text-[10px]">طلبات</p>
+                </div>
+                <div>
+                  <p className="text-gold-400 font-bold">{(form.totalSpent || 0).toLocaleString()}</p>
+                  <p className="text-gold-100/30 text-[10px]">ج.م مجموع</p>
+                </div>
+                <div>
+                  <p className="text-gold-400 font-bold">{formatDateSimple(form.lastOrderAt)}</p>
+                  <p className="text-gold-100/30 text-[10px]">آخر طلب</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="flex gap-3 mt-6">
+          <button onClick={onCancel} className="flex-1 py-2.5 rounded-lg border border-gold-500/20 text-gold-300 text-sm">إلغاء</button>
+          <button
+            onClick={() => {
+              if (!form.name.trim() || !form.phone.trim()) {
+                alert("الاسم ورقم التليفون مطلوبين");
+                return;
+              }
+              onSave(form);
+            }}
+            disabled={saving}
+            className="flex-1 py-2.5 rounded-lg font-bold text-sm flex items-center justify-center gap-2"
+            style={{ background: "linear-gradient(135deg,#D4A44C,#A07020)", color: "#1A0F0A" }}
+          >
+            {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
+            {form.id ? "حفظ التعديلات" : "إضافة العميل"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function formatDateSimple(date: string | null): string {
+  if (!date) return "—";
+  return new Date(date).toLocaleDateString("ar-EG", { month: "short", day: "numeric" });
 }
 
 // ===== Orders Tab =====
