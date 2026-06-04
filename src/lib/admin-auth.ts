@@ -4,13 +4,8 @@ import { createHmac, timingSafeEqual, randomBytes } from "crypto";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "160835";
 const TOKEN_SECRET = process.env.ADMIN_TOKEN_SECRET || "bondok-perfumes-default-secret-change-in-production-2026";
 
-// Warn if using defaults
-if (!process.env.ADMIN_PASSWORD) {
-  console.warn("⚠️ ADMIN_PASSWORD not set. Using default password. Set ADMIN_PASSWORD env var for production!");
-}
-if (!process.env.ADMIN_TOKEN_SECRET) {
-  console.warn("⚠️ ADMIN_TOKEN_SECRET not set. Using default secret. Set ADMIN_TOKEN_SECRET env var for production!");
-}
+// Note: Set ADMIN_PASSWORD and ADMIN_TOKEN_SECRET env vars in production for security.
+// Defaults are used for development convenience.
 
 // ─── Rate Limiting for Login Attempts (In-Memory) ──────────────────
 const loginAttempts = new Map<string, { count: number; lastAttempt: number; lockedUntil: number }>();
