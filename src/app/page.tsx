@@ -4,6 +4,7 @@ import { SiteProvider } from "@/context/SiteContext";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import Navbar from "@/components/bondok/Navbar";
 import Hero from "@/components/bondok/Hero";
+import OffersBanner from "@/components/bondok/OffersBanner";
 import Occasions from "@/components/bondok/Occasions";
 import Seasons from "@/components/bondok/Seasons";
 import Categories from "@/components/bondok/Categories";
@@ -11,6 +12,7 @@ import Products from "@/components/bondok/Products";
 import SampleBundle from "@/components/bondok/SampleBundle";
 import Top10 from "@/components/bondok/Top10";
 import Bundles from "@/components/bondok/Bundles";
+import Testimonials from "@/components/bondok/Testimonials";
 import About from "@/components/bondok/About";
 import Contact from "@/components/bondok/Contact";
 import Footer from "@/components/bondok/Footer";
@@ -32,13 +34,15 @@ export default function Home() {
         <Navbar />
         <main className="flex-1">
           <Hero />
-          <Occasions />
-          <Seasons />
+          <OffersBanner />
           <Categories />
+          <Occasions />
           <Products />
-          <SampleBundle />
           <Top10 />
           <Bundles />
+          <SampleBundle />
+          <Seasons />
+          <Testimonials />
           <About />
           <Contact />
         </main>

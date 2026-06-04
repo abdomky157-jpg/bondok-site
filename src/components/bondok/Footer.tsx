@@ -3,7 +3,11 @@
 import { useState } from "react";
 import { useSiteData } from "@/context/SiteContext";
 import { useBondokStore } from "@/store/bondok";
-import { Truck, Shield, RefreshCw, MessageCircle, X } from "lucide-react";
+import {
+  Truck, Shield, RefreshCw, MessageCircle, X,
+  Instagram, Facebook, Twitter, Mail, Send, Heart,
+  Phone, MapPin, ChevronUp,
+} from "lucide-react";
 
 export default function Footer() {
   const { settings } = useSiteData();
@@ -14,103 +18,222 @@ export default function Footer() {
 
   const [showReturnPolicy, setShowReturnPolicy] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
+  const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email.trim()) {
+      setSubscribed(true);
+      setEmail("");
+      setTimeout(() => setSubscribed(false), 4000);
+    }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <footer className="relative py-12 wood-bg border-t border-gold-500/10">
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="relative mt-auto" style={{ background: "linear-gradient(180deg, #2D1B11, #1A0F0A)" }}>
+      {/* Back to top bar */}
+      <div className="border-b border-gold-500/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            {/* Newsletter */}
+            <div className="flex-1">
+              <h4 className="font-playfair text-gold-400 font-semibold text-sm mb-1">اشترك في النشرة البريدية</h4>
+              <p className="text-gold-100/40 text-xs">احصل على آخر العروض والأخبار</p>
+            </div>
+            <form onSubmit={handleSubscribe} className="flex gap-2 w-full sm:w-auto">
+              <input
+                type="email"
+                placeholder="بريدك الإلكتروني"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="flex-1 sm:w-64 px-4 py-2.5 rounded-full bg-wood-950/50 border border-gold-500/20 text-gold-100 placeholder:text-gold-100/30 focus:border-gold-500/50 focus:outline-none transition text-sm"
+                dir="ltr"
+              />
+              <button
+                type="submit"
+                className="px-5 py-2.5 rounded-full gold-gradient font-bold text-sm flex items-center gap-2 transition-all hover:scale-105"
+              >
+                <Send size={14} /> اشتراك
+              </button>
+            </form>
+          </div>
+          {subscribed && (
+            <p className="text-green-400 text-xs text-center mt-2">تم الاشتراك بنجاح! ✨</p>
+          )}
+        </div>
+      </div>
+
+      {/* Main Footer Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Features Row */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
-          <div className="text-center p-4 rounded-xl border border-gold-500/15" style={{ background: "rgba(45,27,17,.3)" }}>
-            <Truck size={24} className="text-gold-400 mx-auto mb-2" />
-            <p className="text-gold-300 text-xs font-semibold">توصيل لجميع المحافظات</p>
-            <p className="text-gold-100/30 text-[10px] mt-1">في خلال 2-5 أيام عمل</p>
-          </div>
-          <div className="text-center p-4 rounded-xl border border-gold-500/15" style={{ background: "rgba(45,27,17,.3)" }}>
-            <Shield size={24} className="text-gold-400 mx-auto mb-2" />
-            <p className="text-gold-300 text-xs font-semibold">منتجات أصلية 100%</p>
-            <p className="text-gold-100/30 text-[10px] mt-1">ضمان على كل المنتجات</p>
-          </div>
-          <div className="text-center p-4 rounded-xl border border-gold-500/15" style={{ background: "rgba(45,27,17,.3)" }}>
-            <RefreshCw size={24} className="text-gold-400 mx-auto mb-2" />
-            <button onClick={() => setShowReturnPolicy(true)} className="text-gold-300 text-xs font-semibold hover:text-gold-200 transition">
-              سياسة الإرجاع
-            </button>
-            <p className="text-gold-100/30 text-[10px] mt-1">إرجاع خلال 3 أيام</p>
-          </div>
-          <div className="text-center p-4 rounded-xl border border-gold-500/15" style={{ background: "rgba(45,27,17,.3)" }}>
-            <MessageCircle size={24} className="text-green-400 mx-auto mb-2" />
-            <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="text-gold-300 text-xs font-semibold hover:text-gold-200 transition">
-              تواصل عبر واتساب
-            </a>
-            <p className="text-gold-100/30 text-[10px] mt-1">24/7 خدمة عملاء</p>
-          </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
+          {[
+            { icon: <Truck size={28} className="text-gold-400" />, title: "توصيل سريع", desc: "لجميع المحافظات في 2-5 أيام" },
+            { icon: <Shield size={28} className="text-gold-400" />, title: "منتجات أصلية", desc: "ضمان على كل المنتجات" },
+            { icon: <RefreshCw size={28} className="text-gold-400" />, title: "إرجاع مجاني", desc: "إرجاع خلال 3 أيام" },
+            { icon: <MessageCircle size={28} className="text-green-400" />, title: "دعم 24/7", desc: "تواصل معنا على واتساب" },
+          ].map((f, i) => (
+            <div
+              key={i}
+              className="text-center p-5 rounded-xl border border-gold-500/10 transition-all duration-300 hover:border-gold-500/25 hover:bg-gold-500/5"
+              style={{ background: "rgba(45,27,17,.2)" }}
+            >
+              <div className="w-12 h-12 mx-auto mb-3 rounded-full flex items-center justify-center" style={{ background: "rgba(212,164,76,.08)" }}>
+                {f.icon}
+              </div>
+              <p className="text-gold-300 text-xs font-semibold mb-0.5">{f.title}</p>
+              <p className="text-gold-100/30 text-[10px]">{f.desc}</p>
+            </div>
+          ))}
         </div>
 
-        {/* Quick Links + Interactive */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-10">
-          {/* Navigation */}
+        {/* Links Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 mb-12">
+          {/* About */}
           <div>
-            <h4 className="font-playfair text-gold-400 font-semibold text-sm mb-3">روابط سريعة</h4>
-            <ul className="space-y-2">
-              <li><button onClick={() => scrollToSection("prod")} className="text-gold-100/40 text-xs hover:text-gold-300 transition">المنتجات</button></li>
-              <li><button onClick={() => scrollToSection("bun")} className="text-gold-100/40 text-xs hover:text-gold-300 transition">الباقات</button></li>
-              <li><button onClick={() => scrollToSection("t10")} className="text-gold-100/40 text-xs hover:text-gold-300 transition">Top 10</button></li>
-              <li><button onClick={() => scrollToSection("about")} className="text-gold-100/40 text-xs hover:text-gold-300 transition">من نحن</button></li>
-              <li><button onClick={() => scrollToSection("cont")} className="text-gold-100/40 text-xs hover:text-gold-300 transition">تواصل معنا</button></li>
+            <div className="flex items-center gap-3 mb-4">
+              <img
+                src={settings.logoUrl || "https://bondok-perfumes.com/logo.png"}
+                className="w-10 h-10 rounded-full object-contain"
+                style={{ filter: "drop-shadow(0 0 8px rgba(212,164,76,.4))" }}
+                alt="Bondok"
+              />
+              <div>
+                <h4 className="font-playfair text-gold-400 font-bold text-sm">Bondok</h4>
+                <p className="font-playfair text-[10px] tracking-widest text-gold-400/60">PERFUMES</p>
+              </div>
+            </div>
+            <p className="text-gold-100/40 text-xs leading-relaxed mb-4">
+              وجهتك المثالية لعالم العطور الفاخرة. أرقى العطور العالمية بأفضل الأسعار.
+            </p>
+            {/* Social Media */}
+            <div className="flex items-center gap-2">
+              <a href="#" className="w-9 h-9 rounded-full border border-gold-500/20 flex items-center justify-center text-gold-400 hover:bg-gold-500/15 hover:border-gold-500/40 transition-all hover:scale-110" aria-label="فيسبوك">
+                <Facebook size={16} />
+              </a>
+              <a href="#" className="w-9 h-9 rounded-full border border-gold-500/20 flex items-center justify-center text-gold-400 hover:bg-gold-500/15 hover:border-gold-500/40 transition-all hover:scale-110" aria-label="انستغرام">
+                <Instagram size={16} />
+              </a>
+              <a href="#" className="w-9 h-9 rounded-full border border-gold-500/20 flex items-center justify-center text-gold-400 hover:bg-gold-500/15 hover:border-gold-500/40 transition-all hover:scale-110" aria-label="تويتر">
+                <Twitter size={16} />
+              </a>
+              <a href="https://wa.me/${whatsappNumber}" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full border border-gold-500/20 flex items-center justify-center text-green-400 hover:bg-green-500/15 hover:border-green-500/40 transition-all hover:scale-110" aria-label="واتساب">
+                <MessageCircle size={16} />
+              </a>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h4 className="font-playfair text-gold-400 font-semibold text-sm mb-4 flex items-center gap-2">
+              <span className="w-1 h-4 rounded-full bg-gold-500/40" />
+              روابط سريعة
+            </h4>
+            <ul className="space-y-2.5">
+              {[
+                { label: "المنتجات", id: "prod" },
+                { label: "الباقات", id: "bun" },
+                { label: "Top 10", id: "t10" },
+                { label: "التصنيفات", id: "cat" },
+                { label: "من نحن", id: "about" },
+              ].map((link) => (
+                <li key={link.id}>
+                  <button onClick={() => scrollToSection(link.id)} className="text-gold-100/40 text-xs hover:text-gold-300 transition-all hover:pr-2 duration-300">
+                    {link.label}
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Services */}
           <div>
-            <h4 className="font-playfair text-gold-400 font-semibold text-sm mb-3">الخدمات</h4>
-            <ul className="space-y-2">
-              <li><button onClick={() => setQuizOpen(true)} className="text-gold-100/40 text-xs hover:text-gold-300 transition">اكتشف عطرك</button></li>
-              <li><button onClick={() => setSpinOpen(true)} className="text-gold-100/40 text-xs hover:text-gold-300 transition">عجلة الحظ</button></li>
-              <li><button onClick={() => setSurpriseOpen(true)} className="text-gold-100/40 text-xs hover:text-gold-300 transition">فاجئني</button></li>
-              <li><button onClick={() => { window.location.hash = "#track"; window.dispatchEvent(new HashChangeEvent("hashchange")); }} className="text-gold-100/40 text-xs hover:text-gold-300 transition">تتبع طلبك</button></li>
+            <h4 className="font-playfair text-gold-400 font-semibold text-sm mb-4 flex items-center gap-2">
+              <span className="w-1 h-4 rounded-full bg-gold-500/40" />
+              الخدمات
+            </h4>
+            <ul className="space-y-2.5">
+              {[
+                { label: "اكتشف عطرك", action: () => setQuizOpen(true) },
+                { label: "عجلة الحظ", action: () => setSpinOpen(true) },
+                { label: "فاجئني", action: () => setSurpriseOpen(true) },
+                { label: "تتبع طلبك", action: () => { window.location.hash = "#track"; window.dispatchEvent(new HashChangeEvent("hashchange")); } },
+              ].map((link, i) => (
+                <li key={i}>
+                  <button onClick={link.action} className="text-gold-100/40 text-xs hover:text-gold-300 transition-all hover:pr-2 duration-300">
+                    {link.label}
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Info */}
           <div>
-            <h4 className="font-playfair text-gold-400 font-semibold text-sm mb-3">معلومات</h4>
-            <ul className="space-y-2">
-              <li><button onClick={() => setShowReturnPolicy(true)} className="text-gold-100/40 text-xs hover:text-gold-300 transition">سياسة الإرجاع</button></li>
-              <li><button onClick={() => setShowTerms(true)} className="text-gold-100/40 text-xs hover:text-gold-300 transition">شروط الاستخدام</button></li>
-              <li><button onClick={() => scrollToSection("cont")} className="text-gold-100/40 text-xs hover:text-gold-300 transition">تواصل معنا</button></li>
+            <h4 className="font-playfair text-gold-400 font-semibold text-sm mb-4 flex items-center gap-2">
+              <span className="w-1 h-4 rounded-full bg-gold-500/40" />
+              معلومات
+            </h4>
+            <ul className="space-y-2.5">
+              {[
+                { label: "سياسة الإرجاع", action: () => setShowReturnPolicy(true) },
+                { label: "شروط الاستخدام", action: () => setShowTerms(true) },
+                { label: "تواصل معنا", action: () => scrollToSection("cont") },
+              ].map((link, i) => (
+                <li key={i}>
+                  <button onClick={link.action} className="text-gold-100/40 text-xs hover:text-gold-300 transition-all hover:pr-2 duration-300">
+                    {link.label}
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Payment Methods */}
+          {/* Contact */}
           <div>
-            <h4 className="font-playfair text-gold-400 font-semibold text-sm mb-3">طرق الدفع</h4>
-            <ul className="space-y-2">
-              <li className="text-gold-100/40 text-xs">💵 كاش عند الاستلام</li>
-              <li className="text-gold-100/40 text-xs">📱 فودافون كاش</li>
-              <li className="text-gold-100/40 text-xs">🏦 تحويل بنكي</li>
-              <li className="text-gold-100/40 text-xs">💳 بطاقة ائتمان</li>
+            <h4 className="font-playfair text-gold-400 font-semibold text-sm mb-4 flex items-center gap-2">
+              <span className="w-1 h-4 rounded-full bg-gold-500/40" />
+              طرق الدفع
+            </h4>
+            <ul className="space-y-2.5 mb-6">
+              <li className="text-gold-100/40 text-xs flex items-center gap-2">💵 كاش عند الاستلام</li>
+              <li className="text-gold-100/40 text-xs flex items-center gap-2">📱 فودافون كاش</li>
+              <li className="text-gold-100/40 text-xs flex items-center gap-2">🏦 تحويل بنكي</li>
+              <li className="text-gold-100/40 text-xs flex items-center gap-2">💳 بطاقة ائتمان</li>
             </ul>
           </div>
         </div>
 
         {/* Divider */}
-        <div className="border-t border-gold-500/10 pt-6 text-center">
-          <p className="text-gold-100/20 text-xs">{settings.footerText || "© 2025 Bondok Perfumes. جميع الحقوق محفوظة"}</p>
+        <div className="border-t border-gold-500/10 pt-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p className="text-gold-100/20 text-xs">
+              {settings.footerText || "© 2025 Bondok Perfumes. جميع الحقوق محفوظة"}
+            </p>
+            <p className="text-gold-100/20 text-xs flex items-center gap-1">
+              صنع بـ <Heart size={12} className="text-red-500 fill-red-500" /> في مصر 🇪🇬
+            </p>
+          </div>
         </div>
       </div>
 
       {/* Return Policy Modal */}
       {showReturnPolicy && (
-        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,.8)" }} onClick={() => setShowReturnPolicy(false)}>
+        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,.85)" }} onClick={() => setShowReturnPolicy(false)}>
           <div className="rounded-2xl max-w-lg w-full max-h-[80vh] overflow-y-auto p-8" style={{ background: "linear-gradient(135deg,#2D1B11,#1A0F0A)", border: "1px solid rgba(212,164,76,.3)" }} onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-playfair text-xl font-bold gold-shimmer">🔄 سياسة الإرجاع</h3>
-              <button onClick={() => setShowReturnPolicy(false)} className="text-gold-500/50 hover:text-gold-400"><X size={20} /></button>
+              <button onClick={() => setShowReturnPolicy(false)} className="text-gold-500/50 hover:text-gold-400 transition"><X size={20} /></button>
             </div>
             <div className="space-y-4 text-gold-100/70 text-sm leading-relaxed">
               <div>
@@ -131,7 +254,7 @@ export default function Footer() {
                   <li>لو كل حاجة تمام، هيتم استرداد المبلغ خلال 3-5 أيام عمل</li>
                 </ol>
               </div>
-              <div className="p-3 rounded-xl border border-gold-500/15" style={{ background: "rgba(45,27,17,.5)" }}>
+              <div className="p-4 rounded-xl border border-gold-500/15" style={{ background: "rgba(45,27,17,.5)" }}>
                 <p className="text-gold-400 text-xs">لاستفسارات الإرجاع:</p>
                 <a href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("عايز أرجع طلب")}`} target="_blank" rel="noopener noreferrer" className="text-green-400 text-sm font-semibold hover:text-green-300 transition mt-1 inline-block">
                   تواصل معانا على الواتساب
@@ -144,11 +267,11 @@ export default function Footer() {
 
       {/* Terms Modal */}
       {showTerms && (
-        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,.8)" }} onClick={() => setShowTerms(false)}>
+        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,.85)" }} onClick={() => setShowTerms(false)}>
           <div className="rounded-2xl max-w-lg w-full max-h-[80vh] overflow-y-auto p-8" style={{ background: "linear-gradient(135deg,#2D1B11,#1A0F0A)", border: "1px solid rgba(212,164,76,.3)" }} onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-playfair text-xl font-bold gold-shimmer">📋 شروط الاستخدام</h3>
-              <button onClick={() => setShowTerms(false)} className="text-gold-500/50 hover:text-gold-400"><X size={20} /></button>
+              <button onClick={() => setShowTerms(false)} className="text-gold-500/50 hover:text-gold-400 transition"><X size={20} /></button>
             </div>
             <div className="space-y-4 text-gold-100/70 text-sm leading-relaxed">
               <div>
@@ -157,25 +280,13 @@ export default function Footer() {
                   <li>استخدامك للموقع يعني موافقتك على الشروط دي</li>
                   <li>المنتجات كلها أصلية 100% ومعروضة بأفضل الأسعار</li>
                   <li>الأسعار قابلة للتغيير في أي وقت بدون إشعار مسبق</li>
-                  <li>الصور المعروضة قد تختلف اختلاف بسيط عن المنتج الفعلي</li>
                 </ul>
               </div>
               <div>
                 <h4 className="text-gold-400 font-semibold mb-1">الطلب والتوصيل:</h4>
                 <ul className="list-disc list-inside space-y-1 text-gold-100/50">
                   <li>التوصيل لجميع محافظات مصر في خلال 2-5 أيام عمل</li>
-                  <li>مصاريف الشحن بيتحسب حسب المحافظة</li>
                   <li>الطلب بيتأكد بعد التواصل عبر الواتساب</li>
-                  <li>في حالة عدم الاستلام، الطلب بيترجع بعد 7 أيام</li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="text-gold-400 font-semibold mb-1">الدفع:</h4>
-                <ul className="list-disc list-inside space-y-1 text-gold-100/50">
-                  <li>الدفع عند الاستلام (كاش)</li>
-                  <li>فودافون كاش</li>
-                  <li>تحويل بنكي</li>
-                  <li>بطاقة ائتمان</li>
                 </ul>
               </div>
             </div>

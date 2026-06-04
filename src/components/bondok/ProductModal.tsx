@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { X, ShoppingCart, Star } from "lucide-react";
 import { TYPE_AR, GENDER_AR, type Product } from "@/data/products";
 import { occasions, SEASON_AR } from "@/data/categories";
@@ -18,8 +18,6 @@ export default function ProductModal() {
 
   // Scroll lock when modal is open
   useScrollLock(!!selectedProduct);
-
-  useEffect(() => { setSelSize(0); }, [selectedProduct]);
 
   if (!selectedProduct) return null;
   const p = selectedProduct;
@@ -175,7 +173,7 @@ export default function ProductModal() {
                 {sameFamily.map((s) => (
                   <div
                     key={s.id}
-                    onClick={() => { setSelectedProduct(s); setSelSize(0); }}
+                    onClick={() => { setSelectedProduct(s); }}
                     className="shrink-0 w-32 cursor-pointer group"
                   >
                     <div className="aspect-square rounded-xl overflow-hidden gold-border mb-2">
