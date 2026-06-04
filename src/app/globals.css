@@ -1,0 +1,412 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ===== Bondok Perfumes - Wood Luxe Theme ===== */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-tajawal);
+  --font-mono: var(--font-geist-mono);
+
+  /* Wood Palette - Rich warm browns */
+  --color-wood-50: #F5EDE3;
+  --color-wood-100: #E8D9C5;
+  --color-wood-200: #D4BC9A;
+  --color-wood-300: #B8946A;
+  --color-wood-400: #9A7348;
+  --color-wood-500: #7D5630;
+  --color-wood-600: #5E3F22;
+  --color-wood-700: #4A3224;
+  --color-wood-800: #352219;
+  --color-wood-900: #2D1B11;
+  --color-wood-950: #1A0F0A;
+
+  /* Gold/Amber Accent - Warm golden tones */
+  --color-gold-50: #FFF9ED;
+  --color-gold-100: #FFF0CC;
+  --color-gold-200: #FFE099;
+  --color-gold-300: #E8C87A;
+  --color-gold-400: #D4A44C;
+  --color-gold-500: #C4912E;
+  --color-gold-600: #A07020;
+  --color-gold-700: #7D5618;
+  --color-gold-800: #5C3F12;
+  --color-gold-900: #3D2A0C;
+}
+
+:root {
+  --radius: 0.625rem;
+  --site-primary: #D4A44C;
+  --site-bg: #2D1B11;
+}
+
+@layer base {
+  * {
+    outline-color: hsl(var(--ring) / 0.5);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: "Tajawal", sans-serif;
+    background: #2D1B11;
+    color: #F5EDE3;
+  }
+
+  /* Fix anchor links hidden behind fixed navbar */
+  [id] {
+    scroll-margin-top: 80px;
+  }
+}
+
+/* ===== Wood Background with Grain Texture ===== */
+.wood-bg {
+  background: linear-gradient(135deg, #2D1B11, #352219 25%, #3E2A1D 50%, #352219 75%, #2D1B11);
+  position: relative;
+}
+
+.wood-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: 
+    repeating-linear-gradient(
+      85deg,
+      transparent,
+      transparent 3px,
+      rgba(212, 164, 76, 0.02) 3px,
+      rgba(212, 164, 76, 0.02) 4px
+    ),
+    repeating-linear-gradient(
+      175deg,
+      transparent,
+      transparent 8px,
+      rgba(74, 50, 36, 0.15) 8px,
+      rgba(74, 50, 36, 0.15) 10px
+    );
+  pointer-events: none;
+}
+
+.wood-bg-lt {
+  background: linear-gradient(135deg, #352219, #3E2A1D 25%, #4A3224 50%, #3E2A1D 75%, #352219);
+  position: relative;
+}
+
+.wood-bg-lt::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: 
+    repeating-linear-gradient(
+      80deg,
+      transparent,
+      transparent 4px,
+      rgba(212, 164, 76, 0.015) 4px,
+      rgba(212, 164, 76, 0.015) 5px
+    ),
+    repeating-linear-gradient(
+      170deg,
+      transparent,
+      transparent 10px,
+      rgba(94, 63, 34, 0.1) 10px,
+      rgba(94, 63, 34, 0.1) 12px
+    );
+  pointer-events: none;
+}
+
+/* ===== Gold Shimmer Animation ===== */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.gold-shimmer {
+  background: linear-gradient(90deg, #A07020, #FFE099, #D4A44C, #FFE099, #A07020);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+
+/* ===== Gold Border with Warm Glow ===== */
+.gold-border {
+  border: 1px solid rgba(212, 164, 76, 0.25);
+  box-shadow: inset 0 0 20px rgba(212, 164, 76, 0.04), 0 0 15px rgba(212, 164, 76, 0.08);
+}
+
+/* ===== Ornamental Divider ===== */
+.orn-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.orn-div::before,
+.orn-div::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212, 164, 76, 0.4), transparent);
+}
+
+/* ===== Scrollbar - Wood Themed ===== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #2D1B11;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 164, 76, 0.35);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 164, 76, 0.55);
+}
+
+/* ===== Product Card ===== */
+.pc {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+}
+
+.pc:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(26, 15, 10, 0.5), 0 0 30px rgba(212, 164, 76, 0.12);
+}
+
+.pc:hover .pimg {
+  transform: scale(1.05);
+}
+
+.pc:hover .acb {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Fix: Show add-to-cart button on mobile (no hover) */
+@media (max-width: 640px) {
+  .pc .acb {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+}
+
+/* ===== Filter Button Active ===== */
+.fb.active,
+.sb.active {
+  background: linear-gradient(135deg, #D4A44C, #A07020) !important;
+  color: #1A0F0A !important;
+  box-shadow: 0 0 20px rgba(212, 164, 76, 0.25);
+}
+
+.pb.active {
+  background: rgba(212, 164, 76, 0.15) !important;
+  color: #D4A44C !important;
+}
+
+/* ===== Particles ===== */
+@keyframes float-particle {
+  0%, 100% { transform: translateY(0) rotate(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+}
+
+.ptc {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: rgba(212, 164, 76, 0.5);
+  border-radius: 50%;
+  animation: float-particle linear infinite;
+  pointer-events: none;
+}
+
+/* ===== Navbar Scroll - Wood Glass ===== */
+.nsc {
+  background: rgba(45, 27, 17, 0.92) !important;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 4px 20px rgba(26, 15, 10, 0.4), 0 1px 0 rgba(212, 164, 76, 0.15);
+}
+
+/* ===== Hero Float ===== */
+@keyframes hero-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.hero-float {
+  animation: hero-float 6s ease-in-out infinite;
+}
+
+/* ===== Pulse Gold ===== */
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 5px rgba(212, 164, 76, 0.3); }
+  50% { box-shadow: 0 0 25px rgba(212, 164, 76, 0.5); }
+}
+
+.pulse-gold {
+  animation: pulse-gold 2s infinite;
+}
+
+/* ===== Countdown Timer ===== */
+@keyframes countdown {
+  0% { width: 100%; }
+  100% { width: 0%; }
+}
+
+.stb {
+  animation: countdown 3600s linear forwards;
+}
+
+/* ===== Note Pyramid ===== */
+.nt { clip-path: polygon(20% 0%, 80% 0%, 88% 100%, 12% 100%); }
+.nm { clip-path: polygon(12% 0%, 88% 0%, 94% 100%, 6% 100%); }
+.nb { clip-path: polygon(6% 0%, 94% 0%, 100% 100%, 0% 100%); }
+
+/* ===== Quiz Option Selected ===== */
+.qo.sel {
+  background: rgba(212, 164, 76, 0.12) !important;
+  border-color: rgba(212, 164, 76, 0.4) !important;
+}
+
+/* ===== Playfair Font ===== */
+.font-playfair {
+  font-family: "Playfair Display", serif;
+}
+
+.font-amiri {
+  font-family: "Amiri", serif;
+}
+
+/* ===== Wood Grain Overlay for Large Sections ===== */
+.wood-grain {
+  position: relative;
+}
+
+.wood-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: 
+    repeating-linear-gradient(
+      87deg,
+      transparent,
+      transparent 2px,
+      rgba(212, 164, 76, 0.012) 2px,
+      rgba(212, 164, 76, 0.012) 3px
+    ),
+    repeating-linear-gradient(
+      177deg,
+      transparent,
+      transparent 6px,
+      rgba(74, 50, 36, 0.08) 6px,
+      rgba(74, 50, 36, 0.08) 7px
+    );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ===== Warm Card Style ===== */
+.warm-card {
+  background: linear-gradient(145deg, rgba(74, 50, 36, 0.6), rgba(53, 34, 25, 0.8));
+  border: 1px solid rgba(212, 164, 76, 0.15);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.warm-card:hover {
+  border-color: rgba(212, 164, 76, 0.3);
+  box-shadow: 0 8px 32px rgba(26, 15, 10, 0.4), 0 0 20px rgba(212, 164, 76, 0.08);
+}
+
+/* ===== Smooth Glow Button ===== */
+.glow-btn {
+  background: linear-gradient(135deg, #D4A44C, #A07020);
+  color: #1A0F0A;
+  font-weight: bold;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(212, 164, 76, 0.2);
+}
+
+.glow-btn:hover {
+  box-shadow: 0 4px 20px rgba(212, 164, 76, 0.35);
+  transform: translateY(-1px);
+}
+
+/* ===== Gold Gradient Button ===== */
+.gold-gradient {
+  background: linear-gradient(135deg, #D4A44C, #A07020);
+  color: #1A0F0A;
+  font-weight: bold;
+}
+
+/* ===== Mobile Menu Slide Down ===== */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mobile-menu-enter {
+  animation: slideDown 0.25s ease-out;
+}
+
+/* ===== Body scroll lock when modals are open ===== */
+body.modal-open {
+  overflow: hidden !important;
+  padding-right: var(--scrollbar-width, 0px);
+}
+
+/* ===== Improved Touch Targets ===== */
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== Improved Contrast Utilities ===== */
+.text-subtle {
+  color: rgba(245, 237, 227, 0.55);
+}
+
+.text-subtle-light {
+  color: rgba(245, 237, 227, 0.7);
+}
+
+/* ===== Reduced Motion Support ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .hero-float,
+  .ptc,
+  .gold-shimmer {
+    animation: none !important;
+  }
+  .pc:hover {
+    transform: none;
+  }
+}

@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model SiteProduct {
+  id        Int      @id @default(autoincrement())
+  name      String
+  ar        String
+  brand     String
+  gender    String   @default("men")
+  type      String   @default("fresh")
+  sizes     String
+  image     String
+  badge     String   @default("")
+  longevity Int      @default(7)
+  sillage   Int      @default(7)
+  topNotes  String
+  heartNotes String
+  baseNotes String
+  occasions String
+  seasons   String
+  desc      String   @default("")
+  top       Boolean  @default(false)
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SiteBundle {
+  id        Int      @id @default(autoincrement())
+  name      String
+  icon      String   @default("")
+  price     Int
+  desc      String   @default("")
+  items     String
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SiteSetting {
+  key   String @id
+  value String @default("")
+}
+
+model SiteOrder {
+  id        Int      @id @default(autoincrement())
+  name      String
+  phone     String
+  address   String
+  notes     String   @default("")
+  items     String
+  subtotal  Int
+  discount  Int      @default(0)
+  total     Int
+  payment   String   @default("cash")
+  status    String   @default("new")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
