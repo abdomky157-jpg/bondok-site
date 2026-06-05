@@ -1,9 +1,22 @@
 import { PrismaClient } from '@prisma/client'
 import { PrismaLibSQL } from '@prisma/adapter-libsql'
-import { createClient } from '@libsql/client'
+import { createClient, Client } from '@libsql/client'
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
+}
+
+// Shared libsql client for connection reuse
+let _libsqlClient: Client | null = null;
+
+function getLibsqlClient(): Client {
+  if (!_libsqlClient) {
+    _libsqlClient = createClient({
+      url: process.env.DATABASE_URL || 'file:./db/custom.db',
+      authToken: process.env.TURSO_AUTH_TOKEN,
+    })
+  }
+  return _libsqlClient
 }
 
 function createPrismaClient() {
@@ -11,16 +24,13 @@ function createPrismaClient() {
 
   // If using Turso (libsql:// URL), use the driver adapter
   if (dbUrl.startsWith('libsql://')) {
-    const libsql = createClient({
-      url: dbUrl,
-      authToken: process.env.TURSO_AUTH_TOKEN,
-    })
+    const libsql = getLibsqlClient()
     const adapter = new PrismaLibSQL(libsql)
-    return new PrismaClient({ adapter, log: ['query'] })
+    return new PrismaClient({ adapter })
   }
 
   // Local SQLite
-  return new PrismaClient({ log: ['query'] })
+  return new PrismaClient()
 }
 
 export const db =
