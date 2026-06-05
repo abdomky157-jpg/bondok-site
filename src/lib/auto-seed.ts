@@ -35,15 +35,39 @@ const defaultSettings = [
 
 let seeding = false;
 
-export async function ensureSeeded(): Promise<boolean> {
+export async function getDbStats(): Promise<{ products: number; bundles: number; settings: number; customers: number; orders: number }> {
+  try {
+    const [products, bundles, settings, customers, orders] = await Promise.all([
+      db.siteProduct.count(),
+      db.siteBundle.count(),
+      db.siteSetting.count(),
+      db.siteCustomer.count(),
+      db.siteOrder.count(),
+    ]);
+    return { products, bundles, settings, customers, orders };
+  } catch {
+    return { products: 0, bundles: 0, settings: 0, customers: 0, orders: 0 };
+  }
+}
+
+export async function ensureSeeded(force = false): Promise<boolean> {
   if (seeding) return false;
 
   try {
-    // Check if already has data
-    const count = await db.siteProduct.count();
-    if (count > 0) return false;
+    // Check if already has data (unless force)
+    if (!force) {
+      const count = await db.siteProduct.count();
+      if (count > 0) return false;
+    }
 
     seeding = true;
+
+    if (force) {
+      // Clear existing data when force-seeding
+      await db.siteProduct.deleteMany();
+      await db.siteBundle.deleteMany();
+      await db.siteSetting.deleteMany();
+    }
 
     // Seed products
     for (const p of products) {
@@ -96,8 +120,7 @@ export async function ensureSeeded(): Promise<boolean> {
 
     return true;
   } catch (e: any) {
-    // Silently fail - database might not be available during build
-    // The site will return empty data and seed on first real request
+    console.error("[auto-seed] Error:", e.message);
     return false;
   } finally {
     seeding = false;

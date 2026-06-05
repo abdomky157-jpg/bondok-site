@@ -1208,26 +1208,166 @@ function OrdersTab() {
 
 // ===== General Tab =====
 function GeneralTab() {
+  const { refresh } = useSiteData();
+  const [stats, setStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [seeding, setSeeding] = useState(false);
+  const [seedMsg, setSeedMsg] = useState("");
+
+  useEffect(() => {
+    fetch("/api/admin/stats", { headers: adminHeaders() })
+      .then((r) => r.json())
+      .then((data) => { setStats(data); setLoading(false); })
+      .catch(() => { setStats(null); setLoading(false); });
+  }, []);
+
+  const handleSeed = async () => {
+    setSeeding(true);
+    setSeedMsg("");
+    try {
+      const res = await fetch("/api/admin/stats", { method: "POST", headers: adminHeaders() });
+      const data = await res.json();
+      if (data.success) {
+        setSeedMsg("✅ تمت تعبئة البيانات بنجاح!");
+        // Refresh stats
+        const statsRes = await fetch("/api/admin/stats", { headers: adminHeaders() });
+        const statsData = await statsRes.json();
+        setStats(statsData);
+        refresh();
+      } else {
+        setSeedMsg("❌ " + (data.error || "فشل في تعبئة البيانات"));
+      }
+    } catch {
+      setSeedMsg("❌ حدث خطأ");
+    }
+    setSeeding(false);
+  };
+
+  if (loading) return <div className="flex justify-center py-20"><Loader2 className="animate-spin text-gold-400" size={32} /></div>;
+
+  const dbEmpty = stats && stats.total === 0;
+  const dbConnected = stats && stats.connected;
+
   return (
     <div className="space-y-6">
-      <div className="p-4 rounded-xl border border-gold-500/20" style={{ background: "rgba(45,27,17,.5)" }}>
-        <h3 className="font-playfair text-gold-400 font-semibold mb-3">إعادة تعيين البيانات</h3>
-        <p className="text-gold-100/50 text-sm mb-3">حذف كل البيانات وإعادة ملئها بالبيانات الافتراضية</p>
-        <button onClick={async () => {
-          if (!confirm("متأكد؟ سيتم حذف كل التعديلات!")) return;
-          // Clear existing data via delete all, then re-seed
-          await fetch("/api/admin/seed?force=true", { method: "POST", headers: adminHeaders() });
-          alert("تم بنجاح! الصفحة هتتحديث");
-          window.location.reload();
-        }} className="px-4 py-2 rounded-lg bg-red-500/20 border border-red-500/30 text-red-400 text-sm hover:bg-red-500/30">
-          إعادة تعيين
-        </button>
+      {/* Database Status Card */}
+      <div className={`p-4 rounded-xl border ${dbConnected ? "border-gold-500/20" : "border-red-500/30"}`} style={{ background: dbConnected ? "rgba(45,27,17,.5)" : "rgba(60,20,20,.3)" }}>
+        <div className="flex items-center gap-2 mb-3">
+          <Settings size={18} className={dbConnected ? "text-gold-400" : "text-red-400"} />
+          <h3 className="font-playfair text-gold-300 font-bold text-sm">حالة قاعدة البيانات</h3>
+          <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${dbConnected ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"}`}>
+            {dbConnected ? "متصل ✓" : "غير متصل ✗"}
+          </span>
+        </div>
+
+        {dbConnected && (
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div className="text-center">
+              <p className="text-gold-400 font-bold text-lg">{stats?.products || 0}</p>
+              <p className="text-gold-100/40 text-xs">منتجات</p>
+            </div>
+            <div className="text-center">
+              <p className="text-gold-400 font-bold text-lg">{stats?.bundles || 0}</p>
+              <p className="text-gold-100/40 text-xs">باقات</p>
+            </div>
+            <div className="text-center">
+              <p className="text-gold-400 font-bold text-lg">{stats?.settings || 0}</p>
+              <p className="text-gold-100/40 text-xs">إعدادات</p>
+            </div>
+            <div className="text-center">
+              <p className="text-gold-400 font-bold text-lg">{stats?.orders || 0}</p>
+              <p className="text-gold-100/40 text-xs">طلبات</p>
+            </div>
+            <div className="text-center">
+              <p className="text-gold-400 font-bold text-lg">{stats?.customers || 0}</p>
+              <p className="text-gold-100/40 text-xs">عملاء</p>
+            </div>
+            <div className="text-center">
+              <p className="text-gold-400 font-bold text-lg">{stats?.turso ? "Turso ☁" : "محلي 📁"}</p>
+              <p className="text-gold-100/40 text-xs">نوع القاعدة</p>
+            </div>
+          </div>
+        )}
+
+        {!dbConnected && stats?.error && (
+          <p className="text-red-400/70 text-xs mt-2">خطأ: {stats.error}</p>
+        )}
       </div>
 
-      <div className="p-4 rounded-xl border border-gold-500/20" style={{ background: "rgba(45,27,17,.5)" }}>
-        <h3 className="font-playfair text-gold-400 font-semibold mb-3">معلومات</h3>
-        <p className="text-gold-100/50 text-sm">لوحة التحكم - Bondok Perfumes</p>
-        <p className="text-gold-100/30 text-xs mt-2">لا share هذا الرابط أو الباس مع حد.</p>
+      {/* Empty DB Warning + Seed Button */}
+      {dbEmpty && (
+        <div className="p-4 rounded-xl border border-yellow-500/30" style={{ background: "rgba(60,50,10,.3)" }}>
+          <div className="flex items-center gap-2 mb-2">
+            <Star size={18} className="text-yellow-400" />
+            <h3 className="text-yellow-400 font-bold text-sm">قاعدة البيانات فاضية!</h3>
+          </div>
+          <p className="text-gold-100/50 text-sm mb-4">
+            الموقع بيستخدم بيانات مُ presets من الكود. لو عايز تتحكم في البيانات من اللوحة دي،
+            لازم تعبّئ قاعدة البيانات الأول.
+          </p>
+          <button
+            onClick={handleSeed}
+            disabled={seeding}
+            className="w-full py-3 rounded-lg font-bold text-sm flex items-center justify-center gap-2"
+            style={{ background: "linear-gradient(135deg,#D4A44C,#A07020)", color: "#1A0F0A" }}
+          >
+            {seeding ? <Loader2 size={14} className="animate-spin" /> : <Package size={14} />}
+            {seeding ? "جاري تعبئة البيانات..." : "تعبئة قاعدة البيانات بالبيانات الأساسية"}
+          </button>
+          {seedMsg && (
+            <p className={`text-sm mt-2 ${seedMsg.startsWith("✅") ? "text-green-400" : "text-red-400"}`}>{seedMsg}</p>
+          )}
+        </div>
+      )}
+
+      {/* Force Re-seed (always available) */}
+      {!dbEmpty && (
+        <div className="p-4 rounded-xl border border-gold-500/20" style={{ background: "rgba(45,27,17,.5)" }}>
+          <h3 className="font-playfair text-gold-300 font-bold text-sm mb-2">إعادة تعبئة البيانات</h3>
+          <p className="text-gold-100/40 text-xs mb-3">
+            هذا هيحذف كل البيانات الحالية ويعيدها تاني من البيانات الأساسية.
+          </p>
+          <button
+            onClick={async () => {
+              if (!confirm("متأكد؟ هيتم حذف كل البيانات وإعادة تعبئتها")) return;
+              setSeeding(true);
+              try {
+                const res = await fetch("/api/admin/stats", { method: "POST", headers: adminHeaders() });
+                const data = await res.json();
+                if (data.success) {
+                  const statsRes = await fetch("/api/admin/stats", { headers: adminHeaders() });
+                  setStats(await statsRes.json());
+                  refresh();
+                  setSeedMsg("✅ تمت إعادة التعبئة بنجاح!");
+                } else {
+                  setSeedMsg("❌ فشل");
+                }
+              } catch {
+                setSeedMsg("❌ حدث خطأ");
+              }
+              setSeeding(false);
+            }}
+            disabled={seeding}
+            className="px-4 py-2 rounded-lg text-sm border border-gold-500/20 text-gold-400 hover:bg-gold-500/10 transition flex items-center gap-2"
+          >
+            {seeding ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
+            إعادة تعبئة
+          </button>
+          {seedMsg && (
+            <p className={`text-sm mt-2 ${seedMsg.startsWith("✅") ? "text-green-400" : "text-red-400"}`}>{seedMsg}</p>
+          )}
+        </div>
+      )}
+
+      {/* Info */}
+      <div className="p-4 rounded-xl border border-gold-500/10" style={{ background: "rgba(45,27,17,.3)" }}>
+        <h3 className="font-playfair text-gold-300 font-bold text-sm mb-2">معلومات</h3>
+        <div className="space-y-1 text-gold-100/40 text-xs">
+          <p>• البيانات في لوحة التحكم بتتم جلبها من قاعدة البيانات</p>
+          <p>• لو قاعدة البيانات فاضية، الموقع بيستخدم بيانات مُ presets من الكود</p>
+          <p>• أي تغيير في الترسو بيظهر فوراً على الموقع</p>
+          <p>• كلمة السر: الافتراضية 160835 (تقدر تغيرها من متغيرات البيئة)</p>
+        </div>
       </div>
     </div>
   );
