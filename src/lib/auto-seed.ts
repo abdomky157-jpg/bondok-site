@@ -44,7 +44,6 @@ export async function ensureSeeded(): Promise<boolean> {
     if (count > 0) return false;
 
     seeding = true;
-    console.log("[auto-seed] Database is empty, seeding...");
 
     // Seed products
     for (const p of products) {
@@ -95,10 +94,10 @@ export async function ensureSeeded(): Promise<boolean> {
       });
     }
 
-    console.log("[auto-seed] Seeding complete!");
     return true;
   } catch (e: any) {
-    console.error("[auto-seed] Error:", e.message);
+    // Silently fail - database might not be available during build
+    // The site will return empty data and seed on first real request
     return false;
   } finally {
     seeding = false;
