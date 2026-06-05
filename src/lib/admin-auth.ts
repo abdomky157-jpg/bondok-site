@@ -167,14 +167,16 @@ export function isAdminRequest(req: Request): boolean {
  */
 export function buildAdminCookie(token: string): string {
   const maxAge = 24 * 60 * 60; // 24 hours (matches token expiry)
-  return `${ADMIN_COOKIE_NAME}=${token}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${maxAge}`;
+  const secure = process.env.NODE_ENV === "production" ? " Secure;" : "";
+  return `${ADMIN_COOKIE_NAME}=${token}; HttpOnly;${secure} SameSite=Lax; Path=/; Max-Age=${maxAge}`;
 }
 
 /**
  * Build cookie string to clear the admin cookie (logout)
  */
 export function buildAdminCookieClear(): string {
-  return `${ADMIN_COOKIE_NAME}=; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=0`;
+  const secure = process.env.NODE_ENV === "production" ? " Secure;" : "";
+  return `${ADMIN_COOKIE_NAME}=; HttpOnly;${secure} SameSite=Lax; Path=/; Max-Age=0`;
 }
 
 export function getClientIp(req: Request): string {
