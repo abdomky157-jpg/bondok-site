@@ -138,3 +138,38 @@ Priority Recommendations for Next Phase:
 3. Add WhatsApp broadcast to customers from admin panel
 4. Add customer order history in expanded view
 5. Add customer loyalty points system
+
+---
+Task ID: 5
+Agent: Main Agent
+Task: Fix Vercel deployment error - DATABASE_URL undefined causing URL_INVALID crash
+
+Work Log:
+- Analyzed Vercel build log screenshot showing error: `LibsqlError: URL_INVALID: The URL 'undefined' is not in a valid format`
+- Root cause: DATABASE_URL and TURSO_AUTH_TOKEN environment variables not configured in Vercel dashboard
+- Rewrote `src/lib/db.ts`:
+  - Implemented lazy Proxy pattern for Prisma client initialization (client created on first property access, not on module import)
+  - Added handling for literal `'undefined'` string from some build systems
+  - Explicitly provide `datasourceUrl` to PrismaClient constructor to prevent schema `env("DATABASE_URL")` from failing
+  - Properly bound methods via Proxy to actual client instance
+- Updated `src/lib/auto-seed.ts`:
+  - Removed console.log for cleaner build output
+  - Improved error handling (silently fail during build, retry on real request)
+- Verified locally: dev server starts, GET / returns 200, GET /api/site returns 16 products, 6 bundles, 28 settings
+- Committed and pushed to GitHub main branch (commit 27b66fe)
+
+Stage Summary:
+- Fixed the URL_INVALID build error on Vercel
+- Database connection now lazy-initializes (won't crash during Next.js build phase)
+- Code gracefully handles missing DATABASE_URL env var
+- **CRITICAL**: User MUST add DATABASE_URL and TURSO_AUTH_TOKEN in Vercel dashboard (Settings → Environment Variables) for the site to work on Vercel
+
+Unresolved Issues / Risks:
+1. User needs to manually add env vars in Vercel dashboard (DATABASE_URL and TURSO_AUTH_TOKEN)
+2. Without env vars on Vercel, API routes will return empty data (no crash, but no data)
+3. Dev server intermittently unstable with remote Turso connections (known issue)
+
+Current Project Status:
+- ✅ Code fixed and pushed to GitHub
+- ⏳ Waiting for user to add env vars in Vercel
+- ⏳ Cron job set up for continuous QA every 15 minutes
