@@ -11,7 +11,7 @@ import { NextRequest } from "next/server";
  * 2. Origin matches the site's own domain or localhost
  */
 const ALLOWED_ORIGINS = [
-  "bondok-parfumes.vercel.app",
+  "bondok-perfumes.vercel.app",
   "localhost",
   "127.0.0.1",
   // Allow additional origins via env var (comma-separated)
