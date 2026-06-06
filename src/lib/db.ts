@@ -31,8 +31,11 @@ function createPrismaClient(): PrismaClient {
     const authToken = process.env.TURSO_AUTH_TOKEN
     const libsql = getLibsqlClient(dbUrl, authToken)
     const adapter = new PrismaLibSQL(libsql)
+    // Pass a dummy datasourceUrl to satisfy Prisma schema validation.
+    // The actual DB connection is handled by the LibSQL adapter.
     return new PrismaClient({
       adapter,
+      datasourceUrl: 'file:/tmp/dummy.db',
     })
   }
 
