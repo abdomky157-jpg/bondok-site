@@ -25,6 +25,7 @@ import SurpriseModal from "@/components/bondok/SurpriseModal";
 import CheckoutModal from "@/components/bondok/CheckoutModal";
 import OrderTracker from "@/components/bondok/OrderTracker";
 import WishlistDrawer from "@/components/bondok/WishlistDrawer";
+import ScrollReveal from "@/components/bondok/ScrollReveal";
 
 export default function Home() {
   return (
@@ -34,17 +35,39 @@ export default function Home() {
         <Navbar />
         <main className="flex-1">
           <Hero />
-          <OffersBanner />
-          <Categories />
-          <Occasions />
-          <Products />
-          <Top10 />
-          <Bundles />
-          <SampleBundle />
-          <Seasons />
-          <Testimonials />
-          <About />
-          <Contact />
+          <ScrollReveal direction="up">
+            <OffersBanner />
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={100}>
+            <Categories />
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={100}>
+            <Occasions />
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={0}>
+            <Products />
+          </ScrollReveal>
+          <ScrollReveal direction="scale" delay={100}>
+            <Top10 />
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={100}>
+            <Bundles />
+          </ScrollReveal>
+          <ScrollReveal direction="scale" delay={100}>
+            <SampleBundle />
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={100}>
+            <Seasons />
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={100}>
+            <Testimonials />
+          </ScrollReveal>
+          <ScrollReveal direction="left" delay={100}>
+            <About />
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={100}>
+            <Contact />
+          </ScrollReveal>
         </main>
         <Footer />
         <FloatingButtons />

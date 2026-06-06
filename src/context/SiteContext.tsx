@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { products as defaultProducts, type Product, TYPE_AR, GENDER_AR } from "@/data/products";
 import { bundles as defaultBundles, type Bundle } from "@/data/bundles";
+import { useBondokStore } from "@/store/bondok";
 
 interface SiteData {
   products: Product[];
@@ -35,11 +36,15 @@ export function SiteProvider({ children }: { children: ReactNode }) {
       // /api/site handles auto-seeding internally (creates tables + fills data)
       const res = await fetch("/api/site");
       const data = await res.json();
-      if (data.products?.length > 0) setProducts(data.products.map(convertProduct));
+      if (data.products?.length > 0) {
+        const converted = data.products.map(convertProduct);
+        setProducts(converted);
+        useBondokStore.getState().setProducts(converted);
+      }
       if (data.bundles?.length > 0) setBundles(data.bundles.map(convertBundle));
       if (data.settings && Object.keys(data.settings).length > 0) setSettings(data.settings);
-    } catch (e) {
-      console.error("Site data load error:", e);
+    } catch {
+      // Fail silently — fallback data is already set
     }
     setLoaded(true);
   };

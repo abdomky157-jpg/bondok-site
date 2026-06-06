@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { products, type Product } from "@/data/products";
+import { products as defaultProducts, type Product } from "@/data/products";
 import { DISCOUNT_CODES } from "@/data/quiz";
 
 export interface CartItem {
@@ -28,6 +28,10 @@ interface StoreState {
   // Wishlist
   wishlist: number[];
   toggleWishlist: (id: number) => void;
+
+  // Products (synced from SiteContext)
+  products: Product[];
+  setProducts: (products: Product[]) => void;
 
   // Product filters
   categoryFilter: string;
@@ -126,6 +130,10 @@ export const useBondokStore = create<StoreState>()(
           return { wishlist: nw };
         }),
 
+      // Products (initialised with fallback; SiteContext will sync DB products)
+      products: defaultProducts,
+      setProducts: (products) => set({ products }),
+
       // Filters
       categoryFilter: "all",
       setCategoryFilter: (f) => set({ categoryFilter: f }),
@@ -156,7 +164,7 @@ export const useBondokStore = create<StoreState>()(
 
       // Computed
       getFilteredProducts: () => {
-        const { categoryFilter, priceFilter } = get();
+        const { categoryFilter, priceFilter, products } = get();
         let filtered = [...products];
         if (categoryFilter !== "all") {
           filtered = filtered.filter(
@@ -173,7 +181,7 @@ export const useBondokStore = create<StoreState>()(
         return filtered;
       },
 
-      getTopProducts: () => products.filter((p) => p.top).slice(0, 10),
+      getTopProducts: () => get().products.filter((p) => p.top).slice(0, 10),
 
       getCartSubtotal: () => get().cart.reduce((a, c) => a + c.price * c.qty, 0),
 

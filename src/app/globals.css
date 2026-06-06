@@ -512,6 +512,99 @@ textarea:focus-visible {
   }
 }
 
+/* ===== Scroll Reveal Animations ===== */
+.sr-hidden {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sr-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.sr-hidden-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sr-visible-left {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.sr-hidden-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sr-visible-right {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.sr-hidden-scale {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sr-visible-scale {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Stagger delays for child elements */
+.sr-stagger > *:nth-child(1) { transition-delay: 0ms; }
+.sr-stagger > *:nth-child(2) { transition-delay: 80ms; }
+.sr-stagger > *:nth-child(3) { transition-delay: 160ms; }
+.sr-stagger > *:nth-child(4) { transition-delay: 240ms; }
+.sr-stagger > *:nth-child(5) { transition-delay: 320ms; }
+.sr-stagger > *:nth-child(6) { transition-delay: 400ms; }
+.sr-stagger > *:nth-child(7) { transition-delay: 480ms; }
+.sr-stagger > *:nth-child(8) { transition-delay: 560ms; }
+
+/* ===== Section Title Underline ===== */
+.section-title-line {
+  position: relative;
+  display: inline-block;
+}
+
+.section-title-line::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #D4A44C, transparent);
+  border-radius: 1px;
+}
+
+/* ===== Enhanced Product Card Image Overlay ===== */
+.pc-image-overlay {
+  background: linear-gradient(
+    to top,
+    rgba(26, 15, 10, 0.7) 0%,
+    rgba(26, 15, 10, 0.2) 40%,
+    transparent 100%
+  );
+}
+
+/* ===== Add to cart button pulse ===== */
+@keyframes cart-pulse {
+  0%, 100% { box-shadow: 0 4px 15px rgba(212, 164, 76, 0.3); }
+  50% { box-shadow: 0 4px 25px rgba(212, 164, 76, 0.5); }
+}
+
+.cart-btn-pulse {
+  animation: cart-pulse 2s ease-in-out infinite;
+}
+
 /* ===== Reduced Motion Support ===== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Heart, ShoppingCart, Star, Clock, Wind } from "lucide-react";
 import { TYPE_AR, GENDER_AR, type Product } from "@/data/products";
 import { useBondokStore } from "@/store/bondok";
@@ -27,16 +28,35 @@ export default function ProductCard({ product: p }: ProductCardProps) {
   const { toggleWishlist, wishlist, setSelectedProduct, addToCart } = useBondokStore();
   const isWished = wishlist.includes(p.id);
   const rating = Math.min(5, (p.lon + p.sil) / 4);
+  const [justAdded, setJustAdded] = useState(false);
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart({
+      id: p.id,
+      name: p.ar,
+      size: p.sz[0].s,
+      price: p.sz[0].p,
+      img: p.img,
+    });
+    // Brief visual feedback
+    setJustAdded(true);
+    setTimeout(() => setJustAdded(false), 600);
+  };
 
   return (
     <div
-      className="pc rounded-2xl overflow-hidden gold-border relative group"
+      className="pc rounded-2xl overflow-hidden gold-border relative group card-shine"
       style={{ background: "rgba(45,27,17,.6)" }}
     >
       {p.badge && (
         <span
           className="absolute top-3 right-3 z-10 px-3 py-1 rounded-full text-xs font-bold gold-gradient shadow-lg"
-          style={{ boxShadow: "0 0 15px rgba(212,164,76,.3)" }}
+          style={{
+            boxShadow: "0 0 15px rgba(212,164,76,.3)",
+            animation: "float-badge 3s ease-in-out infinite",
+          }}
         >
           {p.badge}
         </span>
@@ -46,7 +66,14 @@ export default function ProductCard({ product: p }: ProductCardProps) {
         className="absolute top-3 left-3 z-10 w-10 h-10 rounded-full bg-wood-950/60 border border-gold-500/20 flex items-center justify-center transition-all duration-300 hover:bg-gold-500/20 hover:scale-110 touch-target"
         aria-label={isWished ? "إزالة من المفضلة" : "إضافة للمفضلة"}
       >
-        <Heart size={16} className={`transition-all duration-300 ${isWished ? "fill-red-500 text-red-500 scale-110" : "fill-gold-400 text-gold-400"}`} />
+        <Heart
+          size={16}
+          className={`transition-all duration-300 ${
+            isWished
+              ? "fill-red-500 text-red-500 scale-110"
+              : "fill-gold-400 text-gold-400"
+          }`}
+        />
       </button>
       <div
         onClick={() => setSelectedProduct(p)}
@@ -62,31 +89,25 @@ export default function ProductCard({ product: p }: ProductCardProps) {
           alt={`${p.name} - ${p.ar}`}
           loading="lazy"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-wood-950/60 via-transparent to-transparent" />
+        {/* Enhanced gradient overlay */}
+        <div className="absolute inset-0 pc-image-overlay" />
         <div className="absolute top-12 left-3 flex flex-col gap-1">
-          <div className="acb flex items-center gap-1 px-2 py-1 rounded-full text-[10px] bg-wood-950/70 border border-gold-500/20 text-gold-300">
+          <div className="acb flex items-center gap-1 px-2 py-1 rounded-full text-[10px] bg-wood-950/70 border border-gold-500/20 text-gold-300 transition-all duration-300">
             <Clock size={10} className="text-gold-400" /> {p.lon}/10
           </div>
-          <div className="acb flex items-center gap-1 px-2 py-1 rounded-full text-[10px] bg-wood-950/70 border border-gold-500/20 text-gold-300">
+          <div className="acb flex items-center gap-1 px-2 py-1 rounded-full text-[10px] bg-wood-950/70 border border-gold-500/20 text-gold-300 transition-all duration-300">
             <Wind size={10} className="text-gold-400" /> {p.sil}/10
           </div>
         </div>
         <button
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            addToCart({
-              id: p.id,
-              name: p.ar,
-              size: p.sz[0].s,
-              price: p.sz[0].p,
-              img: p.img,
-            });
-          }}
-          className="acb absolute bottom-4 left-4 right-4 py-3 rounded-xl font-bold text-sm transition-all duration-300 opacity-0 translate-y-4 flex items-center justify-center gap-2 gold-gradient"
+          onClick={handleAddToCart}
+          className={`acb absolute bottom-4 left-4 right-4 py-3 rounded-xl font-bold text-sm transition-all duration-300 opacity-0 translate-y-4 flex items-center justify-center gap-2 ${
+            justAdded ? "gold-gradient cart-btn-pulse" : "gold-gradient"
+          }`}
           style={{ boxShadow: "0 4px 15px rgba(212,164,76,.3)" }}
         >
-          <ShoppingCart size={16} /> أضف للسلة
+          <ShoppingCart size={16} className={justAdded ? "animate-bounce" : ""} />
+          {justAdded ? "تمت الإضافة!" : "أضف للسلة"}
         </button>
       </div>
       <div className="p-4 pt-3">

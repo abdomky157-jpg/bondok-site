@@ -127,7 +127,7 @@ export default function Footer() {
               <a href="#" className="w-9 h-9 rounded-full border border-gold-500/20 flex items-center justify-center text-gold-400 hover:bg-gold-500/15 hover:border-gold-500/40 transition-all hover:scale-110" aria-label="تويتر">
                 <Twitter size={16} />
               </a>
-              <a href="https://wa.me/${whatsappNumber}" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full border border-gold-500/20 flex items-center justify-center text-green-400 hover:bg-green-500/15 hover:border-green-500/40 transition-all hover:scale-110" aria-label="واتساب">
+              <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full border border-gold-500/20 flex items-center justify-center text-green-400 hover:bg-green-500/15 hover:border-green-500/40 transition-all hover:scale-110" aria-label="واتساب">
                 <MessageCircle size={16} />
               </a>
             </div>
