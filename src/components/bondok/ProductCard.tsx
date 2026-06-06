@@ -48,10 +48,13 @@ export default function ProductCard({ product: p }: ProductCardProps) {
       >
         <Heart size={16} className={`transition-all duration-300 ${isWished ? "fill-red-500 text-red-500 scale-110" : "fill-gold-400 text-gold-400"}`} />
       </button>
-      <button
+      <div
         onClick={() => setSelectedProduct(p)}
         className="relative overflow-hidden aspect-square bg-wood-950/30 cursor-pointer block w-full"
+        role="button"
+        tabIndex={0}
         aria-label={`عرض ${p.name}`}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setSelectedProduct(p); }}
       >
         <img
           src={p.img}
@@ -85,7 +88,7 @@ export default function ProductCard({ product: p }: ProductCardProps) {
         >
           <ShoppingCart size={16} /> أضف للسلة
         </button>
-      </button>
+      </div>
       <div className="p-4 pt-3">
         <div className="flex items-center justify-between mb-1">
           <p className="font-playfair text-gold-500/50 text-[10px] tracking-widest uppercase">{p.br}</p>
