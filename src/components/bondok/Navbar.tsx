@@ -180,9 +180,9 @@ export default function Navbar() {
               alt="Bondok"
             />
             <div className="hidden sm:block">
-              <h1 className="font-playfair text-lg sm:text-xl font-bold gold-shimmer leading-tight">
+              <h2 className="font-playfair text-lg sm:text-xl font-bold gold-shimmer leading-tight">
                 Bondok
-              </h1>
+              </h2>
               <p className="font-playfair text-[9px] sm:text-xs tracking-[0.25em] text-gold-400 -mt-0.5">
                 PERFUMES
               </p>

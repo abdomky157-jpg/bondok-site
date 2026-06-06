@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { X, ShoppingBag, Loader2, MapPin, User, Phone, FileText, CreditCard, Banknote, Smartphone, Building2 } from "lucide-react";
+import { X, ShoppingBag, Loader2, MapPin, User, Phone, FileText, Banknote } from "lucide-react";
 import { useBondokStore } from "@/store/bondok";
 import { useSiteData } from "@/context/SiteContext";
 import { useScrollLock } from "@/hooks/useScrollLock";
@@ -38,9 +38,6 @@ const GOVERNORATES = [
 
 const PAYMENT_OPTIONS = [
   { id: "cash", label: "كاش عند الاستلام", icon: Banknote },
-  { id: "vodafone", label: "فودافون كاش", icon: Smartphone },
-  { id: "bank", label: "تحويل بنكي", icon: Building2 },
-  { id: "card", label: "بطاقة ائتمان", icon: CreditCard },
 ];
 
 export default function CheckoutModal() {

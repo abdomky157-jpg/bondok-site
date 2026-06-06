@@ -121,7 +121,7 @@ export default function RootLayout({
     },
     priceRange: "EGP",
     currency: "EGP",
-    paymentAccepted: "Cash, Vodafone Cash, Bank Transfer",
+    paymentAccepted: "Cash on delivery",
     areaServed: {
       "@type": "Country",
       name: "مصر",

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { ensureSeeded } from "@/lib/auto-seed";
+import { rateLimit } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,12 @@ const STATUS_LABELS: Record<string, { label: string; color: string; description:
 // GET /api/orders/track?id=123&phone=01012345678
 export async function GET(req: NextRequest) {
   try {
+    // Rate limit: 10 requests per 10 minutes
+    const rl = rateLimit({ limit: 10, window: "10m" });
+    if (!rl.success) {
+      return NextResponse.json({ error: "عدد المحاولات كثير. حاول بعد قليل" }, { status: 429 });
+    }
+
     const url = new URL(req.url);
     const orderId = url.searchParams.get("id");
     const phone = url.searchParams.get("phone");

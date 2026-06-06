@@ -28,6 +28,7 @@ model SiteProduct {
   seasons   String
   desc      String   @default("")
   top       Boolean  @default(false)
+  stock     Int      @default(10)
   order     Int      @default(0)
   active    Boolean  @default(true)
   createdAt DateTime @default(now())
