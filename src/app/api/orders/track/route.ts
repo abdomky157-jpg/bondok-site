@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { ensureSeeded } from "@/lib/auto-seed";
-import { rateLimit } from "@/lib/rate-limit";
+import { rateLimit, rateLimitKey } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
@@ -17,8 +17,9 @@ const STATUS_LABELS: Record<string, { label: string; color: string; description:
 export async function GET(req: NextRequest) {
   try {
     // Rate limit: 10 requests per 10 minutes
-    const rl = rateLimit({ limit: 10, window: "10m" });
-    if (!rl.success) {
+    const rlKey = rateLimitKey(req, "orders:track:GET");
+    const rl = rateLimit(rlKey, { maxRequests: 10, windowMs: 10 * 60 * 1000, lockoutMs: 10 * 60 * 1000 });
+    if (!rl.allowed) {
       return NextResponse.json({ error: "عدد المحاولات كثير. حاول بعد قليل" }, { status: 429 });
     }
 
