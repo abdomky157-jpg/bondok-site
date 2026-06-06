@@ -29,10 +29,11 @@ function createPrismaClient(): PrismaClient {
   const authToken = process.env.TURSO_AUTH_TOKEN
   
   // Always use the LibSQL adapter — works for both local SQLite and remote Turso.
-  // This avoids Prisma's built-in SQLite driver trying to read DATABASE_URL
-  // and failing on Vercel serverless environments.
-  const libsql = getLibsqlClient(dbUrl, authToken)
-  const adapter = new PrismaLibSQL(libsql)
+  // Pass config object (not client instance) so the adapter can manage its own connections.
+  const adapter = new PrismaLibSQL({
+    url: dbUrl,
+    authToken: authToken,
+  })
   return new PrismaClient({ adapter })
 }
 
