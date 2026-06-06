@@ -149,7 +149,7 @@ export default function CheckoutModal() {
       const orderId = data.id;
 
       // Build WhatsApp message and open
-      const whatsappNumber = getSetting("contactWhatsapp", "+201010733294").replace(/[^0-9+]/g, "");
+      const whatsappNumber = getSetting("contactWhatsapp", "+201067278639").replace(/[^0-9+]/g, "");
       const msg = buildWhatsAppMessage(orderId);
       const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`;
       window.open(waUrl, "_blank");

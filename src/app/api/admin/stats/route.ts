@@ -5,8 +5,11 @@ import { isAdminRequest } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
 
-// GET database stats + connection test
-export async function GET() {
+// GET database stats + connection test (admin only)
+export async function GET(req: NextRequest) {
+  if (!isAdminRequest(req)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   try {
     // Test DB connection by getting stats
     const stats = await getDbStats();
@@ -16,7 +19,6 @@ export async function GET() {
     return NextResponse.json({
       connected: true,
       turso: hasTurso,
-      database: hasTurso ? dbUrl.replace(/\/\/.*@/, "//***@") : "local",
       ...stats,
       total: stats.products + stats.bundles + stats.settings + stats.customers + stats.orders,
     });

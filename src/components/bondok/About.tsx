@@ -83,7 +83,7 @@ export default function About() {
               <div className="flex items-center gap-2">
                 <Award size={20} className="text-gold-400" />
                 <div>
-                  <p className="font-playfair text-gold-300 font-bold text-sm">منذ 2020</p>
+                  <p className="font-playfair text-gold-300 font-bold text-sm">منذ 2026</p>
                   <p className="text-gold-100/40 text-[10px]">خبرة في العطور</p>
                 </div>
               </div>

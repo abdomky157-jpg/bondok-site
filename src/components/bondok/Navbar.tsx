@@ -18,7 +18,8 @@ import {
 import { TYPE_AR, GENDER_AR } from "@/data/products";
 import { useSiteData } from "@/context/SiteContext";
 import { useBondokStore } from "@/store/bondok";
-import AdminPanel from "./AdminPanel";
+import dynamic from "next/dynamic";
+const AdminPanel = dynamic(() => import("./AdminPanel"), { ssr: false });
 import { useScrollLock } from "@/hooks/useScrollLock";
 import { LOGO_URL } from "@/lib/constants";
 
@@ -413,8 +414,14 @@ export default function Navbar() {
         </div>
       )}
 
-      {/* Admin Panel */}
+      {/* Admin Panel (lazy-loaded) */}
       {adminOpen && <AdminPanel onClose={() => setAdminOpen(false)} />}
+      {/* Loading overlay for admin panel */}
+      {adminOpen && (
+        <div className="fixed inset-0 z-[1999] flex items-center justify-center bg-black/60">
+          <div className="text-gold-400 animate-pulse font-playfair text-lg">جاري التحميل...</div>
+        </div>
+      )}
     </>
   );
 }

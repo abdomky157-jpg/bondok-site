@@ -4,7 +4,6 @@ import { SiteProvider } from "@/context/SiteContext";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import Navbar from "@/components/bondok/Navbar";
 import Hero from "@/components/bondok/Hero";
-import OffersBanner from "@/components/bondok/OffersBanner";
 import Occasions from "@/components/bondok/Occasions";
 import Seasons from "@/components/bondok/Seasons";
 import Categories from "@/components/bondok/Categories";
@@ -35,9 +34,6 @@ export default function Home() {
         <Navbar />
         <main className="flex-1">
           <Hero />
-          <ScrollReveal direction="up">
-            <OffersBanner />
-          </ScrollReveal>
           <ScrollReveal direction="up" delay={100}>
             <Categories />
           </ScrollReveal>

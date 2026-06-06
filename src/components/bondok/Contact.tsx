@@ -17,23 +17,24 @@ export default function Contact() {
     {
       icon: <MapPin size={24} className="text-gold-400" />,
       title: "العنوان",
-      value: settings.contactAddress || "القاهرة، مصر",
+      value: settings.contactAddress || "أمام فتح الله ماركت - الهانوفيل - العجمي - الاسكندريه",
       color: "rgba(212,164,76,.1)",
+      link: "https://maps.app.goo.gl/iyPNUvuU1c1r54zj9",
     },
     {
       icon: <Phone size={24} className="text-gold-400" />,
       title: "الهاتف",
-      value: settings.contactPhone || "+201010733294",
+      value: settings.contactPhone || "+20 106 727 8639",
       color: "rgba(212,164,76,.1)",
       dir: "ltr",
     },
     {
       icon: <MessageCircle size={24} className="text-green-400" />,
       title: "واتساب",
-      value: settings.contactWhatsapp || "+201010733294",
+      value: settings.contactWhatsapp || "+20 106 727 8639",
       color: "rgba(34,197,94,.1)",
       dir: "ltr",
-      link: `https://wa.me/${(settings.contactWhatsapp || "+201010733294").replace(/[^0-9+]/g, "")}`,
+      link: `https://wa.me/${(settings.contactWhatsapp || "+201067278639").replace(/[^0-9+]/g, "")}`,
     },
     {
       icon: <Clock size={24} className="text-gold-400" />,
@@ -82,7 +83,7 @@ export default function Contact() {
               e.preventDefault();
               setSending(true);
               try {
-                const whatsappNumber = (settings.contactWhatsapp || "+201010733294").replace(/[^0-9+]/g, "");
+                const whatsappNumber = (settings.contactWhatsapp || "+201067278639").replace(/[^0-9+]/g, "");
                 const msg = `📩 رسالة جديدة من موقع Bondok Perfumes\n\n👤 الاسم: ${formName}\n📱 التليفون: ${formPhone}\n💬 الرسالة: ${formMessage}`;
                 const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`;
                 window.open(waUrl, "_blank");

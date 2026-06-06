@@ -5,8 +5,8 @@ import { useSiteData } from "@/context/SiteContext";
 import { useBondokStore } from "@/store/bondok";
 import {
   Truck, Shield, RefreshCw, MessageCircle, X,
-  Instagram, Facebook, Twitter, Mail, Send, Heart,
-  Phone, MapPin, ChevronUp,
+  Instagram, Facebook, Twitter, Heart,
+  Phone, MapPin, ChevronUp, ExternalLink,
 } from "lucide-react";
 
 export default function Footer() {
@@ -14,25 +14,14 @@ export default function Footer() {
   const setQuizOpen = useBondokStore((s) => s.setQuizOpen);
   const setSpinOpen = useBondokStore((s) => s.setSpinOpen);
   const setSurpriseOpen = useBondokStore((s) => s.setSurpriseOpen);
-  const whatsappNumber = (settings.contactWhatsapp || "+201010733294").replace(/[^0-9+]/g, "");
+  const whatsappNumber = (settings.contactWhatsapp || "+201067278639").replace(/[^0-9+]/g, "");
 
   const [showReturnPolicy, setShowReturnPolicy] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
-  const [email, setEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email.trim()) {
-      setSubscribed(true);
-      setEmail("");
-      setTimeout(() => setSubscribed(false), 4000);
-    }
   };
 
   const scrollToTop = () => {
@@ -41,37 +30,6 @@ export default function Footer() {
 
   return (
     <footer className="relative mt-auto" style={{ background: "linear-gradient(180deg, #2D1B11, #1A0F0A)" }}>
-      {/* Back to top bar */}
-      <div className="border-b border-gold-500/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            {/* Newsletter */}
-            <div className="flex-1">
-              <h4 className="font-playfair text-gold-400 font-semibold text-sm mb-1">اشترك في النشرة البريدية</h4>
-              <p className="text-gold-100/40 text-xs">احصل على آخر العروض والأخبار</p>
-            </div>
-            <form onSubmit={handleSubscribe} className="flex gap-2 w-full sm:w-auto">
-              <input
-                type="email"
-                placeholder="بريدك الإلكتروني"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 sm:w-64 px-4 py-2.5 rounded-full bg-wood-950/50 border border-gold-500/20 text-gold-100 placeholder:text-gold-100/30 focus:border-gold-500/50 focus:outline-none transition text-sm"
-                dir="ltr"
-              />
-              <button
-                type="submit"
-                className="px-5 py-2.5 rounded-full gold-gradient font-bold text-sm flex items-center gap-2 transition-all hover:scale-105"
-              >
-                <Send size={14} /> اشتراك
-              </button>
-            </form>
-          </div>
-          {subscribed && (
-            <p className="text-green-400 text-xs text-center mt-2">تم الاشتراك بنجاح! ✨</p>
-          )}
-        </div>
-      </div>
 
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

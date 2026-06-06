@@ -83,8 +83,9 @@ async function uploadFile(file: File): Promise<string> {
   const fd = new FormData();
   fd.append("file", file);
   const res = await fetch("/api/admin/upload", { method: "POST", headers: adminHeadersFormData(), body: fd });
+  if (!res.ok) throw new Error("فشل رفع الصورة");
   const data = await res.json();
-  return data.url;
+  return data.url || "";
 }
 
 // ===== Parse JSON string fields from API =====
@@ -505,7 +506,7 @@ function SettingsTab({ type }: { type: "text" | "image" | "color" }) {
       "إحصائية 3": "aboutStat3",
       "عنوان إحصائية 3": "aboutStat3Label",
       "عنوان تواصل": "contactTitle",
-      "العنوان": "contactAddress",
+      "عنوان الفرع": "contactAddress",
       "الهاتف": "contactPhone",
       "واتساب": "contactWhatsapp",
       "نص الفوتر": "footerText",

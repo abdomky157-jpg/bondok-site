@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { X, Heart, ShoppingCart, Trash2 } from "lucide-react";
 import { products, TYPE_AR } from "@/data/products";
 import { useBondokStore } from "@/store/bondok";
@@ -12,6 +11,7 @@ export default function WishlistDrawer() {
   const wishlist = useBondokStore((s) => s.wishlist);
   const toggleWishlist = useBondokStore((s) => s.toggleWishlist);
   const addToCart = useBondokStore((s) => s.addToCart);
+  const setSelectedProduct = useBondokStore((s) => s.setSelectedProduct);
 
   // Scroll lock when wishlist drawer is open
   useScrollLock(wishlistOpen);
@@ -99,27 +99,25 @@ export default function WishlistDrawer() {
                   className="flex gap-3 p-3 rounded-xl border border-gold-500/15 bg-wood-950/30 hover:bg-wood-950/50 transition"
                 >
                   {/* Image */}
-                  <Link
-                    href={`/product/${p.id}`}
+                  <button
+                    onClick={() => { setSelectedProduct(p); setWishlistOpen(false); }}
                     className="shrink-0 w-20 h-20 rounded-lg overflow-hidden gold-border"
-                    onClick={() => setWishlistOpen(false)}
                   >
                     <img
                       src={p.img}
                       className="w-full h-full object-cover"
                       alt={`${p.name} - ${p.ar}`}
                     />
-                  </Link>
+                  </button>
 
                   {/* Info */}
                   <div className="flex-1 min-w-0">
-                    <Link
-                      href={`/product/${p.id}`}
-                      className="font-playfair text-gold-300 text-sm font-semibold hover:text-gold-400 transition block truncate"
-                      onClick={() => setWishlistOpen(false)}
+                    <button
+                      onClick={() => { setSelectedProduct(p); setWishlistOpen(false); }}
+                      className="font-playfair text-gold-300 text-sm font-semibold hover:text-gold-400 transition block truncate w-full text-right"
                     >
                       {p.name}
-                    </Link>
+                    </button>
                     <p className="text-subtle text-xs mb-1">
                       {p.br} &middot; {TYPE_AR[p.t]}
                     </p>
