@@ -26,18 +26,14 @@ function createPrismaClient(): PrismaClient {
     ? rawUrl.trim()
     : 'file:./db/custom.db'
 
-  // If using Turso (libsql:// URL), use the driver adapter
-  if (dbUrl.startsWith('libsql://')) {
-    const authToken = process.env.TURSO_AUTH_TOKEN
-    const libsql = getLibsqlClient(dbUrl, authToken)
-    const adapter = new PrismaLibSQL(libsql)
-    return new PrismaClient({ adapter })
-  }
-
-  // Local SQLite - explicitly set datasourceUrl to prevent Prisma schema env() from returning undefined
-  return new PrismaClient({
-    datasourceUrl: dbUrl,
-  })
+  const authToken = process.env.TURSO_AUTH_TOKEN
+  
+  // Always use the LibSQL adapter — works for both local SQLite and remote Turso.
+  // This avoids Prisma's built-in SQLite driver trying to read DATABASE_URL
+  // and failing on Vercel serverless environments.
+  const libsql = getLibsqlClient(dbUrl, authToken)
+  const adapter = new PrismaLibSQL(libsql)
+  return new PrismaClient({ adapter })
 }
 
 // Lazy initialization: the client is created on first access, not on module import.
