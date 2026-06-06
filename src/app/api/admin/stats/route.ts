@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getDbStats, ensureSeeded } from "@/lib/auto-seed";
+import { isAdminRequest } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
 
@@ -34,8 +35,11 @@ export async function GET() {
   }
 }
 
-// POST seed database
-export async function POST() {
+// POST seed database (admin only)
+export async function POST(req: NextRequest) {
+  if (!isAdminRequest(req)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   try {
     const seeded = await ensureSeeded(true);
     if (seeded) {
