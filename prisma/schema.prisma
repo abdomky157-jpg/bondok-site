@@ -4,7 +4,9 @@ generator client {
 
 datasource db {
   provider  = "sqlite"
-  url       = env("DATABASE_URL")
+  // This is a placeholder URL for Prisma's internal validation only.
+  // When using the LibSQL adapter, the actual DB connection is handled by the adapter.
+  url       = "file:./db/custom.db"
 }
 
 model SiteProduct {

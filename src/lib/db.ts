@@ -31,13 +31,7 @@ function createPrismaClient(): PrismaClient {
     const authToken = process.env.TURSO_AUTH_TOKEN
     const libsql = getLibsqlClient(dbUrl, authToken)
     const adapter = new PrismaLibSQL(libsql)
-    // Prisma schema reads env("DATABASE_URL") for validation.
-    // We set a dummy SQLite URL so validation passes, while the adapter handles the real connection.
-    const originalUrl = process.env.DATABASE_URL;
-    process.env.DATABASE_URL = 'file:/tmp/dummy.db';
-    const client = new PrismaClient({ adapter });
-    process.env.DATABASE_URL = originalUrl;
-    return client;
+    return new PrismaClient({ adapter })
   }
 
   // Local SQLite - explicitly set datasourceUrl to prevent Prisma schema env() from returning undefined
