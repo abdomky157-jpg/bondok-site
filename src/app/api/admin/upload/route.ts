@@ -1,0 +1,48 @@
+import { NextRequest, NextResponse } from "next/server";
+import { isAdminRequest } from "@/lib/admin-auth";
+
+// Allowed file types for upload
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp", "image/svg+xml"];
+const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+
+export async function POST(req: NextRequest) {
+  if (!isAdminRequest(req)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    const formData = await req.formData();
+    const file = formData.get("file") as File | null;
+
+    if (!file) {
+      return NextResponse.json({ error: "No file provided" }, { status: 400 });
+    }
+
+    // Validate file type
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      return NextResponse.json(
+        { error: `File type "${file.type}" not allowed. Use JPEG, PNG, GIF, WebP, or SVG.` },
+        { status: 400 }
+      );
+    }
+
+    // Validate file size
+    if (file.size > MAX_SIZE) {
+      return NextResponse.json(
+        { error: `File too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Max 5MB.` },
+        { status: 400 }
+      );
+    }
+
+    // Convert file to base64 data URL
+    const bytes = await file.arrayBuffer();
+    const base64 = Buffer.from(bytes).toString("base64");
+    const dataUrl = `data:${file.type};base64,${base64}`;
+
+    return NextResponse.json({ url: dataUrl, name: file.name, size: file.size });
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : "Unknown error";
+    console.error("[/api/admin/upload] Error:", message);
+    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
+  }
+}
