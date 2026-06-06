@@ -173,3 +173,49 @@ Current Project Status:
 - ✅ Code fixed and pushed to GitHub
 - ⏳ Waiting for user to add env vars in Vercel
 - ⏳ Cron job set up for continuous QA every 15 minutes
+
+---
+Task ID: 6
+Agent: Main Agent (Comprehensive Audit & Status Report)
+
+Work Log:
+- Full audit of all project files: 40+ source files, 12 API routes, 5 DB models
+- agent-browser testing: homepage loads correctly, API returns 16 products / 6 bundles / 28 settings
+- Console error found: button-inside-button hydration error in ProductCard.tsx
+- Lint check: 0 errors, 2 warnings (alt-text, unused directive)
+- Security audit performed on all API routes, auth system, CSRF, rate limiting
+- Performance and architecture review completed
+- Cron job set up (job 188594, every 15 min)
+
+Audit Findings Summary:
+
+🔴 CRITICAL Issues:
+1. Vercel env vars (DATABASE_URL, TURSO_AUTH_TOKEN) still not set → admin panel empty on Vercel
+2. Nested <button> in <button> in ProductCard.tsx → hydration error in browser
+3. /api/admin/stats POST has NO auth check → anyone can reseed/clear the database
+4. /api/admin/upload endpoint MISSING → image upload broken in admin panel
+5. CSRF origin typo: "bondok-parfumes" vs "bondok-perfumes" mismatch
+
+🟡 SECURITY Issues:
+6. Admin password hardcoded as default "160835" in admin-auth.ts
+7. Token secret hardcoded with default value
+8. In-memory rate limiting resets on each Vercel serverless invocation (ineffective)
+9. Login attempt lockout also in-memory (ineffective on serverless)
+10. Most admin POST routes lack CSRF protection (only orders has it)
+
+🟠 FUNCTIONALITY Issues:
+11. Admin panel shows no data on Vercel even though public site shows data (public site uses fallback default data files, admin panel only uses API)
+12. Customer phone validation missing (accepts any string)
+13. Order tracking has no validation of phone format
+
+🟢 MINOR Issues:
+14. 18 files have nested button elements (potential hydration warnings)
+15. 2 lint warnings (alt-text, unused directive)
+16. console.error/console.log in 11 files (production logging noise)
+
+Stage Summary:
+- Site is functional locally with local SQLite (16 products, 6 bundles, 28 settings)
+- Public-facing site works because SiteContext has fallback data from /src/data/ files
+- Admin panel depends entirely on API → broken on Vercel without env vars
+- Several security vulnerabilities need patching
+- Cron job active for continuous development and QA
