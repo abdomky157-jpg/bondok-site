@@ -31,7 +31,7 @@ async function ensureTablesExist(): Promise<void> {
 const defaultSettings = [
   { key: "siteName", value: "Bondok Perfumes" },
   { key: "siteNameAr", value: "عطور بوندوك" },
-  { key: "logoUrl", value: "https://z-cdn-media.chatglm.cn/files/6c66da01-4443-40aa-bb7b-d6bd54a7c505.png?auth_key=1880267790-08e21141053d4e15b394e1d4cf01e594-0-affca78eef460c96a99ed6f34f2f8614" },
+  { key: "logoUrl", value: "/logo.png" },
   { key: "heroSubtitle", value: "رحلة في عالم العطور الفاخرة" },
   { key: "heroBtn1", value: "تسوق الآن" },
   { key: "heroBtn2", value: "اكتشف عطرك" },

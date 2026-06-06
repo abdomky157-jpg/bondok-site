@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { X, Save, Plus, Trash2, Upload, ChevronDown, ChevronUp, Loader2, Image, Palette, Type, Package, Settings, ShoppingBag, Users, Phone, Mail, MapPin, Calendar, Search, Edit3, UserPlus, TrendingUp, DollarSign, ShoppingCart, Clock, MessageSquare, Star, Crown } from "lucide-react";
+import { X, Save, Plus, Trash2, Upload, ChevronDown, ChevronUp, Loader2, Image, Palette, Type, Package, Settings, ShoppingBag, Users, Phone, Mail, MapPin, Calendar, Search, Edit3, UserPlus, TrendingUp, DollarSign, ShoppingCart, Clock, MessageSquare, Star, Crown, Crop } from "lucide-react";
 import { useSiteData } from "@/context/SiteContext";
+import ImageCropModal from "@/components/bondok/ImageCropModal";
 
 // ===== Admin Panel Component =====
 export default function AdminPanel({ onClose }: { onClose: () => void }) {
@@ -200,6 +201,7 @@ function ProductsTab({ onRefresh }: { onRefresh: () => void }) {
 function ProductForm({ product, saving, onSave, onCancel }: { product: any; saving: boolean; onSave: (d: any) => void; onCancel: () => void }) {
   const [form, setForm] = useState({ ...product });
   const [imgUploading, setImgUploading] = useState(false);
+  const [showCropModal, setShowCropModal] = useState(false);
 
   const set = (k: string, v: any) => setForm({ ...form, [k]: v });
 
@@ -276,8 +278,27 @@ function ProductForm({ product, saving, onSave, onCancel }: { product: any; savi
               {imgUploading ? "جاري..." : "رفع"}
               <input type="file" accept="image/*" onChange={handleImgUpload} className="hidden" />
             </label>
+            {form.image && (
+              <button
+                type="button"
+                onClick={() => setShowCropModal(true)}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-gold-500/20 text-gold-400 text-sm hover:bg-gold-500/10 transition"
+                title="قص الصورة"
+              >
+                <Crop size={14} />
+                قص
+              </button>
+            )}
           </div>
           {form.image && <img src={form.image} className="w-20 h-20 rounded-lg object-cover mt-2" alt="preview" />}
+          {showCropModal && form.image && (
+            <ImageCropModal
+              imageUrl={form.image}
+              isLogo={false}
+              onApply={(url) => { set("image", url); setShowCropModal(false); }}
+              onCancel={() => setShowCropModal(false)}
+            />
+          )}
         </div>
 
         {/* Sizes */}
@@ -543,6 +564,13 @@ function SettingsTab({ type }: { type: "text" | "image" | "color" }) {
               <div className="flex gap-2">
                 <input type="text" value={changed[key] ?? settings[key] ?? ""} onChange={(e) => set(key, e.target.value)} className="flex-1 px-3 py-2 rounded-lg bg-wood-950/50 border border-gold-500/20 text-gold-100 text-sm" />
                 <ImageUploadButton onUploaded={(url) => set(key, url)} />
+                {(changed[key] ?? settings[key]) && (
+                  <ImageCropInlineButton
+                    imageUrl={changed[key] ?? settings[key] ?? ""}
+                    isLogo={key === "logoUrl"}
+                    onCropped={(url) => set(key, url)}
+                  />
+                )}
               </div>
             ) : (
               <input type="text" value={changed[key] ?? settings[key] ?? ""} onChange={(e) => set(key, e.target.value)} className="w-full px-3 py-2 rounded-lg bg-wood-950/50 border border-gold-500/20 text-gold-100 text-sm" />
@@ -1427,5 +1455,31 @@ function ImageUploadButton({ onUploaded }: { onUploaded: (url: string) => void }
         setUploading(false);
       }} className="hidden" />
     </label>
+  );
+}
+
+// ===== Image Crop Inline Button (for settings image fields) =====
+function ImageCropInlineButton({ imageUrl, isLogo, onCropped }: { imageUrl: string; isLogo: boolean; onCropped: (url: string) => void }) {
+  const [showCrop, setShowCrop] = useState(false);
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setShowCrop(true)}
+        className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-gold-500/20 text-gold-400 text-sm hover:bg-gold-500/10 transition"
+        title="قص الصورة"
+      >
+        <Crop size={14} />
+        قص
+      </button>
+      {showCrop && (
+        <ImageCropModal
+          imageUrl={imageUrl}
+          isLogo={isLogo}
+          onApply={(url) => { onCropped(url); setShowCrop(false); }}
+          onCancel={() => setShowCrop(false)}
+        />
+      )}
+    </>
   );
 }
