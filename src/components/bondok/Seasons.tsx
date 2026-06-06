@@ -94,7 +94,7 @@ function MiniCard({
       >
         <Heart size={16} className={wishlisted ? "fill-red-500 text-red-500" : "fill-gold-400 text-gold-400"} />
       </button>
-      <div className="relative overflow-hidden aspect-square bg-wood-950/30 cursor-pointer" onClick={onOpen}>
+      <div className="relative overflow-hidden aspect-square bg-wood-950/30 cursor-pointer" onClick={onOpen} role="button" tabIndex={0} aria-label={`عرض ${p.name}`} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onOpen(); }}>
         <img src={p.img} className="pimg w-full h-full object-cover transition-transform duration-500" alt={p.name} />
         <div className="absolute inset-0 bg-gradient-to-t from-wood-950/40 to-transparent" />
         <button

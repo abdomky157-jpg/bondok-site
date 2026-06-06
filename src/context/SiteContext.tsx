@@ -55,7 +55,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     const bg = settings["bgColor"];
     if (primary) document.documentElement.style.setProperty("--site-primary", primary);
     if (bg) document.documentElement.style.setProperty("--site-bg", bg);
-  }, [loaded, settings]); // eslint-disable-line react-hooks/set-state-in-effect
+  }, [loaded, settings]);
 
   return (
     <SiteContext.Provider value={{ products, bundles, settings, loaded, refresh: load, getSetting }}>
