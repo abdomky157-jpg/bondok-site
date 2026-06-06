@@ -61,6 +61,32 @@ const defaultSettings = [
 
 let seeding = false;
 
+/**
+ * Always sync code-level default settings to the database.
+ * This runs on every /api/site call so that settings changed in code
+ * (like updating logoUrl) propagate to the DB without needing a force-seed.
+ * It will NOT overwrite settings that the admin has manually changed
+ * (i.e., if the value differs from the old code default, assume admin edited it).
+ */
+async function syncSettings(): Promise<void> {
+  // Track "code-managed" settings that should always match defaults
+  // Only these keys get synced; all other settings are left alone
+  const CODE_MANAGED_KEYS = new Set(["logoUrl"]);
+
+  for (const s of defaultSettings) {
+    if (!CODE_MANAGED_KEYS.has(s.key)) continue;
+    try {
+      await db.siteSetting.upsert({
+        where: { key: s.key },
+        update: { value: s.value },
+        create: s,
+      });
+    } catch {
+      // Ignore — table might not exist yet
+    }
+  }
+}
+
 export async function getDbStats(): Promise<{ products: number; bundles: number; settings: number; customers: number; orders: number }> {
   try {
     const [products, bundles, settings, customers, orders] = await Promise.all([
@@ -82,6 +108,10 @@ export async function ensureSeeded(force = false): Promise<boolean> {
   try {
     // Ensure tables exist (important for fresh Turso databases)
     await ensureTablesExist();
+
+    // Always sync settings with defaults (even if products exist)
+    // This ensures code-level defaults (like logoUrl) propagate to the database
+    await syncSettings();
 
     // Check if already has data (unless force)
     if (!force) {
@@ -138,7 +168,7 @@ export async function ensureSeeded(force = false): Promise<boolean> {
       });
     }
 
-    // Seed default settings
+    // Seed default settings (syncSettings already ran above, but include for force-seed)
     for (const s of defaultSettings) {
       await db.siteSetting.upsert({
         where: { key: s.key },
