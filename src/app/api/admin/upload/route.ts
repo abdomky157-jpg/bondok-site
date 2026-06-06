@@ -40,20 +40,27 @@ export async function POST(req: NextRequest) {
 
     // Convert file to base64 data URL
     const bytes = await file.arrayBuffer();
-    let content = Buffer.from(bytes).toString("utf-8");
+    const buffer = Buffer.from(bytes);
 
-    // Sanitize SVG content to prevent XSS (strip scripts, event handlers, javascript: URIs)
+    let base64: string;
+
     if (file.type === "image/svg+xml") {
-      content = content
+      // SVG is text — sanitize to prevent XSS, then encode to base64
+      let svgText = buffer.toString("utf-8");
+      svgText = svgText
         .replace(/<script[\s\S]*?<\/script>/gi, "")
         .replace(/\son\w+\s*=\s*["'][^"']*["']/gi, "")
         .replace(/\son\w+\s*=\s*[^\s>]+/gi, "")
         .replace(/javascript\s*:/gi, "")
         .replace(/<\?xml[\s\S]*?\?>/gi, "")
         .replace(/<!DOCTYPE[\s\S]*?>/gi, "");
+      base64 = Buffer.from(svgText).toString("base64");
+    } else {
+      // Binary images (JPEG, PNG, GIF, WebP) — convert directly to base64
+      // Do NOT convert to UTF-8 string first — that corrupts binary data
+      base64 = buffer.toString("base64");
     }
 
-    const base64 = Buffer.from(content).toString("base64");
     const dataUrl = `data:${file.type};base64,${base64}`;
 
     return NextResponse.json({ url: dataUrl, name: file.name, size: file.size });

@@ -52,7 +52,11 @@ export default function ImageCropModal({
   // Load image for source cropping
   useEffect(() => {
     const img = new window.Image();
-    img.crossOrigin = "anonymous";
+    // Only set crossOrigin for remote URLs — data URLs don't have an origin
+    // and setting crossOrigin on them causes load failures in most browsers
+    if (!imageUrl.startsWith("data:")) {
+      img.crossOrigin = "anonymous";
+    }
     img.onload = () => {
       sourceImgRef.current = img;
       setImgNaturalSize({ w: img.naturalWidth, h: img.naturalHeight });
@@ -221,7 +225,7 @@ export default function ImageCropModal({
                 ref={imgRef}
                 src={imageUrl}
                 alt="مصدر"
-                crossOrigin="anonymous"
+                {...(!imageUrl.startsWith("data:") ? { crossOrigin: "anonymous" } : {})}
                 draggable={false}
                 style={{
                   position: "absolute",
