@@ -6,6 +6,7 @@ import { Heart, ShoppingCart, Star, Clock, Wind } from "lucide-react";
 import { TYPE_AR, GENDER_AR, type Product } from "@/data/products";
 import { useBondokStore } from "@/store/bondok";
 import { useSiteData } from "@/context/SiteContext";
+import { triggerAddToCartEvent } from "@/lib/cart-events";
 
 interface ProductCardProps {
   product: Product;
@@ -35,12 +36,21 @@ export default function ProductCard({ product: p }: ProductCardProps) {
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     addToCart({
       id: p.id,
       name: p.ar,
       size: p.sz[0].s,
       price: p.sz[0].p,
       img: p.img,
+    });
+    triggerAddToCartEvent({
+      productImg: p.img,
+      startX: rect.left + rect.width / 2,
+      startY: rect.top + rect.height / 2,
+      productName: p.ar,
+      productSize: p.sz[0].s,
+      productPrice: p.sz[0].p,
     });
     // Brief visual feedback
     setJustAdded(true);

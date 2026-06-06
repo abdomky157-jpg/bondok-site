@@ -6,6 +6,7 @@ import { TYPE_AR } from "@/data/products";
 import { useSiteData } from "@/context/SiteContext";
 import { useBondokStore } from "@/store/bondok";
 import { useScrollLock } from "@/hooks/useScrollLock";
+import { triggerAddToCartEvent } from "@/lib/cart-events";
 
 export default function WishlistDrawer() {
   const router = useRouter();
@@ -23,7 +24,8 @@ export default function WishlistDrawer() {
 
   const wishProducts = products.filter((p) => wishlist.includes(p.id));
 
-  const handleAdd = (p: (typeof products)[0]) => {
+  const handleAdd = (p: (typeof products)[0], e?: React.MouseEvent) => {
+    const rect = e?.currentTarget ? (e.currentTarget as HTMLElement).getBoundingClientRect() : { left: window.innerWidth / 2, top: window.innerHeight / 2, width: 0, height: 0 };
     addToCart({
       id: p.id,
       name: p.ar,
@@ -31,6 +33,7 @@ export default function WishlistDrawer() {
       price: p.sz[0].p,
       img: p.img,
     });
+    triggerAddToCartEvent({ productImg: p.img, startX: rect.left + rect.width / 2, startY: rect.top + rect.height / 2, productName: p.ar, productSize: p.sz[0].s, productPrice: p.sz[0].p });
   };
 
   return (
@@ -132,7 +135,7 @@ export default function WishlistDrawer() {
                   {/* Actions */}
                   <div className="flex flex-col gap-2 shrink-0">
                     <button
-                      onClick={() => handleAdd(p)}
+                      onClick={(e) => handleAdd(p, e)}
                       className="w-10 h-10 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-400 hover:bg-gold-500/20 transition"
                       title="أضف للسلة"
                     >

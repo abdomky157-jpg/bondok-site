@@ -657,3 +657,106 @@ html, body {
     transform: none;
   }
 }
+
+/* ===== Add To Cart Animations ===== */
+
+/* Flying product image from button to cart icon */
+.fly-to-cart {
+  position: fixed;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  z-index: 10000;
+  pointer-events: none;
+  left: var(--fly-start-x);
+  top: var(--fly-start-y);
+  transform: translate(-50%, -50%);
+  animation: flyToCart 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 164, 76, 0.4);
+  border: 2px solid rgba(212, 164, 76, 0.6);
+}
+
+@keyframes flyToCart {
+  0% {
+    left: var(--fly-start-x);
+    top: var(--fly-start-y);
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  40% {
+    /* Mid-flight: arc up slightly with a curve offset */
+    transform: translate(-50%, -50%) scale(0.8) rotate(-15deg);
+    opacity: 1;
+  }
+  85% {
+    transform: translate(-50%, -50%) scale(0.35) rotate(360deg);
+    opacity: 1;
+  }
+  100% {
+    left: var(--fly-end-x);
+    top: var(--fly-end-y);
+    transform: translate(-50%, -50%) scale(0) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Gold sparkle particles that burst at the cart icon */
+.cart-particle {
+  position: fixed;
+  width: var(--p-size);
+  height: var(--p-size);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  background: radial-gradient(circle, #FFE099, #D4A44C);
+  box-shadow: 0 0 6px rgba(212, 164, 76, 0.8);
+  left: var(--p-cx);
+  top: var(--p-cy);
+  animation: particleBurst var(--p-dur) ease-out var(--p-delay) forwards;
+}
+
+@keyframes particleBurst {
+  0% {
+    left: var(--p-cx);
+    top: var(--p-cy);
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    left: var(--p-x);
+    top: var(--p-y);
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+}
+
+/* Cart badge bounce when item is added */
+.cart-badge-bounce {
+  animation: badgeBounce 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes badgeBounce {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.6); }
+  50% { transform: scale(0.8); }
+  70% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* Success toast slide-in */
+.cart-toast {
+  animation: toastSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  pointer-events: auto;
+}
+
+@keyframes toastSlideIn {
+  0% {
+    transform: translateY(-30px) scale(0.85);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}

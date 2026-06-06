@@ -8,6 +8,7 @@ import { occasions, SEASON_AR } from "@/data/categories";
 import { useSiteData } from "@/context/SiteContext";
 import { useBondokStore } from "@/store/bondok";
 import { useScrollLock } from "@/hooks/useScrollLock";
+import { triggerAddToCartEvent } from "@/lib/cart-events";
 import { CircleProgress, NoteRow } from "./shared/ProductComponents";
 
 export default function ProductModal() {
@@ -33,13 +34,22 @@ export default function ProductModal() {
     .filter((x) => x.t === p.t && x.id !== p.id)
     .slice(0, 4);
 
-  const handleAdd = () => {
+  const handleAdd = (e: React.MouseEvent) => {
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     addToCart({
       id: p.id,
       name: p.ar,
       size: p.sz[selSize].s,
       price: p.sz[selSize].p,
       img: p.img,
+    });
+    triggerAddToCartEvent({
+      productImg: p.img,
+      startX: rect.left + rect.width / 2,
+      startY: rect.top + rect.height / 2,
+      productName: p.ar,
+      productSize: p.sz[selSize].s,
+      productPrice: p.sz[selSize].p,
     });
     setSelectedProduct(null);
   };

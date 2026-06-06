@@ -7,6 +7,7 @@ import { seasons } from "@/data/categories";
 import { Heart, ShoppingCart } from "lucide-react";
 import { useSiteData } from "@/context/SiteContext";
 import { useBondokStore } from "@/store/bondok";
+import { triggerAddToCartEvent } from "@/lib/cart-events";
 
 export default function Seasons() {
   const { products } = useSiteData();
@@ -55,9 +56,11 @@ export default function Seasons() {
               product={p}
               wishlisted={wishlist.includes(p.id)}
               onWish={() => toggleWishlist(p.id)}
-              onCart={() =>
-                addToCart({ id: p.id, name: p.ar, size: p.sz[0].s, price: p.sz[0].p, img: p.img })
-              }
+              onCart={(e?: React.MouseEvent) => {
+                const rect = e?.currentTarget ? (e.currentTarget as HTMLElement).getBoundingClientRect() : { left: window.innerWidth / 2, top: window.innerHeight / 2, width: 0, height: 0 };
+                addToCart({ id: p.id, name: p.ar, size: p.sz[0].s, price: p.sz[0].p, img: p.img });
+                triggerAddToCartEvent({ productImg: p.img, startX: rect.left + rect.width / 2, startY: rect.top + rect.height / 2, productName: p.ar, productSize: p.sz[0].s, productPrice: p.sz[0].p });
+              }}
               onOpen={() => router.push(`/product/${p.id}`)}
             />
           ))}

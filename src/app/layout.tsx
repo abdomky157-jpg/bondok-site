@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Tajawal, Playfair_Display, Amiri } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import AddToCartFlyer from "@/components/bondok/AddToCartFlyer";
 import { SiteProvider } from "@/context/SiteContext";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { LOGO_URL, SITE_URL, DEFAULT_WHATSAPP } from "@/lib/constants";
@@ -153,6 +154,7 @@ export default function RootLayout({
           </ErrorBoundary>
         </SiteProvider>
         <Toaster />
+        <AddToCartFlyer />
       </body>
     </html>
   );

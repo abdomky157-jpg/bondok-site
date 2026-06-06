@@ -3,6 +3,7 @@
 import { useSiteData } from "@/context/SiteContext";
 import { useBondokStore } from "@/store/bondok";
 import { Crown, Users, GraduationCap, Heart, Building2, Snowflake, CheckCircle, ShoppingCart, Gift, Sparkles } from "lucide-react";
+import { triggerAddToCartEvent } from "@/lib/cart-events";
 
 const bundleIcons: Record<string, React.ReactNode> = {
   "mdi:account-group": <Users size={36} className="text-gold-400" />,
@@ -65,15 +66,18 @@ export default function Bundles() {
                   ))}
                 </ul>
                 <button
-                  onClick={() =>
+                  onClick={(e) => {
+                    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+                    const bundleImg = "data:image/svg+xml," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" rx="16" fill="#2D1B11"/><rect x="5" y="5" width="90" height="90" rx="12" fill="none" stroke="%23D4A44C" stroke-width="2"/><text x="50" y="38" text-anchor="middle" font-size="28">🎁</text><text x="50" y="65" text-anchor="middle" font-size="9" font-family="sans-serif" fill="%23D4A44C" font-weight="bold">Bondok</text></svg>`);
                     addToCart({
                       id: 9000 + b.id,
                       name: b.name,
                       size: "باقة",
                       price: b.price,
-                      img: "data:image/svg+xml," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" rx="16" fill="#2D1B11"/><rect x="5" y="5" width="90" height="90" rx="12" fill="none" stroke="%23D4A44C" stroke-width="2"/><text x="50" y="38" text-anchor="middle" font-size="28">🎁</text><text x="50" y="65" text-anchor="middle" font-size="9" font-family="sans-serif" fill="%23D4A44C" font-weight="bold">Bondok</text></svg>`),
-                    })
-                  }
+                      img: bundleImg,
+                    });
+                    triggerAddToCartEvent({ productImg: bundleImg, startX: rect.left + rect.width / 2, startY: rect.top + rect.height / 2, productName: b.name, productSize: "باقة", productPrice: b.price });
+                  }}
                   className="w-full py-3 bg-gradient-to-l from-gold-500 to-gold-700 text-wood-950 font-bold rounded-xl text-sm transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-[0_4px_20px_rgba(212,164,76,.3)] hover:scale-[1.02] active:scale-[0.98]"
                 >
                   <ShoppingCart size={16} /> اطلب الباقة

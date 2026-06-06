@@ -297,10 +297,10 @@ export default function Navbar() {
               <Shuffle size={13} />
               فاجئني
             </button>
-            <button onClick={toggleCart} aria-label="السلة" className="relative text-gold-400/80 hover:text-gold-300 transition-all hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center">
+            <button id="cart-icon-btn" onClick={toggleCart} aria-label="السلة" className="relative text-gold-400/80 hover:text-gold-300 transition-all hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center">
               <ShoppingCart size={22} />
               {cartCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 bg-gold-500 text-wood-950 text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">
+                <span id="cart-badge" className="absolute -top-0.5 -right-0.5 bg-gold-500 text-wood-950 text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">
                   {cartCount}
                 </span>
               )}

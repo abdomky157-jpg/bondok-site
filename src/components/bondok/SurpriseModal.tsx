@@ -7,6 +7,7 @@ import { useSiteData } from "@/context/SiteContext";
 import { SURPRISE_REASONS } from "@/data/quiz";
 import { useBondokStore } from "@/store/bondok";
 import { useScrollLock } from "@/hooks/useScrollLock";
+import { triggerAddToCartEvent } from "@/lib/cart-events";
 
 export default function SurpriseModal() {
   const surpriseOpen = useBondokStore((s) => s.surpriseOpen);
@@ -69,8 +70,9 @@ export default function SurpriseModal() {
     setKey((k) => k + 1);
   };
 
-  const handleAdd = () => {
+  const handleAdd = (e?: React.MouseEvent) => {
     if (timeLeft <= 0) return;
+    const rect = e?.currentTarget ? (e.currentTarget as HTMLElement).getBoundingClientRect() : { left: window.innerWidth / 2, top: window.innerHeight / 2, width: 0, height: 0 };
     // Add to cart at discounted price
     addToCart({
       id: product.id,
@@ -79,6 +81,7 @@ export default function SurpriseModal() {
       price: discountedPrice,
       img: product.img,
     });
+    triggerAddToCartEvent({ productImg: product.img, startX: rect.left + rect.width / 2, startY: rect.top + rect.height / 2, productName: product.ar, productSize: product.sz[0].s, productPrice: discountedPrice });
     // Auto-apply 20% discount code for the rest of the cart
     applyDiscount("SURPRISE20");
     setSurpriseOpen(false);

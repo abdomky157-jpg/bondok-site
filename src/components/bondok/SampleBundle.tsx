@@ -2,6 +2,7 @@
 
 import { FlaskConical, Sparkles, Star, Package } from "lucide-react";
 import { useBondokStore } from "@/store/bondok";
+import { triggerAddToCartEvent } from "@/lib/cart-events";
 
 export default function SampleBundle() {
   const addToCart = useBondokStore((s) => s.addToCart);
@@ -59,15 +60,18 @@ export default function SampleBundle() {
             </p>
 
             <button
-              onClick={() =>
+              onClick={(e) => {
+                const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+                const sampleImg = "https://images.unsplash.com/photo-1594035910387-fea081ae7aec?w=100";
                 addToCart({
                   id: 999,
                   name: "باقة السامبلز",
                   size: "5x3ml",
                   price: 80,
-                  img: "https://images.unsplash.com/photo-1594035910387-fea081ae7aec?w=100",
-                })
-              }
+                  img: sampleImg,
+                });
+                triggerAddToCartEvent({ productImg: sampleImg, startX: rect.left + rect.width / 2, startY: rect.top + rect.height / 2, productName: "باقة السامبلز", productSize: "5x3ml", productPrice: 80 });
+              }}
               className="px-10 py-3.5 bg-gradient-to-l from-gold-500 to-gold-700 text-wood-950 font-bold rounded-full hover:shadow-[0_0_30px_rgba(212,164,76,.4)] transition-all duration-300 hover:scale-105 active:scale-[0.98] text-lg"
             >
               اطلب باقة السامبلز

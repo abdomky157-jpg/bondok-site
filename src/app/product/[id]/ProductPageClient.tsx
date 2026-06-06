@@ -17,6 +17,7 @@ import {
   ShoppingCart, Heart, ArrowRight, Star, Share2,
   Clock, Wind, MapPin, Phone, MessageCircle, Sparkles,
 } from "lucide-react";
+import { triggerAddToCartEvent } from "@/lib/cart-events";
 
 export default function ProductPageClient({ params }: { params: Promise<{ id: string }> }) {
   // In Next.js 15+ with React 19, params is a Promise that needs to be unwrapped with `use()`
@@ -225,7 +226,11 @@ export default function ProductPageClient({ params }: { params: Promise<{ id: st
                     <p className="text-gold-100/30 text-xs">{p.sz[selectedSize].s}</p>
                   </div>
                   <button
-                    onClick={() => addToCart({ id: p.id, name: p.ar, size: p.sz[selectedSize].s, price: p.sz[selectedSize].p, img: p.img })}
+                    onClick={(e) => {
+                      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+                      addToCart({ id: p.id, name: p.ar, size: p.sz[selectedSize].s, price: p.sz[selectedSize].p, img: p.img });
+                      triggerAddToCartEvent({ productImg: p.img, startX: rect.left + rect.width / 2, startY: rect.top + rect.height / 2, productName: p.ar, productSize: p.sz[selectedSize].s, productPrice: p.sz[selectedSize].p });
+                    }}
                     className="px-6 py-3 bg-gradient-to-l from-gold-500 to-gold-700 text-wood-950 font-bold rounded-xl flex items-center gap-2 text-sm"
                   >
                     <ShoppingCart size={16} /> أضف للسلة
@@ -242,7 +247,11 @@ export default function ProductPageClient({ params }: { params: Promise<{ id: st
                     <p className="text-gold-100/30 text-xs mt-0.5">{p.sz[selectedSize].s} - أسعار تبدأ من {p.sz[p.sz.length - 1].p.toLocaleString()} ج.م</p>
                   </div>
                   <button
-                    onClick={() => addToCart({ id: p.id, name: p.ar, size: p.sz[selectedSize].s, price: p.sz[selectedSize].p, img: p.img })}
+                    onClick={(e) => {
+                      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+                      addToCart({ id: p.id, name: p.ar, size: p.sz[selectedSize].s, price: p.sz[selectedSize].p, img: p.img });
+                      triggerAddToCartEvent({ productImg: p.img, startX: rect.left + rect.width / 2, startY: rect.top + rect.height / 2, productName: p.ar, productSize: p.sz[selectedSize].s, productPrice: p.sz[selectedSize].p });
+                    }}
                     className="px-8 py-3.5 bg-gradient-to-l from-gold-500 to-gold-700 text-wood-950 font-bold rounded-xl flex items-center gap-2 transition-all hover:shadow-[0_4px_20px_rgba(212,164,76,.3)] hover:scale-[1.02] active:scale-[0.98]"
                   >
                     <ShoppingCart size={18} /> أضف للسلة
