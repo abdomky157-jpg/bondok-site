@@ -51,7 +51,7 @@ export default function Footer() {
                 {f.icon}
               </div>
               <p className="text-gold-300 text-xs font-semibold mb-0.5">{f.title}</p>
-              <p className="text-gold-100/30 text-[10px]">{f.desc}</p>
+              <p className="text-gold-100/30 text-[11px] sm:text-xs">{f.desc}</p>
             </div>
           ))}
         </div>
@@ -98,7 +98,7 @@ export default function Footer() {
                 { label: "من نحن", id: "about" },
               ].map((link) => (
                 <li key={link.id}>
-                  <button onClick={() => scrollToSection(link.id)} className="text-gold-100/40 text-xs hover:text-gold-300 transition-all hover:pr-2 duration-300">
+                  <button onClick={() => scrollToSection(link.id)} className="text-gold-100/40 text-xs hover:text-gold-300 transition-all hover:pl-2 duration-300">
                     {link.label}
                   </button>
                 </li>
@@ -120,7 +120,7 @@ export default function Footer() {
                 { label: "تتبع طلبك", action: () => { window.location.hash = "#track"; window.dispatchEvent(new HashChangeEvent("hashchange")); } },
               ].map((link, i) => (
                 <li key={i}>
-                  <button onClick={link.action} className="text-gold-100/40 text-xs hover:text-gold-300 transition-all hover:pr-2 duration-300">
+                  <button onClick={link.action} className="text-gold-100/40 text-xs hover:text-gold-300 transition-all hover:pl-2 duration-300">
                     {link.label}
                   </button>
                 </li>
@@ -141,7 +141,7 @@ export default function Footer() {
                 { label: "تواصل معنا", action: () => scrollToSection("cont") },
               ].map((link, i) => (
                 <li key={i}>
-                  <button onClick={link.action} className="text-gold-100/40 text-xs hover:text-gold-300 transition-all hover:pr-2 duration-300">
+                  <button onClick={link.action} className="text-gold-100/40 text-xs hover:text-gold-300 transition-all hover:pl-2 duration-300">
                     {link.label}
                   </button>
                 </li>
@@ -180,7 +180,7 @@ export default function Footer() {
       {/* Return Policy Modal */}
       {showReturnPolicy && (
         <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,.85)" }} onClick={() => setShowReturnPolicy(false)}>
-          <div className="rounded-2xl max-w-lg w-full max-h-[80vh] overflow-y-auto p-8" style={{ background: "linear-gradient(135deg,#2D1B11,#1A0F0A)", border: "1px solid rgba(212,164,76,.3)" }} onClick={(e) => e.stopPropagation()}>
+          <div className="rounded-2xl max-w-lg w-full max-h-[80vh] overflow-y-auto p-5 sm:p-8" style={{ background: "linear-gradient(135deg,#2D1B11,#1A0F0A)", border: "1px solid rgba(212,164,76,.3)" }} onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-playfair text-xl font-bold gold-shimmer">🔄 سياسة الإرجاع</h3>
               <button onClick={() => setShowReturnPolicy(false)} className="text-gold-500/50 hover:text-gold-400 transition"><X size={20} /></button>
@@ -218,7 +218,7 @@ export default function Footer() {
       {/* Terms Modal */}
       {showTerms && (
         <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,.85)" }} onClick={() => setShowTerms(false)}>
-          <div className="rounded-2xl max-w-lg w-full max-h-[80vh] overflow-y-auto p-8" style={{ background: "linear-gradient(135deg,#2D1B11,#1A0F0A)", border: "1px solid rgba(212,164,76,.3)" }} onClick={(e) => e.stopPropagation()}>
+          <div className="rounded-2xl max-w-lg w-full max-h-[80vh] overflow-y-auto p-5 sm:p-8" style={{ background: "linear-gradient(135deg,#2D1B11,#1A0F0A)", border: "1px solid rgba(212,164,76,.3)" }} onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-playfair text-xl font-bold gold-shimmer">📋 شروط الاستخدام</h3>
               <button onClick={() => setShowTerms(false)} className="text-gold-500/50 hover:text-gold-400 transition"><X size={20} /></button>

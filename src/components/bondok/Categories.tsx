@@ -1,7 +1,7 @@
 "use client";
 
 import { useBondokStore } from "@/store/bondok";
-import { TYPE_AR, GENDER_AR } from "@/data/products";
+import { TYPE_AR } from "@/data/products";
 import { Trees, Flower2, Flame, Droplets, Candy, Heart, Users } from "lucide-react";
 
 const genderCategories = [

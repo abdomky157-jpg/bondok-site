@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { X, Save, Plus, Trash2, Upload, ChevronDown, ChevronUp, Loader2, Image, Palette, Type, Package, Settings, ShoppingBag, Users, Phone, Mail, MapPin, Calendar, Search, Edit3, Eye, UserPlus, TrendingUp, DollarSign, ShoppingCart, Clock, MessageSquare, Star, Crown } from "lucide-react";
+import { X, Save, Plus, Trash2, Upload, ChevronDown, ChevronUp, Loader2, Image, Palette, Type, Package, Settings, ShoppingBag, Users, Phone, Mail, MapPin, Calendar, Search, Edit3, UserPlus, TrendingUp, DollarSign, ShoppingCart, Clock, MessageSquare, Star, Crown } from "lucide-react";
 import { useSiteData } from "@/context/SiteContext";
 
 // ===== Admin Panel Component =====
@@ -175,14 +175,16 @@ function ProductsTab({ onRefresh }: { onRefresh: () => void }) {
       <div className="space-y-2 mb-4">
         {products.map((p: any) => (
           <div key={p.id} className="flex items-center gap-3 p-3 rounded-xl border border-gold-500/20" style={{ background: "rgba(45,27,17,.5)" }}>
-            <img src={p.image} className="w-12 h-12 rounded-lg object-cover" alt={p.name} />
+            <img src={p.image} className="w-12 h-12 rounded-lg object-cover shrink-0" alt={p.name} />
             <div className="flex-1 min-w-0">
               <p className="font-playfair text-gold-300 text-sm font-semibold truncate">{p.name}</p>
               <p className="text-gold-100/40 text-xs">{p.ar} · {p.brand}</p>
             </div>
-            <span className="text-gold-400 text-xs">{p.gender === "men" ? "رجالي" : p.gender === "women" ? "نسائي" : "مشترك"}</span>
-            <button onClick={() => { setEditing(parseProduct(p)); setShowForm(true); }} className="text-gold-400 hover:text-gold-200 text-xs px-2 py-1 border border-gold-500/20 rounded">تعديل</button>
-            <button onClick={() => del(p.id)} className="text-red-400 hover:text-red-300 text-xs px-2 py-1"><Trash2 size={14} /></button>
+            <div className="flex items-center gap-1.5 shrink-0">
+              <span className="hidden sm:inline text-gold-400 text-[10px] px-1.5 py-0.5 rounded bg-gold-500/10">{p.gender === "men" ? "رجالي" : p.gender === "women" ? "نسائي" : "مشترك"}</span>
+              <button onClick={() => { setEditing(parseProduct(p)); setShowForm(true); }} className="text-gold-400 hover:text-gold-200 text-xs px-2 py-1 border border-gold-500/20 rounded">تعديل</button>
+              <button onClick={() => del(p.id)} className="text-red-400 hover:text-red-300 p-1"><Trash2 size={14} /></button>
+            </div>
           </div>
         ))}
       </div>
@@ -391,8 +393,10 @@ function BundlesTab({ onRefresh }: { onRefresh: () => void }) {
               <p className="font-playfair text-gold-300 text-sm font-semibold truncate">{b.name}</p>
               <p className="text-gold-400 text-xs">{b.price?.toLocaleString()} ج.م</p>
             </div>
-            <button onClick={() => { setEditing(parseBundle(b)); setShowForm(true); }} className="text-gold-400 hover:text-gold-200 text-xs px-2 py-1 border border-gold-500/20 rounded">تعديل</button>
-            <button onClick={() => del(b.id)} className="text-red-400 hover:text-red-300 text-xs px-2 py-1"><Trash2 size={14} /></button>
+            <div className="flex items-center gap-1.5 shrink-0">
+              <button onClick={() => { setEditing(parseBundle(b)); setShowForm(true); }} className="text-gold-400 hover:text-gold-200 text-xs px-2 py-1 border border-gold-500/20 rounded">تعديل</button>
+              <button onClick={() => del(b.id)} className="text-red-400 hover:text-red-300 p-1"><Trash2 size={14} /></button>
+            </div>
           </div>
         ))}
       </div>

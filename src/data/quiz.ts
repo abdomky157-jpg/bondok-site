@@ -124,6 +124,3 @@ export const SURPRISE_REASONS: Record<string, string[]> = {
     "العطر الحلو هيخلي الكل يحب يقرب!",
   ],
 };
-
-// Re-exported from shared constants for backwards compatibility
-export { DISCOUNT_CODES } from "@/lib/discount-codes";

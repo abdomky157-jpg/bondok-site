@@ -132,14 +132,14 @@ export default function WishlistDrawer() {
                   <div className="flex flex-col gap-2 shrink-0">
                     <button
                       onClick={() => handleAdd(p)}
-                      className="w-8 h-8 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-400 hover:bg-gold-500/20 transition"
+                      className="w-10 h-10 rounded-lg bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-400 hover:bg-gold-500/20 transition"
                       title="أضف للسلة"
                     >
                       <ShoppingCart size={14} />
                     </button>
                     <button
                       onClick={() => toggleWishlist(p.id)}
-                      className="w-8 h-8 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 hover:bg-red-500/20 transition"
+                      className="w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 hover:bg-red-500/20 transition"
                       title="إزالة من المفضلة"
                     >
                       <Trash2 size={14} />

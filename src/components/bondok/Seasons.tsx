@@ -90,7 +90,7 @@ function MiniCard({
       )}
       <button
         onClick={(e) => { e.stopPropagation(); onWish(); }}
-        className="absolute top-3 left-3 z-10 w-8 h-8 rounded-full bg-wood-950/60 border border-gold-500/20 flex items-center justify-center transition hover:bg-gold-500/20"
+        className="absolute top-3 left-3 z-10 w-10 h-10 rounded-full bg-wood-950/60 border border-gold-500/20 flex items-center justify-center transition hover:bg-gold-500/20"
       >
         <Heart size={16} className={wishlisted ? "fill-red-500 text-red-500" : "fill-gold-400 text-gold-400"} />
       </button>

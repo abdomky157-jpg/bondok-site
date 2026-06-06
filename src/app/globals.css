@@ -605,6 +605,12 @@ textarea:focus-visible {
   animation: cart-pulse 2s ease-in-out infinite;
 }
 
+/* ===== Slide In Right (RTL) ===== */
+@keyframes slideInRight {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
 /* ===== Reduced Motion Support ===== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

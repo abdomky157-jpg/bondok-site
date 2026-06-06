@@ -72,3 +72,5 @@ export async function POST(req: NextRequest) {
     const message = e instanceof Error ? e.message : "Unknown error";
     console.error("[/api/admin/customers] POST error:", message);
     return NextResponse.json({ error: "فشل إنشاء العميل" }, { status: 500 });
+  }
+}

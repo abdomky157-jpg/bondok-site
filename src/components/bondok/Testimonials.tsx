@@ -71,11 +71,6 @@ function RatingStars({ count }: { count: number }) {
 export default function Testimonials() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(1);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     const updateCount = () => {
@@ -155,8 +150,8 @@ export default function Testimonials() {
               <button
                 key={i}
                 onClick={() => setActiveIndex(i)}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  i === activeIndex ? "bg-gold-400 w-6" : "bg-gold-500/20 hover:bg-gold-500/40"
+                className={`rounded-full transition-all ${
+                  i === activeIndex ? "bg-gold-400 w-6 h-3" : "bg-gold-500/20 hover:bg-gold-500/40 w-3 h-3"
                 }`}
                 aria-label={`شهادة ${i + 1}`}
               />

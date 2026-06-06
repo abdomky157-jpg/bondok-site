@@ -96,7 +96,7 @@ export default function SurpriseModal() {
     >
       <div
         key={key}
-        className="rounded-2xl max-w-[550px] w-full p-8 text-center"
+        className="rounded-2xl max-w-[550px] w-full p-5 sm:p-8 text-center"
         style={{
           background: "linear-gradient(135deg,#2D1B11,#1A0F0A)",
           border: "1px solid rgba(212,164,76,.3)",

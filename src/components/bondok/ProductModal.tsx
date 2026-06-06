@@ -71,7 +71,7 @@ export default function ProductModal() {
 
           <div className="grid md:grid-cols-2 gap-0">
             <div className="relative">
-              <img src={p.img} className="w-full h-64 md:h-full object-cover rounded-t-2xl md:rounded-r-2xl md:rounded-tl-none" alt={`${p.name} - ${p.ar}`} />
+              <img src={p.img} className="w-full h-48 sm:h-56 md:h-full object-cover rounded-t-2xl md:rounded-r-2xl md:rounded-tl-none" alt={`${p.name} - ${p.ar}`} />
             </div>
 
             <div className="p-6 sm:p-8">
@@ -122,12 +122,14 @@ export default function ProductModal() {
                 </div>
               </div>
 
-              <button
-                onClick={handleAdd}
-                className="w-full py-3 bg-gradient-to-l from-gold-500 to-gold-700 text-wood-950 font-bold rounded-xl flex items-center justify-center gap-2 transition-all"
-              >
-                <ShoppingCart size={16} /> أضف للسلة
-              </button>
+              <div className="sticky bottom-0 -mx-6 sm:-mx-8 px-6 sm:px-8 pt-4 pb-2" style={{ background: "linear-gradient(to top, #1A0F0A 60%, transparent)" }}>
+                <button
+                  onClick={handleAdd}
+                  className="w-full py-3 bg-gradient-to-l from-gold-500 to-gold-700 text-wood-950 font-bold rounded-xl flex items-center justify-center gap-2 transition-all"
+                >
+                  <ShoppingCart size={16} /> أضف للسلة
+                </button>
+              </div>
             </div>
           </div>
 

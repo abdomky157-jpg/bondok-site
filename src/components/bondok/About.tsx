@@ -2,7 +2,7 @@
 
 import { useSiteData } from "@/context/SiteContext";
 import { useEffect, useState, useRef } from "react";
-import { Truck, Award, Shield } from "lucide-react";
+import { Award } from "lucide-react";
 
 function AnimatedCounter({ target, suffix = "", prefix = "" }: { target: number; suffix?: string; prefix?: string }) {
   const [count, setCount] = useState(0);
@@ -79,7 +79,7 @@ export default function About() {
               />
             </div>
             {/* Floating badge */}
-            <div className="absolute -bottom-4 -left-4 sm:-left-6 p-4 rounded-xl gold-border z-10" style={{ background: "rgba(26,15,10,.9)" }}>
+            <div className="absolute -bottom-4 -left-2 sm:-left-4 md:-left-6 p-4 rounded-xl gold-border z-10" style={{ background: "rgba(26,15,10,.9)" }}>
               <div className="flex items-center gap-2">
                 <Award size={20} className="text-gold-400" />
                 <div>

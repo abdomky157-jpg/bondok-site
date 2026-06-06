@@ -79,12 +79,12 @@ export default function Hero() {
       <Particles />
 
       {/* Decorative corner ornaments */}
-      <div className="absolute top-20 right-10 w-32 h-32 opacity-10">
+      <div className="absolute top-20 right-10 w-32 h-32 opacity-10 hidden sm:block">
         <div className="absolute top-0 right-0 w-full h-px bg-gradient-to-l from-gold-500 to-transparent" />
         <div className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-gold-500 to-transparent" />
         <span className="absolute top-3 right-3 text-gold-500 text-2xl">✦</span>
       </div>
-      <div className="absolute top-20 left-10 w-32 h-32 opacity-10">
+      <div className="absolute top-20 left-10 w-32 h-32 opacity-10 hidden sm:block">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-gold-500 to-transparent" />
         <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-gold-500 to-transparent" />
         <span className="absolute top-3 left-3 text-gold-500 text-2xl">✦</span>
@@ -207,7 +207,7 @@ export default function Hero() {
       </button>
 
       {/* Quick Feature Badges */}
-      <div className={`absolute bottom-20 left-4 sm:left-8 flex flex-col gap-2 opacity-60 transition-all duration-700 ${mounted ? "opacity-60 translate-x-0" : "opacity-0 -translate-x-4"}`}
+      <div className={`absolute bottom-20 left-4 sm:left-8 hidden sm:flex flex-col gap-2 opacity-60 transition-all duration-700 ${mounted ? "opacity-60 translate-x-0" : "opacity-0 -translate-x-4"}`}
         style={{ transitionDelay: "1600ms" }}
       >
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-wood-950/60 border border-gold-500/15 text-gold-300/70 text-[10px] sm:text-xs">
@@ -217,7 +217,7 @@ export default function Hero() {
           <Award size={12} /> منتجات أصلية 100%
         </div>
       </div>
-      <div className={`absolute bottom-20 right-4 sm:right-8 flex flex-col gap-2 transition-all duration-700 ${mounted ? "opacity-60 translate-x-0" : "opacity-0 translate-x-4"}`}
+      <div className={`absolute bottom-20 right-4 sm:right-8 hidden sm:flex flex-col gap-2 transition-all duration-700 ${mounted ? "opacity-60 translate-x-0" : "opacity-0 translate-x-4"}`}
         style={{ transitionDelay: "1700ms" }}
       >
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-wood-950/60 border border-gold-500/15 text-gold-300/70 text-[10px] sm:text-xs">

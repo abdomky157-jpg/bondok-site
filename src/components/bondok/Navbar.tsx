@@ -261,7 +261,7 @@ export default function Navbar() {
             <button
               onClick={() => toggleWishlistOpen()}
               aria-label="المفضلة"
-              className="relative text-gold-400/80 hover:text-gold-300 transition-all hover:scale-110 p-1.5"
+              className="relative text-gold-400/80 hover:text-gold-300 transition-all hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center"
             >
               <Heart size={20} />
               {wishlist.length > 0 && (
@@ -294,7 +294,7 @@ export default function Navbar() {
               <Shuffle size={13} />
               فاجئني
             </button>
-            <button onClick={toggleCart} aria-label="السلة" className="relative text-gold-400/80 hover:text-gold-300 transition-all hover:scale-110 p-1.5">
+            <button onClick={toggleCart} aria-label="السلة" className="relative text-gold-400/80 hover:text-gold-300 transition-all hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center">
               <ShoppingCart size={22} />
               {cartCount > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 bg-gold-500 text-wood-950 text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">
@@ -303,7 +303,7 @@ export default function Navbar() {
               )}
             </button>
             <button
-              className="lg:hidden text-gold-400/80 hover:text-gold-300 transition p-1"
+              className="lg:hidden text-gold-400/80 hover:text-gold-300 transition p-2.5"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="القائمة"
             >

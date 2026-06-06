@@ -1,22 +1,8 @@
 import { PrismaClient } from '@prisma/client'
 import { PrismaLibSQL } from '@prisma/adapter-libsql'
-import { createClient, Client } from '@libsql/client'
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
-}
-
-// Shared libsql client for connection reuse
-let _libsqlClient: Client | null = null;
-
-function getLibsqlClient(url: string, authToken?: string): Client {
-  if (!_libsqlClient) {
-    _libsqlClient = createClient({
-      url,
-      authToken: authToken || undefined,
-    })
-  }
-  return _libsqlClient
 }
 
 function createPrismaClient(): PrismaClient {

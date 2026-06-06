@@ -91,7 +91,7 @@ export default function QuizModal() {
       onKeyDown={(e) => { if (e.key === "Escape") { handleClose(); } }}
     >
       <div
-        className="rounded-2xl max-w-[650px] w-full max-h-[90vh] overflow-y-auto p-8"
+        className="rounded-2xl max-w-[650px] w-full max-h-[90vh] overflow-y-auto p-5 sm:p-8"
         style={{
           background: "linear-gradient(135deg,#2D1B11,#1A0F0A)",
           border: "1px solid rgba(212,164,76,.3)",
@@ -141,7 +141,7 @@ export default function QuizModal() {
           <>
             <div className="flex items-center justify-between mb-6">
               <p className="text-gold-400 text-xs">السؤال {step + 1} من {quizQuestions.length}</p>
-              <button onClick={handleClose} className="text-gold-500/50 hover:text-gold-400">
+              <button onClick={handleClose} className="text-gold-500/50 hover:text-gold-400 touch-target">
                 <X size={20} />
               </button>
             </div>

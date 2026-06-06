@@ -78,7 +78,7 @@ export default function OrderTracker() {
   return (
     <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,.8)", backdropFilter: "blur(5px)" }}>
       <div
-        className="rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-8"
+        className="rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-5 sm:p-8"
         style={{ background: "linear-gradient(135deg,#2D1B11,#1A0F0A)", border: "1px solid rgba(212,164,76,.3)" }}
       >
         {/* Header */}
@@ -86,7 +86,7 @@ export default function OrderTracker() {
           <h3 className="font-playfair text-xl font-bold gold-shimmer flex items-center gap-2">
             <Search size={20} /> تتبع طلبك
           </h3>
-          <button onClick={() => { setIsOpen(false); setOrderData(null); }} className="text-gold-500/50 hover:text-gold-400 transition">
+          <button onClick={() => { setIsOpen(false); setOrderData(null); }} className="text-gold-500/50 hover:text-gold-400 transition touch-target">
             <X size={20} />
           </button>
         </div>

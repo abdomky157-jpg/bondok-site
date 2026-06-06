@@ -94,14 +94,14 @@ export default function CartDrawer() {
                       <div className="flex items-center gap-2 mt-1.5">
                         <button
                           onClick={() => updateQuantity(i, c.qty - 1)}
-                          className="w-8 h-8 rounded-md border border-gold-500/20 flex items-center justify-center text-gold-400 hover:bg-gold-500/10 transition text-xs"
+                          className="w-10 h-10 rounded-md border border-gold-500/20 flex items-center justify-center text-gold-400 hover:bg-gold-500/10 transition text-xs"
                         >
                           <Minus size={14} />
                         </button>
                         <span className="text-gold-300 text-sm font-bold min-w-[20px] text-center">{c.qty}</span>
                         <button
                           onClick={() => updateQuantity(i, c.qty + 1)}
-                          className="w-8 h-8 rounded-md border border-gold-500/20 flex items-center justify-center text-gold-400 hover:bg-gold-500/10 transition text-xs"
+                          className="w-10 h-10 rounded-md border border-gold-500/20 flex items-center justify-center text-gold-400 hover:bg-gold-500/10 transition text-xs"
                         >
                           <Plus size={12} />
                         </button>
