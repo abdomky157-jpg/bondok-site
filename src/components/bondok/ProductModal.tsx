@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { X, ShoppingCart, Star } from "lucide-react";
 import { TYPE_AR, GENDER_AR, type Product } from "@/data/products";
 import { occasions, SEASON_AR } from "@/data/categories";
@@ -10,6 +11,7 @@ import { useScrollLock } from "@/hooks/useScrollLock";
 import { CircleProgress, NoteRow } from "./shared/ProductComponents";
 
 export default function ProductModal() {
+  const router = useRouter();
   const { products } = useSiteData();
   const selectedProduct = useBondokStore((s) => s.selectedProduct);
   const setSelectedProduct = useBondokStore((s) => s.setSelectedProduct);
@@ -180,7 +182,7 @@ export default function ProductModal() {
                 {sameFamily.map((s) => (
                   <div
                     key={s.id}
-                    onClick={() => { setSelectedProduct(s); }}
+                    onClick={() => { setSelectedProduct(s); router.push(`/product/${s.id}`); setSelectedProduct(null); }}
                     className="shrink-0 w-32 cursor-pointer group"
                   >
                     <div className="aspect-square rounded-xl overflow-hidden gold-border mb-2">

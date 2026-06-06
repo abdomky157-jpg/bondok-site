@@ -55,7 +55,7 @@ export default function CartDrawer() {
       )}
       {/* Drawer */}
       <div
-        className={`fixed top-0 right-0 bottom-0 w-[380px] max-w-[90vw] z-[10001] transition-transform duration-400 ease-[cubic-bezier(0.4,0,0.2,1)] overflow-y-auto ${
+        className={`fixed top-0 right-0 bottom-0 w-full sm:w-[380px] max-w-[95vw] sm:max-w-[90vw] z-[10001] transition-transform duration-400 ease-[cubic-bezier(0.4,0,0.2,1)] overflow-y-auto ${
           cartOpen ? "translate-x-0" : "translate-x-full"
         }`}
         style={{ background: "linear-gradient(180deg,#2D1B11,#1A0F0A)", borderLeft: "1px solid rgba(212,164,76,.3)" }}
@@ -63,7 +63,7 @@ export default function CartDrawer() {
         aria-modal="true"
         aria-label="سلة التسوق"
       >
-        <div className="p-6">
+        <div className="p-6 pb-8 sm:pb-6">
           <div className="flex items-center justify-between mb-6">
             <h3 className="font-playfair text-xl font-bold text-gold-400">
               <ShoppingBag size={20} className="inline ml-2" /> السلة
@@ -156,7 +156,7 @@ export default function CartDrawer() {
 
                 <button
                   onClick={handleConfirm}
-                  className="w-full py-3 bg-gradient-to-l from-gold-500 to-gold-700 text-wood-950 font-bold rounded-xl hover:shadow-[0_0_20px_rgba(212,164,76,.3)] transition-all"
+                  className="w-full py-3 bg-gradient-to-l from-gold-500 to-gold-700 text-wood-950 font-bold rounded-xl hover:shadow-[0_0_20px_rgba(212,164,76,.3)] transition-all safe-bottom"
                 >
                   تأكيد الطلب
                 </button>

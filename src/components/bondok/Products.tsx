@@ -89,12 +89,12 @@ export default function Products() {
   };
 
   return (
-    <section id="prod" className="relative py-20 wood-bg">
+    <section id="prod" className="relative py-10 sm:py-20 wood-bg">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-12">
-          <p className="font-amiri text-gold-400 text-lg mb-2">تشكيلة واسعة</p>
-          <h2 className="font-playfair text-4xl sm:text-5xl font-bold gold-shimmer mb-4">
+        <div className="text-center mb-8 sm:mb-12">
+          <p className="font-amiri text-gold-400 text-base sm:text-lg mb-2">تشكيلة واسعة</p>
+          <h2 className="font-playfair text-3xl sm:text-4xl lg:text-5xl font-bold gold-shimmer mb-4">
             المنتجات
           </h2>
           <div className="orn-div max-w-xs mx-auto">

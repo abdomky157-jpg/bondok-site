@@ -45,7 +45,7 @@ function AnimatedCounter({ target, suffix = "", duration = 2000 }: { target: num
 
   return (
     <div ref={ref} className="text-center">
-      <span className="font-playfair text-3xl sm:text-4xl font-bold gold-shimmer">
+      <span className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold gold-shimmer">
         {count.toLocaleString()}{suffix}
       </span>
     </div>
@@ -104,7 +104,7 @@ export default function Hero() {
           <div className="relative inline-block">
             <img
               src={settings.logoUrl || LOGO_URL}
-              className="w-24 h-24 sm:w-32 sm:h-32 mx-auto object-contain rounded-full"
+              className="w-20 h-20 sm:w-28 sm:h-28 lg:w-32 lg:h-32 mx-auto object-contain rounded-full"
               style={{ filter: "drop-shadow(0 0 30px rgba(212,164,76,.6))" }}
               alt="Bondok Logo"
             />
@@ -117,13 +117,13 @@ export default function Hero() {
 
         {/* Title */}
         <h1
-          className={`font-playfair text-5xl sm:text-7xl lg:text-9xl font-bold mb-2 leading-tight transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          className={`font-playfair text-4xl sm:text-6xl lg:text-8xl xl:text-9xl font-bold mb-2 leading-tight transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
           style={{ transitionDelay: "400ms" }}
         >
           <span className="gold-shimmer">Bondok</span>
         </h1>
         <h2
-          className={`font-playfair text-xl sm:text-3xl lg:text-4xl text-gold-400 tracking-[0.2em] sm:tracking-[0.3em] mb-6 font-light transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+          className={`font-playfair text-lg sm:text-2xl lg:text-3xl text-gold-400 tracking-[0.2em] sm:tracking-[0.3em] mb-6 font-light transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
           style={{ transitionDelay: "600ms" }}
         >
           PERFUMES
@@ -139,7 +139,7 @@ export default function Hero() {
 
         {/* Subtitle */}
         <p
-          className={`font-amiri text-xl sm:text-2xl lg:text-3xl text-gold-200/80 mb-4 leading-relaxed transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+          className={`font-amiri text-lg sm:text-2xl lg:text-3xl text-gold-200/80 mb-4 leading-relaxed transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
           style={{ transitionDelay: "900ms" }}
         >
           {settings.heroSubtitle || "رحلة في عالم العطور الفاخرة"}
@@ -153,12 +153,12 @@ export default function Hero() {
 
         {/* CTA Buttons */}
         <div
-          className={`flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+          className={`flex flex-col sm:flex-row items-center justify-center gap-4 mb-10 sm:mb-16 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
           style={{ transitionDelay: "1200ms" }}
         >
           <a
             href="#prod"
-            className="group px-10 py-4 bg-gradient-to-l from-gold-500 to-gold-700 text-wood-950 font-bold rounded-full text-lg transition-all duration-300 hover:shadow-[0_0_40px_rgba(212,164,76,.5)] hover:scale-105 flex items-center gap-2 relative overflow-hidden"
+            className="group px-8 py-3 sm:px-10 sm:py-4 text-base sm:text-lg bg-gradient-to-l from-gold-500 to-gold-700 text-wood-950 font-bold rounded-full transition-all duration-300 hover:shadow-[0_0_40px_rgba(212,164,76,.5)] hover:scale-105 flex items-center gap-2 relative overflow-hidden"
           >
             <span className="relative z-10 flex items-center gap-2">
               <Sparkles size={20} className="group-hover:rotate-12 transition-transform duration-300" />
@@ -169,7 +169,7 @@ export default function Hero() {
           </a>
           <button
             onClick={() => setQuizOpen(true)}
-            className="px-10 py-4 border-2 border-gold-500/40 text-gold-400 font-bold rounded-full text-lg transition-all duration-300 hover:bg-gold-500/10 hover:border-gold-500/60 hover:scale-105 relative overflow-hidden group"
+            className="px-8 py-3 sm:px-10 sm:py-4 text-base sm:text-lg border-2 border-gold-500/40 text-gold-400 font-bold rounded-full transition-all duration-300 hover:bg-gold-500/10 hover:border-gold-500/60 hover:scale-105 relative overflow-hidden group"
           >
             <span className="relative z-10">{settings.heroBtn2 || "اكتشف عطرك"}</span>
             <span className="absolute inset-0 bg-gold-500/5 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-right" />
@@ -178,7 +178,7 @@ export default function Hero() {
 
         {/* Stats */}
         <div
-          className={`grid grid-cols-3 gap-6 sm:gap-10 max-w-2xl mx-auto transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          className={`grid grid-cols-3 gap-6 sm:gap-10 max-w-2xl mx-auto px-2 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
           style={{ transitionDelay: "1400ms" }}
         >
           <div className="p-4 rounded-xl transition-all duration-300 hover:bg-gold-500/5">

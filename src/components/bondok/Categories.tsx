@@ -47,10 +47,10 @@ export default function Categories() {
   };
 
   return (
-    <section id="cat" className="relative py-20 wood-bg-lt">
+    <section id="cat" className="relative py-10 sm:py-20 wood-bg-lt">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-14">
-          <h2 className="font-playfair text-4xl sm:text-5xl font-bold gold-shimmer mb-4">
+        <div className="text-center mb-8 sm:mb-14">
+          <h2 className="font-playfair text-3xl sm:text-4xl lg:text-5xl font-bold gold-shimmer mb-4">
             التصنيفات
           </h2>
           <div className="orn-div max-w-xs mx-auto">

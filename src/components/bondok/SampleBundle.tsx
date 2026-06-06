@@ -7,14 +7,14 @@ export default function SampleBundle() {
   const addToCart = useBondokStore((s) => s.addToCart);
 
   return (
-    <section className="relative py-16 wood-bg-lt overflow-hidden">
+    <section className="relative py-10 sm:py-16 wood-bg-lt overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold-500/20 to-transparent" />
       <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold-500/20 to-transparent" />
 
-      <div className="relative z-10 max-w-4xl mx-auto px-6">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6">
         <div
-          className="rounded-2xl gold-border p-8 sm:p-12 text-center relative overflow-hidden card-shine"
+          className="rounded-2xl gold-border p-6 sm:p-8 lg:p-12 text-center relative overflow-hidden card-shine"
           style={{ background: "linear-gradient(135deg,rgba(45,27,17,.8),rgba(26,15,10,.9))" }}
         >
           {/* Background pattern */}

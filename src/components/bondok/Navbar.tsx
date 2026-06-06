@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Search,
   ShoppingCart,
@@ -31,6 +32,7 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const router = useRouter();
   const { products, settings } = useSiteData();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -207,8 +209,9 @@ export default function Navbar() {
                       key={p.id}
                       className="flex items-center gap-3 p-3 hover:bg-gold-500/8 cursor-pointer transition border-b border-gold-500/8"
                       onMouseDown={() => {
-                        setSelectedProduct(p);
+                        router.push(`/product/${p.id}`);
                         setSearchVal("");
+                        setSearchOpen(false);
                       }}
                     >
                       <img src={p.img} className="w-10 h-10 rounded-lg object-cover" alt={p.name} />
@@ -335,8 +338,9 @@ export default function Navbar() {
                     key={p.id}
                     className="flex items-center gap-3 p-3 hover:bg-gold-500/8 cursor-pointer transition border-b border-gold-500/8"
                     onMouseDown={() => {
-                      setSelectedProduct(p);
+                      router.push(`/product/${p.id}`);
                       setSearchVal("");
+                      setSearchOpen(false);
                       setMobileOpen(false);
                     }}
                   >

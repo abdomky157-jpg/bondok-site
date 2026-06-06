@@ -611,6 +611,35 @@ textarea:focus-visible {
   to { transform: translateX(0); }
 }
 
+/* ===== Mobile Safety Improvements ===== */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .safe-bottom {
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+  }
+}
+
+/* Prevent horizontal overflow on mobile */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Better mobile text rendering */
+@media (max-width: 640px) {
+  html {
+    font-size: 15px;
+  }
+  
+  /* Prevent text from being too small */
+  p, span, a, button {
+    font-size: max(12px, 0.85rem);
+  }
+  
+  h1, h2, h3 {
+    font-size: max(16px, 1.1rem);
+  }
+}
+
 /* ===== Reduced Motion Support ===== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

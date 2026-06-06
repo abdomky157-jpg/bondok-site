@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Heart, ShoppingCart, Star, Clock, Wind } from "lucide-react";
 import { TYPE_AR, GENDER_AR, type Product } from "@/data/products";
@@ -25,10 +26,11 @@ function RatingStars({ rating }: { rating: number }) {
 }
 
 export default function ProductCard({ product: p }: ProductCardProps) {
-  const { toggleWishlist, wishlist, setSelectedProduct, addToCart } = useBondokStore();
+  const { toggleWishlist, wishlist, addToCart } = useBondokStore();
   const isWished = wishlist.includes(p.id);
   const rating = Math.min(5, (p.lon + p.sil) / 4);
   const [justAdded, setJustAdded] = useState(false);
+  const router = useRouter();
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -76,12 +78,12 @@ export default function ProductCard({ product: p }: ProductCardProps) {
         />
       </button>
       <div
-        onClick={() => setSelectedProduct(p)}
+        onClick={() => router.push(`/product/${p.id}`)}
         className="relative overflow-hidden aspect-square bg-wood-950/30 cursor-pointer block w-full"
         role="button"
         tabIndex={0}
         aria-label={`عرض ${p.name}`}
-        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setSelectedProduct(p); }}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') router.push(`/product/${p.id}`); }}
       >
         <img
           src={p.img}

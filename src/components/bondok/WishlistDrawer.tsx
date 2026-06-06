@@ -1,18 +1,19 @@
 "use client";
 
 import { X, Heart, ShoppingCart, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { TYPE_AR } from "@/data/products";
 import { useSiteData } from "@/context/SiteContext";
 import { useBondokStore } from "@/store/bondok";
 import { useScrollLock } from "@/hooks/useScrollLock";
 
 export default function WishlistDrawer() {
+  const router = useRouter();
   const wishlistOpen = useBondokStore((s) => s.wishlistOpen);
   const setWishlistOpen = useBondokStore((s) => s.setWishlistOpen);
   const wishlist = useBondokStore((s) => s.wishlist);
   const toggleWishlist = useBondokStore((s) => s.toggleWishlist);
   const addToCart = useBondokStore((s) => s.addToCart);
-  const setSelectedProduct = useBondokStore((s) => s.setSelectedProduct);
   const { products } = useSiteData();
 
   // Scroll lock when wishlist drawer is open
@@ -102,7 +103,7 @@ export default function WishlistDrawer() {
                 >
                   {/* Image */}
                   <button
-                    onClick={() => { setSelectedProduct(p); setWishlistOpen(false); }}
+                    onClick={() => { router.push(`/product/${p.id}`); setWishlistOpen(false); }}
                     className="shrink-0 w-20 h-20 rounded-lg overflow-hidden gold-border"
                   >
                     <img
@@ -115,7 +116,7 @@ export default function WishlistDrawer() {
                   {/* Info */}
                   <div className="flex-1 min-w-0">
                     <button
-                      onClick={() => { setSelectedProduct(p); setWishlistOpen(false); }}
+                      onClick={() => { router.push(`/product/${p.id}`); setWishlistOpen(false); }}
                       className="font-playfair text-gold-300 text-sm font-semibold hover:text-gold-400 transition block truncate w-full text-right"
                     >
                       {p.name}

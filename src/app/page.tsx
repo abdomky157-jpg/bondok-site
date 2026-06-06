@@ -1,7 +1,5 @@
 "use client";
 
-import { SiteProvider } from "@/context/SiteContext";
-import ErrorBoundary from "@/components/ErrorBoundary";
 import Navbar from "@/components/bondok/Navbar";
 import Hero from "@/components/bondok/Hero";
 import Occasions from "@/components/bondok/Occasions";
@@ -28,55 +26,51 @@ import ScrollReveal from "@/components/bondok/ScrollReveal";
 
 export default function Home() {
   return (
-    <SiteProvider>
-      <ErrorBoundary>
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-1">
-          <Hero />
-          <ScrollReveal direction="up" delay={100}>
-            <Categories />
-          </ScrollReveal>
-          <ScrollReveal direction="up" delay={100}>
-            <Occasions />
-          </ScrollReveal>
-          <ScrollReveal direction="up" delay={0}>
-            <Products />
-          </ScrollReveal>
-          <ScrollReveal direction="scale" delay={100}>
-            <Top10 />
-          </ScrollReveal>
-          <ScrollReveal direction="up" delay={100}>
-            <Bundles />
-          </ScrollReveal>
-          <ScrollReveal direction="scale" delay={100}>
-            <SampleBundle />
-          </ScrollReveal>
-          <ScrollReveal direction="up" delay={100}>
-            <Seasons />
-          </ScrollReveal>
-          <ScrollReveal direction="up" delay={100}>
-            <Testimonials />
-          </ScrollReveal>
-          <ScrollReveal direction="left" delay={100}>
-            <About />
-          </ScrollReveal>
-          <ScrollReveal direction="up" delay={100}>
-            <Contact />
-          </ScrollReveal>
-        </main>
-        <Footer />
-        <FloatingButtons />
-        <CartDrawer />
-        <CheckoutModal />
-        <ProductModal />
-        <QuizModal />
-        <SpinWheel />
-        <SurpriseModal />
-        <OrderTracker />
-        <WishlistDrawer />
-      </div>
-      </ErrorBoundary>
-    </SiteProvider>
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-1">
+        <Hero />
+        <ScrollReveal direction="up" delay={100}>
+          <Categories />
+        </ScrollReveal>
+        <ScrollReveal direction="up" delay={100}>
+          <Occasions />
+        </ScrollReveal>
+        <ScrollReveal direction="up" delay={0}>
+          <Products />
+        </ScrollReveal>
+        <ScrollReveal direction="scale" delay={100}>
+          <Top10 />
+        </ScrollReveal>
+        <ScrollReveal direction="up" delay={100}>
+          <Bundles />
+        </ScrollReveal>
+        <ScrollReveal direction="scale" delay={100}>
+          <SampleBundle />
+        </ScrollReveal>
+        <ScrollReveal direction="up" delay={100}>
+          <Seasons />
+        </ScrollReveal>
+        <ScrollReveal direction="up" delay={100}>
+          <Testimonials />
+        </ScrollReveal>
+        <ScrollReveal direction="left" delay={100}>
+          <About />
+        </ScrollReveal>
+        <ScrollReveal direction="up" delay={100}>
+          <Contact />
+        </ScrollReveal>
+      </main>
+      <Footer />
+      <FloatingButtons />
+      <CartDrawer />
+      <CheckoutModal />
+      <ProductModal />
+      <QuizModal />
+      <SpinWheel />
+      <SurpriseModal />
+      <OrderTracker />
+      <WishlistDrawer />
+    </div>
   );
 }

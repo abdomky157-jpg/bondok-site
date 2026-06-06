@@ -24,13 +24,13 @@ export default function Occasions() {
   };
 
   return (
-    <section id="occ" className="relative py-20 wood-bg-lt">
+    <section id="occ" className="relative py-10 sm:py-20 wood-bg-lt">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-14">
-          <p className="font-amiri text-gold-400 text-lg mb-2">
+        <div className="text-center mb-8 sm:mb-14">
+          <p className="font-amiri text-gold-400 text-base sm:text-lg mb-2">
             العطر المناسب لكل لحظة
           </p>
-          <h2 className="font-playfair text-4xl sm:text-5xl font-bold gold-shimmer mb-4">
+          <h2 className="font-playfair text-3xl sm:text-4xl lg:text-5xl font-bold gold-shimmer mb-4">
             أفضل عطر لكل مناسبة
           </h2>
           <div className="orn-div max-w-xs mx-auto">
@@ -44,7 +44,7 @@ export default function Occasions() {
               <button
                 key={o.id}
                 onClick={() => handleOccasion(o.id)}
-                className="group cursor-pointer rounded-xl gold-border p-5 text-center hover:bg-gold-500/10 transition-all"
+                className="group cursor-pointer rounded-xl gold-border p-3 sm:p-5 text-center hover:bg-gold-500/10 transition-all"
               >
                 <span className="text-3xl mb-2 block">{o.e}</span>
                 <h4 className="font-playfair text-gold-300 font-semibold text-sm mb-1">

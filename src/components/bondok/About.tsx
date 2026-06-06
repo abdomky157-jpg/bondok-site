@@ -66,15 +66,15 @@ export default function About() {
   };
 
   return (
-    <section id="about" className="relative py-20 wood-bg">
+    <section id="about" className="relative py-10 sm:py-20 wood-bg">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="grid md:grid-cols-2 gap-6 sm:gap-12 items-center">
           {/* Image */}
           <div className="relative group">
             <div className="rounded-2xl overflow-hidden gold-border transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(212,164,76,.1)]">
               <img
                 src={aboutImage}
-                className="w-full h-[400px] sm:h-[500px] object-cover transition-transform duration-700 group-hover:scale-105"
+                className="w-full h-[250px] sm:h-[400px] lg:h-[500px] object-cover transition-transform duration-700 group-hover:scale-105"
                 alt="About Bondok Perfumes"
               />
             </div>
@@ -93,7 +93,7 @@ export default function About() {
           {/* Content */}
           <div>
             <p className="font-amiri text-gold-400 text-lg mb-2">قصتنا</p>
-            <h2 className="font-playfair text-4xl sm:text-5xl font-bold gold-shimmer mb-6">
+            <h2 className="font-playfair text-3xl sm:text-4xl lg:text-5xl font-bold gold-shimmer mb-6">
               {aboutTitle}
             </h2>
             <div className="orn-div mb-8" style={{ marginRight: 0 }}>

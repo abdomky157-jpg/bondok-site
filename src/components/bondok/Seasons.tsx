@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { TYPE_AR, GENDER_AR, type Product } from "@/data/products";
 import { seasons } from "@/data/categories";
 import { Heart, ShoppingCart } from "lucide-react";
@@ -14,14 +15,15 @@ export default function Seasons() {
   const toggleWishlist = useBondokStore((s) => s.toggleWishlist);
   const addToCart = useBondokStore((s) => s.addToCart);
   const setSelectedProduct = useBondokStore((s) => s.setSelectedProduct);
+  const router = useRouter();
 
   const filtered = products.filter((p) => p.sea.includes(active));
 
   return (
-    <section id="sea" className="relative py-20 wood-bg">
+    <section id="sea" className="relative py-10 sm:py-20 wood-bg">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-14">
-          <h2 className="font-playfair text-4xl sm:text-5xl font-bold gold-shimmer mb-4">
+        <div className="text-center mb-8 sm:mb-14">
+          <h2 className="font-playfair text-3xl sm:text-4xl lg:text-5xl font-bold gold-shimmer mb-4">
             أفضل العطور للمواسم
           </h2>
           <div className="orn-div max-w-xs mx-auto">
@@ -56,7 +58,7 @@ export default function Seasons() {
               onCart={() =>
                 addToCart({ id: p.id, name: p.ar, size: p.sz[0].s, price: p.sz[0].p, img: p.img })
               }
-              onOpen={() => setSelectedProduct(p)}
+              onOpen={() => router.push(`/product/${p.id}`)}
             />
           ))}
         </div>

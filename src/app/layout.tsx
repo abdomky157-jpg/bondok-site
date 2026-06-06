@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Tajawal, Playfair_Display, Amiri } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { SiteProvider } from "@/context/SiteContext";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import { LOGO_URL, SITE_URL, DEFAULT_WHATSAPP } from "@/lib/constants";
 
 const tajawal = Tajawal({
@@ -91,6 +93,14 @@ export const metadata: Metadata = {
   category: "Shopping",
 };
 
+export const viewport: Metadata["viewport"] = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  viewportFit: "cover",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -137,7 +147,11 @@ export default function RootLayout({
         className={`${tajawal.variable} ${playfair.variable} ${amiri.variable} antialiased`}
         style={{ fontFamily: "'Tajawal', sans-serif", background: "#1a0f0a", color: "#FAEBD7" }}
       >
-        {children}
+        <SiteProvider>
+          <ErrorBoundary>
+            {children}
+          </ErrorBoundary>
+        </SiteProvider>
         <Toaster />
       </body>
     </html>

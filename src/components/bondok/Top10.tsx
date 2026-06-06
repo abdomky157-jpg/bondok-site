@@ -2,19 +2,21 @@
 
 import { useSiteData } from "@/context/SiteContext";
 import { useBondokStore } from "@/store/bondok";
+import { useRouter } from "next/navigation";
 import { Trophy } from "lucide-react";
 
 export default function Top10() {
   const { products } = useSiteData();
   const setSelectedProduct = useBondokStore((s) => s.setSelectedProduct);
+  const router = useRouter();
   const topProducts = products.filter((p) => p.top).slice(0, 10);
 
   return (
-    <section id="t10" className="relative py-20 wood-bg">
+    <section id="t10" className="relative py-10 sm:py-20 wood-bg">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-14">
-          <p className="font-amiri text-gold-400 text-lg mb-2">الأكثر مبيعاً</p>
-          <h2 className="font-playfair text-4xl sm:text-5xl font-bold gold-shimmer mb-4">
+        <div className="text-center mb-8 sm:mb-14">
+          <p className="font-amiri text-gold-400 text-base sm:text-lg mb-2">الأكثر مبيعاً</p>
+          <h2 className="font-playfair text-3xl sm:text-4xl lg:text-5xl font-bold gold-shimmer mb-4">
             🏆 Top 10
           </h2>
           <div className="orn-div max-w-xs mx-auto">
@@ -27,7 +29,7 @@ export default function Top10() {
               key={p.id}
               className="pc card-shine rounded-2xl overflow-hidden gold-border relative cursor-pointer group"
               style={{ background: "rgba(45,27,17,.6)" }}
-              onClick={() => setSelectedProduct(p)}
+              onClick={() => router.push(`/product/${p.id}`)}
             >
               {/* Rank Badge */}
               <div

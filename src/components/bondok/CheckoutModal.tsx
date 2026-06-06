@@ -177,7 +177,7 @@ export default function CheckoutModal() {
 
       {/* Modal */}
       <div
-        className="relative w-full max-w-lg mx-4 my-8 rounded-2xl border border-gold-500/30 overflow-hidden"
+        className="relative w-full max-w-lg mx-4 my-4 sm:my-8 rounded-2xl border border-gold-500/30 overflow-hidden"
         style={{ background: "linear-gradient(180deg, #1A0F0A, #2D1B11)" }}
         role="dialog"
         aria-modal="true"
@@ -215,7 +215,7 @@ export default function CheckoutModal() {
           </div>
         ) : (
           /* Form */
-          <div className="p-5 space-y-4">
+          <div className="p-4 sm:p-5 space-y-4">
             {/* Customer Info */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
@@ -366,7 +366,7 @@ export default function CheckoutModal() {
             <button
               onClick={handleSubmit}
               disabled={submitting}
-              className="w-full py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all hover:shadow-[0_0_20px_rgba(212,164,76,.3)] gold-gradient"
+              className="w-full py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all hover:shadow-[0_0_20px_rgba(212,164,76,.3)] gold-gradient safe-bottom"
             >
               {submitting ? (
                 <>

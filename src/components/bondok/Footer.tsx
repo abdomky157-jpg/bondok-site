@@ -33,21 +33,21 @@ export default function Footer() {
     <footer className="relative mt-auto" style={{ background: "linear-gradient(180deg, #2D1B11, #1A0F0A)" }}>
 
       {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Features Row */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-8 sm:mb-12">
           {[
-            { icon: <Truck size={28} className="text-gold-400" />, title: "توصيل سريع", desc: "لجميع المحافظات في 2-5 أيام" },
-            { icon: <Shield size={28} className="text-gold-400" />, title: "منتجات أصلية", desc: "ضمان على كل المنتجات" },
-            { icon: <RefreshCw size={28} className="text-gold-400" />, title: "إرجاع مجاني", desc: "إرجاع خلال 3 أيام" },
-            { icon: <MessageCircle size={28} className="text-green-400" />, title: "دعم 24/7", desc: "تواصل معنا على واتساب" },
+            { icon: <Truck size={24} className="text-gold-400" />, title: "توصيل سريع", desc: "لجميع المحافظات في 2-5 أيام" },
+            { icon: <Shield size={24} className="text-gold-400" />, title: "منتجات أصلية", desc: "ضمان على كل المنتجات" },
+            { icon: <RefreshCw size={24} className="text-gold-400" />, title: "إرجاع مجاني", desc: "إرجاع خلال 3 أيام" },
+            { icon: <MessageCircle size={24} className="text-green-400" />, title: "دعم 24/7", desc: "تواصل معنا على واتساب" },
           ].map((f, i) => (
             <div
               key={i}
-              className="text-center p-5 rounded-xl border border-gold-500/10 transition-all duration-300 hover:border-gold-500/25 hover:bg-gold-500/5"
+              className="text-center p-3 sm:p-5 rounded-xl border border-gold-500/10 transition-all duration-300 hover:border-gold-500/25 hover:bg-gold-500/5"
               style={{ background: "rgba(45,27,17,.2)" }}
             >
-              <div className="w-12 h-12 mx-auto mb-3 rounded-full flex items-center justify-center" style={{ background: "rgba(212,164,76,.08)" }}>
+              <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 rounded-full flex items-center justify-center" style={{ background: "rgba(212,164,76,.08)" }}>
                 {f.icon}
               </div>
               <p className="text-gold-300 text-xs font-semibold mb-0.5">{f.title}</p>
@@ -57,7 +57,7 @@ export default function Footer() {
         </div>
 
         {/* Links Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-8 mb-8 sm:mb-12">
           {/* About */}
           <div>
             <div className="flex items-center gap-3 mb-4">
