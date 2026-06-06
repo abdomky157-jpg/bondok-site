@@ -48,18 +48,22 @@ export function checkCsrf(req: NextRequest): boolean {
     return false;
   }
 
-  // Check origin against allowed list
+  // Check origin against allowed list (exact hostname match, not substring)
   if (origin) {
-    const originLower = origin.toLowerCase();
-    if (ALLOWED_ORIGINS.some(allowed => originLower.includes(allowed))) {
+    const originHost = extractHost(origin)?.toLowerCase();
+    if (originHost && ALLOWED_ORIGINS.some(allowed =>
+      originHost === allowed || originHost.endsWith('.' + allowed)
+    )) {
       return true;
     }
   }
 
-  // Check referer against allowed list
+  // Check referer against allowed list (exact hostname match)
   if (referer) {
-    const refererLower = referer.toLowerCase();
-    if (ALLOWED_ORIGINS.some(allowed => refererLower.includes(allowed))) {
+    const refererHost = extractHost(referer)?.toLowerCase();
+    if (refererHost && ALLOWED_ORIGINS.some(allowed =>
+      refererHost === allowed || refererHost.endsWith('.' + allowed)
+    )) {
       return true;
     }
   }

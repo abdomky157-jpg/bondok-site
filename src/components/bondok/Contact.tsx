@@ -60,20 +60,38 @@ export default function Contact() {
           {/* Contact Cards */}
           <div className="space-y-3">
             {contactCards.map((card, i) => (
-              <div
-                key={i}
-                className={`flex items-start gap-4 p-4 sm:p-5 rounded-xl gold-border transition-all duration-300 hover:bg-gold-500/5 ${card.link ? "cursor-pointer" : ""}`}
-                onClick={() => card.link && window.open(card.link, "_blank")}
-                style={{ background: "rgba(45,27,17,.3)" }}
-              >
-                <div className="w-10 h-10 shrink-0 rounded-lg flex items-center justify-center" style={{ background: card.color }}>
-                  {card.icon}
+              card.link ? (
+                <a
+                  key={i}
+                  href={card.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-4 p-4 sm:p-5 rounded-xl gold-border transition-all duration-300 hover:bg-gold-500/5"
+                  style={{ background: "rgba(45,27,17,.3)" }}
+                >
+                  <div className="w-10 h-10 shrink-0 rounded-lg flex items-center justify-center" style={{ background: card.color }}>
+                    {card.icon}
+                  </div>
+                  <div>
+                    <h4 className="font-playfair text-gold-300 font-semibold text-sm mb-0.5">{card.title}</h4>
+                    <p className="text-gold-100/50 text-sm" dir={card.dir || "rtl"}>{card.value}</p>
+                  </div>
+                </a>
+              ) : (
+                <div
+                  key={i}
+                  className="flex items-start gap-4 p-4 sm:p-5 rounded-xl gold-border transition-all duration-300"
+                  style={{ background: "rgba(45,27,17,.3)" }}
+                >
+                  <div className="w-10 h-10 shrink-0 rounded-lg flex items-center justify-center" style={{ background: card.color }}>
+                    {card.icon}
+                  </div>
+                  <div>
+                    <h4 className="font-playfair text-gold-300 font-semibold text-sm mb-0.5">{card.title}</h4>
+                    <p className="text-gold-100/50 text-sm" dir={card.dir || "rtl"}>{card.value}</p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-playfair text-gold-300 font-semibold text-sm mb-0.5">{card.title}</h4>
-                  <p className="text-gold-100/50 text-sm" dir={card.dir || "rtl"}>{card.value}</p>
-                </div>
-              </div>
+              )
             ))}
           </div>
 

@@ -16,14 +16,23 @@ export async function GET(req: NextRequest) {
   }
   try {
     await ensureSeeded();
-    const orders = await db.siteOrder.findMany({
-      orderBy: { createdAt: "desc" },
-    });
-    return NextResponse.json(orders);
+    const url = new URL(req.url);
+    const page = Math.max(1, parseInt(url.searchParams.get("page") || "1") || 1);
+    const limit = Math.min(100, Math.max(1, parseInt(url.searchParams.get("limit") || "50") || 50));
+
+    const [orders, total] = await Promise.all([
+      db.siteOrder.findMany({
+        orderBy: { createdAt: "desc" },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      db.siteOrder.count(),
+    ]);
+    return NextResponse.json({ orders, total, page, limit, pages: Math.ceil(total / limit) });
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : "Unknown error";
     console.error("[/api/admin/orders] GET error:", message);
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json({ error: "فشل جلب الطلبات" }, { status: 500 });
   }
 }
 
@@ -56,11 +65,18 @@ export async function POST(req: NextRequest) {
 
     const { name, phone, address, notes, items, discountCode, payment } = validation.data;
 
-    // ─── SERVER-SIDE price calculation ──────────────────────────
-    const serverSubtotal = items.reduce(
-      (sum, item) => sum + (item.price * item.qty),
-      0
-    );
+    // ─── SERVER-SIDE price verification (fetch actual prices from DB) ─
+    let serverSubtotal = 0;
+    for (const item of items) {
+      const product = await db.siteProduct.findUnique({ where: { id: item.id } });
+      if (!product) {
+        return NextResponse.json({ error: "منتج غير موجود" }, { status: 400 });
+      }
+      const sizes = JSON.parse(product.sizes as string) as Array<{ s: string; p: number }>;
+      const sizeObj = sizes.find((sz) => sz.s === item.size);
+      const actualPrice = sizeObj?.p ?? sizes[0]?.p ?? 0;
+      serverSubtotal += actualPrice * item.qty;
+    }
 
     // ─── Validate discount code server-side ─────────────────────
     const discountPct = discountCode && DISCOUNT_CODES[discountCode.toUpperCase()]
@@ -75,59 +91,61 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "خطأ في حساب الأسعار" }, { status: 400 });
     }
 
-    // ─── Create order with SERVER-CALCULATED values ──────────────
-    const order = await db.siteOrder.create({
-      data: {
-        name: name.trim(),
-        phone: phone.trim(),
-        address: address.trim(),
-        notes: notes.trim(),
-        items: JSON.stringify(items),
-        subtotal: serverSubtotal,
-        discount: serverDiscount,
-        total: serverTotal,
-        payment: payment,
-      },
-    });
-
-    // ─── Auto-create or update customer record ──────────────────
+    // ─── Create order + update customer in a transaction ─────────
     const cleanPhone = phone.trim();
-    const existingCustomer = await db.siteCustomer.findUnique({ where: { phone: cleanPhone } });
     const addressParts = address.trim().split(",").map(s => s.trim()).filter(Boolean);
     const governorate = addressParts[0] || "";
 
-    if (existingCustomer) {
-      // Update existing customer
-      await db.siteCustomer.update({
-        where: { phone: cleanPhone },
-        data: {
-          name: name.trim(),
-          totalOrders: { increment: 1 },
-          totalSpent: { increment: serverTotal },
-          lastOrderAt: new Date(),
-          address: address.trim(),
-          governorate: governorate,
-        },
-      });
-    } else {
-      // Create new customer
-      await db.siteCustomer.create({
+    const order = await db.$transaction(async (tx) => {
+      const newOrder = await tx.siteOrder.create({
         data: {
           name: name.trim(),
           phone: cleanPhone,
           address: address.trim(),
-          governorate: governorate,
-          totalOrders: 1,
-          totalSpent: serverTotal,
-          lastOrderAt: new Date(),
+          notes: notes.trim(),
+          items: JSON.stringify(items),
+          subtotal: serverSubtotal,
+          discount: serverDiscount,
+          total: serverTotal,
+          payment: payment,
         },
       });
-    }
+
+      // Auto-create or update customer record within the transaction
+      const existingCustomer = await tx.siteCustomer.findUnique({ where: { phone: cleanPhone } });
+      if (existingCustomer) {
+        await tx.siteCustomer.update({
+          where: { phone: cleanPhone },
+          data: {
+            name: name.trim(),
+            totalOrders: { increment: 1 },
+            totalSpent: { increment: serverTotal },
+            lastOrderAt: new Date(),
+            address: address.trim(),
+            governorate: governorate,
+          },
+        });
+      } else {
+        await tx.siteCustomer.create({
+          data: {
+            name: name.trim(),
+            phone: cleanPhone,
+            address: address.trim(),
+            governorate: governorate,
+            totalOrders: 1,
+            totalSpent: serverTotal,
+            lastOrderAt: new Date(),
+          },
+        });
+      }
+
+      return newOrder;
+    });
 
     return NextResponse.json(order, { status: 201 });
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : "Unknown error";
     console.error("[/api/admin/orders] POST error:", message);
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json({ error: "فشل تقديم الطلب" }, { status: 500 });
   }
 }

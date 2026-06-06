@@ -69,7 +69,20 @@ export function SiteProvider({ children }: { children: ReactNode }) {
   );
 }
 
-function convertProduct(p: any): Product {
+interface RawProduct {
+  id: number; name: string; ar: string; brand: string;
+  gender: string; type: string; sizes: string; image: string;
+  badge: string | null; longevity: string; sillage: string;
+  topNotes: string; heartNotes: string; baseNotes: string;
+  occasions: string; seasons: string; desc: string; top: boolean;
+}
+
+interface RawBundle {
+  id: number; name: string; icon: string | null; price: number;
+  desc: string | null; items: string;
+}
+
+function convertProduct(p: RawProduct): Product {
   return {
     id: p.id, name: p.name, ar: p.ar, br: p.brand,
     g: p.gender as Product["g"], t: p.type as Product["t"],
@@ -81,8 +94,8 @@ function convertProduct(p: any): Product {
   };
 }
 
-function convertBundle(b: any): Bundle {
+function convertBundle(b: RawBundle): Bundle {
   return { id: b.id, name: b.name, icon: b.icon || "", price: b.price, desc: b.desc || "", items: safeParse(b.items, []) };
 }
 
-function safeParse(str: string, fallback: any) { try { return JSON.parse(str); } catch { return fallback; } }
+function safeParse(str: string, fallback: unknown) { try { return JSON.parse(str); } catch { return fallback; } }

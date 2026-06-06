@@ -45,7 +45,7 @@ export async function GET(req: NextRequest) {
 
     const statusInfo = STATUS_LABELS[order.status] || STATUS_LABELS.new;
 
-    let items: any[] = [];
+    let items: unknown[] = [];
     try {
       items = typeof order.items === "string" ? JSON.parse(order.items) : order.items;
     } catch {
@@ -69,6 +69,6 @@ export async function GET(req: NextRequest) {
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : "Unknown error";
     console.error("[/api/orders/track] GET error:", message);
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json({ error: "فشل تتبع الطلب" }, { status: 500 });
   }
 }

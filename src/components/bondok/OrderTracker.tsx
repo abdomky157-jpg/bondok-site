@@ -60,8 +60,8 @@ export default function OrderTracker() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "حدث خطأ");
       setOrderData(data);
-    } catch (e: any) {
-      setError(e.message || "حدث خطأ أثناء تتبع الطلب");
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "حدث خطأ أثناء تتبع الطلب");
     } finally {
       setLoading(false);
     }

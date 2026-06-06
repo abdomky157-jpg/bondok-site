@@ -158,8 +158,8 @@ export default function CheckoutModal() {
       clearCart();
       setSuccessOrderId(orderId);
       setSuccess(true);
-    } catch (e: any) {
-      setError(e.message || "حدث خطأ أثناء تقديم الطلب");
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "حدث خطأ أثناء تقديم الطلب");
     } finally {
       setSubmitting(false);
     }

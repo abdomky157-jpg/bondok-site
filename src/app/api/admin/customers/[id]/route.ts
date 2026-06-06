@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { ensureSeeded } from "@/lib/auto-seed";
 import { isAdminRequest } from "@/lib/admin-auth";
+import { checkCsrf } from "@/lib/csrf";
 
 export const dynamic = "force-dynamic";
 
@@ -29,6 +30,9 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   if (!isAdminRequest(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  if (!checkCsrf(req)) {
+    return NextResponse.json({ error: "طلب غير مصرح به" }, { status: 403 });
   }
   try {
     await ensureSeeded();
@@ -65,9 +69,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
     return NextResponse.json(customer);
   } catch (e: unknown) {
-    const message = e instanceof Error ? e.message : "Unknown error";
-    console.error("[/api/admin/customers/:id] PUT error:", message);
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error("[/api/admin/customers/:id] PUT error:", e instanceof Error ? e.message : e);
+    return NextResponse.json({ error: "فشل تحديث العميل" }, { status: 500 });
   }
 }
 
@@ -76,14 +79,16 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
   if (!isAdminRequest(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  if (!checkCsrf(req)) {
+    return NextResponse.json({ error: "طلب غير مصرح به" }, { status: 403 });
+  }
   try {
     await ensureSeeded();
     const { id } = await params;
     await db.siteCustomer.delete({ where: { id: Number(id) } });
     return NextResponse.json({ success: true });
   } catch (e: unknown) {
-    const message = e instanceof Error ? e.message : "Unknown error";
-    console.error("[/api/admin/customers/:id] DELETE error:", message);
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error("[/api/admin/customers/:id] DELETE error:", e instanceof Error ? e.message : e);
+    return NextResponse.json({ error: "فشل حذف العميل" }, { status: 500 });
   }
 }

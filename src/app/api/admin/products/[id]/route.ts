@@ -65,8 +65,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const p = await db.siteProduct.update({ where: { id: numId }, data: updateData });
     return NextResponse.json(p);
   } catch (e: unknown) {
-    const message = e instanceof Error ? e.message : "Unknown error";
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error("[/api/admin/products/:id] PUT error:", e instanceof Error ? e.message : e);
+    return NextResponse.json({ error: "فشل تحديث المنتج" }, { status: 500 });
   }
 }
 
@@ -84,7 +84,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     await db.siteProduct.delete({ where: { id: numId } });
     return NextResponse.json({ success: true });
   } catch (e: unknown) {
-    const message = e instanceof Error ? e.message : "Unknown error";
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error("[/api/admin/products/:id] DELETE error:", e instanceof Error ? e.message : e);
+    return NextResponse.json({ error: "فشل حذف المنتج" }, { status: 500 });
   }
 }

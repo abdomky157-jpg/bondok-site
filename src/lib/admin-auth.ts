@@ -1,3 +1,4 @@
+import { getClientIp } from "./rate-limit";
 import { createHmac, timingSafeEqual, randomBytes } from "crypto";
 
 // ─── Environment Variables ────────────────────────────────
@@ -137,6 +138,7 @@ export function checkPassword(password: string): boolean {
 export const ADMIN_COOKIE_NAME = "bondok_admin_token";
 
 // ─── Helpers ──────────────────────────────────────────────────────
+// getClientIp is imported from rate-limit.ts (single source of truth)
 
 /**
  * Extract token from request.
@@ -179,13 +181,4 @@ export function buildAdminCookie(token: string): string {
 export function buildAdminCookieClear(): string {
   const secure = process.env.NODE_ENV === "production" ? " Secure;" : "";
   return `${ADMIN_COOKIE_NAME}=; HttpOnly;${secure} SameSite=Lax; Path=/; Max-Age=0`;
-}
-
-export function getClientIp(req: Request): string {
-  // Try common proxy headers, fallback to unknown
-  const forwarded = req.headers.get("x-forwarded-for");
-  if (forwarded) return forwarded.split(",")[0].trim();
-  const realIp = req.headers.get("x-real-ip");
-  if (realIp) return realIp;
-  return "unknown";
 }

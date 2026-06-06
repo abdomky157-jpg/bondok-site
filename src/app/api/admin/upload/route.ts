@@ -40,7 +40,20 @@ export async function POST(req: NextRequest) {
 
     // Convert file to base64 data URL
     const bytes = await file.arrayBuffer();
-    const base64 = Buffer.from(bytes).toString("base64");
+    let content = Buffer.from(bytes).toString("utf-8");
+
+    // Sanitize SVG content to prevent XSS (strip scripts, event handlers, javascript: URIs)
+    if (file.type === "image/svg+xml") {
+      content = content
+        .replace(/<script[\s\S]*?<\/script>/gi, "")
+        .replace(/\son\w+\s*=\s*["'][^"']*["']/gi, "")
+        .replace(/\son\w+\s*=\s*[^\s>]+/gi, "")
+        .replace(/javascript\s*:/gi, "")
+        .replace(/<\?xml[\s\S]*?\?>/gi, "")
+        .replace(/<!DOCTYPE[\s\S]*?>/gi, "");
+    }
+
+    const base64 = Buffer.from(content).toString("base64");
     const dataUrl = `data:${file.type};base64,${base64}`;
 
     return NextResponse.json({ url: dataUrl, name: file.name, size: file.size });

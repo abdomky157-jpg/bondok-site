@@ -1,8 +1,28 @@
-import { NextRequest, NextResponse } from "next/server";
-import type { NextMiddleware } from "next/server";
+import { NextRequest } from "next/server";
 
 // ─── Generic Rate Limiter ────────────────────────────────────────
 const rateLimitStore = new Map<string, { count: number; windowStart: number; lockedUntil: number }>();
+
+// Periodic cleanup to prevent memory leak (every 5 minutes, remove expired entries)
+const CLEANUP_INTERVAL_MS = 5 * 60 * 1000;
+const MAX_STORE_SIZE = 10000;
+
+if (typeof globalThis !== "undefined" && typeof setInterval === "function") {
+  setInterval(() => {
+    const now = Date.now();
+    for (const [key, record] of rateLimitStore) {
+      // Remove entries whose lockout expired and window expired
+      if ((!record.lockedUntil || now >= record.lockedUntil) && (now - record.windowStart > 60 * 1000)) {
+        rateLimitStore.delete(key);
+      }
+      // Safety cap: if still too many, clear oldest entries
+      if (rateLimitStore.size > MAX_STORE_SIZE) {
+        const firstKey = rateLimitStore.keys().next().value;
+        if (firstKey !== undefined) rateLimitStore.delete(firstKey);
+      }
+    }
+  }, CLEANUP_INTERVAL_MS);
+}
 
 interface RateLimitConfig {
   maxRequests: number;

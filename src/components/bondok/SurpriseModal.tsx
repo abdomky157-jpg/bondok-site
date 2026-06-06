@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { X, ShoppingCart, RefreshCw, Star } from "lucide-react";
 import { TYPE_AR } from "@/data/products";
 import { useSiteData } from "@/context/SiteContext";
@@ -27,8 +27,10 @@ export default function SurpriseModal() {
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const type = product.t;
-  const reasons = SURPRISE_REASONS[type] || SURPRISE_REASONS.woody;
-  const reason = reasons[Math.floor(Math.random() * reasons.length)];
+  const reason = useMemo(() => {
+    const reasons = SURPRISE_REASONS[type] || SURPRISE_REASONS.woody;
+    return reasons[Math.floor(Math.random() * reasons.length)];
+  }, [type]);
 
   // Calculate the discounted price (20% off)
   const originalPrice = product.sz[0].p;

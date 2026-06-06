@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getDbStats, ensureSeeded } from "@/lib/auto-seed";
 import { isAdminRequest } from "@/lib/admin-auth";
+import { checkCsrf } from "@/lib/csrf";
 
 export const dynamic = "force-dynamic";
 
@@ -40,6 +41,9 @@ export async function POST(req: NextRequest) {
   if (!isAdminRequest(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  if (!checkCsrf(req)) {
+    return NextResponse.json({ error: "طلب غير مصرح به" }, { status: 403 });
+  }
   try {
     const seeded = await ensureSeeded(true);
     if (seeded) {
@@ -49,6 +53,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, message: "لم تتم التعبئة - حاول مرة أخرى" });
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : "Unknown error";
-    return NextResponse.json({ success: false, error: message }, { status: 500 });
+    console.error("[/api/admin/stats] POST error:", message);
+    return NextResponse.json({ success: false, error: "فشلت العملية" }, { status: 500 });
   }
 }

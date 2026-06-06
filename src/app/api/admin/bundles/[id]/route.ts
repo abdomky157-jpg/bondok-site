@@ -53,8 +53,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const b = await db.siteBundle.update({ where: { id: numId }, data: updateData });
     return NextResponse.json(b);
   } catch (e: unknown) {
-    const message = e instanceof Error ? e.message : "Unknown error";
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error("[/api/admin/bundles/:id] PUT error:", e instanceof Error ? e.message : e);
+    return NextResponse.json({ error: "فشل تحديث الباقة" }, { status: 500 });
   }
 }
 
@@ -72,7 +72,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     await db.siteBundle.delete({ where: { id: numId } });
     return NextResponse.json({ success: true });
   } catch (e: unknown) {
-    const message = e instanceof Error ? e.message : "Unknown error";
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error("[/api/admin/bundles/:id] DELETE error:", e instanceof Error ? e.message : e);
+    return NextResponse.json({ error: "فشل حذف الباقة" }, { status: 500 });
   }
 }

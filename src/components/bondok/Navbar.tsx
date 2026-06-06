@@ -417,12 +417,6 @@ export default function Navbar() {
 
       {/* Admin Panel (lazy-loaded) */}
       {adminOpen && <AdminPanel onClose={() => setAdminOpen(false)} />}
-      {/* Loading overlay for admin panel */}
-      {adminOpen && (
-        <div className="fixed inset-0 z-[1999] flex items-center justify-center bg-black/60">
-          <div className="text-gold-400 animate-pulse font-playfair text-lg">جاري التحميل...</div>
-        </div>
-      )}
     </>
   );
 }

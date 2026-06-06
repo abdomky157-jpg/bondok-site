@@ -22,7 +22,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : "Unknown error";
     console.error("[/api/admin/orders/:id] GET error:", message);
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json({ error: "فشل جلب الطلب" }, { status: 500 });
   }
 }
 
@@ -45,7 +45,13 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     }
 
     const updateData: Record<string, unknown> = {};
-    if (body.status) updateData.status = String(body.status);
+    if (body.status) {
+      const ALLOWED_STATUSES = ["new", "preparing", "shipped", "delivered", "cancelled"];
+      if (!ALLOWED_STATUSES.includes(body.status)) {
+        return NextResponse.json({ error: "قيمة حالة الطلب غير صالحة" }, { status: 400 });
+      }
+      updateData.status = body.status;
+    }
     if (body.name) updateData.name = String(body.name);
     if (body.phone) updateData.phone = String(body.phone);
     if (body.address) updateData.address = String(body.address);
@@ -60,6 +66,6 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : "Unknown error";
     console.error("[/api/admin/orders/:id] PUT error:", message);
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json({ error: "فشل تحديث الطلب" }, { status: 500 });
   }
 }

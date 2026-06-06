@@ -576,7 +576,7 @@ function CustomersTab() {
       const res = await fetch("/api/admin/customers", { headers: adminHeaders() });
       const data = await res.json();
       if (data.error === "Unauthorized") { setCustomers([]); return; }
-      setCustomers(Array.isArray(data) ? data : []);
+      setCustomers(Array.isArray(data.customers) ? data.customers : Array.isArray(data) ? data : []);
     } catch {
       setCustomers([]);
     }
@@ -1020,7 +1020,7 @@ function OrdersTab() {
       const res = await fetch("/api/admin/orders", { headers: adminHeaders() });
       const data = await res.json();
       if (data.error === "Unauthorized") { setOrders([]); return; }
-      setOrders(Array.isArray(data) ? data : []);
+      setOrders(Array.isArray(data.orders) ? data.orders : Array.isArray(data) ? data : []);
     } catch {
       setOrders([]);
     }
