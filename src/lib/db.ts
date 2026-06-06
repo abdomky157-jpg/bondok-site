@@ -33,8 +33,6 @@ function createPrismaClient(): PrismaClient {
     const adapter = new PrismaLibSQL(libsql)
     return new PrismaClient({
       adapter,
-      // Explicitly provide datasourceUrl so Prisma doesn't read env("DATABASE_URL") from schema
-      datasourceUrl: dbUrl,
     })
   }
 
