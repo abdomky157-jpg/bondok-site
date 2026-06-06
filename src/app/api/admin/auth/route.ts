@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { checkPassword, generateToken, verifyToken, getTokenFromRequest, checkRateLimit, recordFailedAttempt, clearLoginAttempts, getClientIp, buildAdminCookie, buildAdminCookieClear, ADMIN_COOKIE_NAME } from "@/lib/admin-auth";
+import { checkPassword, generateToken, verifyToken, getTokenFromRequest, checkRateLimit, recordFailedAttempt, clearLoginAttempts, buildAdminCookie, buildAdminCookieClear, ADMIN_COOKIE_NAME } from "@/lib/admin-auth";
+import { getClientIp } from "@/lib/rate-limit";
 import { authSchema, validateBody } from "@/lib/validators";
 
 export async function POST(req: NextRequest) {

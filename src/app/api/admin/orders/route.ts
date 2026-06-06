@@ -68,7 +68,11 @@ export async function POST(req: NextRequest) {
     // ─── SERVER-SIDE price verification (fetch actual prices from DB) ─
     let serverSubtotal = 0;
     for (const item of items) {
-      const product = await db.siteProduct.findUnique({ where: { id: item.id } });
+      const productId = parseInt(item.id, 10);
+      if (isNaN(productId)) {
+        return NextResponse.json({ error: "منتج غير موجود" }, { status: 400 });
+      }
+      const product = await db.siteProduct.findUnique({ where: { id: productId } });
       if (!product) {
         return NextResponse.json({ error: "منتج غير موجود" }, { status: 400 });
       }

@@ -1,4 +1,3 @@
-import { getClientIp } from "./rate-limit";
 import { createHmac, timingSafeEqual, randomBytes } from "crypto";
 
 // ─── Environment Variables ────────────────────────────────

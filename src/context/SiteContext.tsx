@@ -87,7 +87,7 @@ function convertProduct(p: RawProduct): Product {
     id: p.id, name: p.name, ar: p.ar, br: p.brand,
     g: p.gender as Product["g"], t: p.type as Product["t"],
     sz: safeParse(p.sizes, []), img: p.image, badge: p.badge || null,
-    lon: p.longevity, sil: p.sillage,
+    lon: parseInt(p.longevity, 10) || 0, sil: parseInt(p.sillage, 10) || 0,
     tn: safeParse(p.topNotes, []), hn: safeParse(p.heartNotes, []),
     bn: safeParse(p.baseNotes, []), occ: safeParse(p.occasions, []),
     sea: safeParse(p.seasons, []), desc: p.desc || "", rev: [], top: p.top,

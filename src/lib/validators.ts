@@ -59,6 +59,7 @@ export const settingsBatchSchema = z.record(
 
 // ─── Order Validation ───────────────────────────────────────────
 export const orderItemSchema = z.object({
+  id: z.string().min(1),
   name: z.string().min(1),
   size: z.string().min(1),
   price: z.number().min(0).max(100000),
