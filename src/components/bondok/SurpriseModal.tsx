@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import { X, ShoppingCart, RefreshCw, Star } from "lucide-react";
-import { products, TYPE_AR } from "@/data/products";
+import { TYPE_AR } from "@/data/products";
+import { useSiteData } from "@/context/SiteContext";
 import { SURPRISE_REASONS } from "@/data/quiz";
 import { useBondokStore } from "@/store/bondok";
 import { useScrollLock } from "@/hooks/useScrollLock";
@@ -12,6 +13,7 @@ export default function SurpriseModal() {
   const setSurpriseOpen = useBondokStore((s) => s.setSurpriseOpen);
   const addToCart = useBondokStore((s) => s.addToCart);
   const applyDiscount = useBondokStore((s) => s.applyDiscount);
+  const { products } = useSiteData();
   useScrollLock(surpriseOpen);
 
   const getRandomProduct = () => {

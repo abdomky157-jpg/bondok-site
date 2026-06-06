@@ -70,11 +70,22 @@ function RatingStars({ count }: { count: number }) {
 
 export default function Testimonials() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const visibleCount = typeof window !== "undefined" && window.innerWidth >= 1024 ? 3 : typeof window !== "undefined" && window.innerWidth >= 640 ? 2 : 1;
+  const [visibleCount, setVisibleCount] = useState(1);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const updateCount = () => {
+      if (window.innerWidth >= 1024) setVisibleCount(3);
+      else if (window.innerWidth >= 640) setVisibleCount(2);
+      else setVisibleCount(1);
+    };
+    updateCount();
+    window.addEventListener("resize", updateCount);
+    return () => window.removeEventListener("resize", updateCount);
   }, []);
 
   const next = () => {
@@ -86,8 +97,8 @@ export default function Testimonials() {
   };
 
   const getVisible = () => {
-    const items = [];
-    for (let i = 0; i < (mounted && typeof window !== "undefined" && window.innerWidth >= 1024 ? 3 : typeof window !== "undefined" && window.innerWidth >= 640 ? 2 : 1); i++) {
+    const items: typeof testimonials = [];
+    for (let i = 0; i < visibleCount; i++) {
       items.push(testimonials[(activeIndex + i) % testimonials.length]);
     }
     return items;

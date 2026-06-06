@@ -2,13 +2,25 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { isAdminRequest } from "@/lib/admin-auth";
 import { productUpdateSchema, validateBody } from "@/lib/validators";
+import { checkCsrf } from "@/lib/csrf";
+
+function parseId(id: string): number {
+  const num = parseInt(id);
+  if (isNaN(num)) throw new Error("Invalid ID");
+  return num;
+}
 
 // GET single product (public)
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  try {
   const { id } = await params;
-  const p = await db.siteProduct.findUnique({ where: { id: parseInt(id) } });
+  const p = await db.siteProduct.findUnique({ where: { id: parseId(id) } });
   if (!p) return NextResponse.json({ error: "Not found" }, { status: 404 });
   return NextResponse.json(p);
+  } catch (e) {
+    const message = e instanceof Error ? e.message : "Unknown error";
+    return NextResponse.json({ error: message }, { status: 400 });
+  }
 }
 
 // PUT update product (admin only)
@@ -16,8 +28,12 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   if (!isAdminRequest(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  if (!checkCsrf(req)) {
+    return NextResponse.json({ error: "طلب غير مصرح به" }, { status: 403 });
+  }
   try {
     const { id } = await params;
+    const numId = parseId(id);
     const body = await req.json();
     const validation = validateBody(productUpdateSchema, body);
     if (!validation.success) {
@@ -46,7 +62,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     if (data.order !== undefined) updateData.order = data.order;
     if (data.active !== undefined) updateData.active = data.active;
 
-    const p = await db.siteProduct.update({ where: { id: parseInt(id) }, data: updateData });
+    const p = await db.siteProduct.update({ where: { id: numId }, data: updateData });
     return NextResponse.json(p);
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : "Unknown error";
@@ -59,9 +75,13 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
   if (!isAdminRequest(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  if (!checkCsrf(req)) {
+    return NextResponse.json({ error: "طلب غير مصرح به" }, { status: 403 });
+  }
   try {
     const { id } = await params;
-    await db.siteProduct.delete({ where: { id: parseInt(id) } });
+    const numId = parseId(id);
+    await db.siteProduct.delete({ where: { id: numId } });
     return NextResponse.json({ success: true });
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : "Unknown error";

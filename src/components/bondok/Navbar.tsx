@@ -402,6 +402,7 @@ export default function Navbar() {
               className="w-full px-4 py-3 rounded-lg bg-wood-950/50 border border-gold-500/15 text-gold-100 placeholder:text-gold-100/25 focus:border-gold-500/40 focus:outline-none text-sm text-center mb-3 transition"
               placeholder="كلمة السر"
               autoFocus
+              autoComplete="current-password"
             />
             {authErr && <p className="text-red-400 text-xs text-center mb-3">{authErr}</p>}
             <div className="flex gap-2">

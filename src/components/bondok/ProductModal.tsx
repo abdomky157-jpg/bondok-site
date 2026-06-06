@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { X, ShoppingCart, Star } from "lucide-react";
 import { TYPE_AR, GENDER_AR, type Product } from "@/data/products";
 import { occasions, SEASON_AR } from "@/data/categories";
@@ -15,6 +15,11 @@ export default function ProductModal() {
   const setSelectedProduct = useBondokStore((s) => s.setSelectedProduct);
   const addToCart = useBondokStore((s) => s.addToCart);
   const [selSize, setSelSize] = useState(0);
+
+  // Reset selected size when product changes
+  useEffect(() => {
+    setSelSize(0);
+  }, [selectedProduct?.id]);
 
   // Scroll lock when modal is open
   useScrollLock(!!selectedProduct);

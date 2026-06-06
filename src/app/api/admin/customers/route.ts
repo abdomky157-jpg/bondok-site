@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { ensureSeeded } from "@/lib/auto-seed";
 import { isAdminRequest } from "@/lib/admin-auth";
+import { checkCsrf } from "@/lib/csrf";
 
 export const dynamic = "force-dynamic";
 
@@ -27,6 +28,9 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   if (!isAdminRequest(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  if (!checkCsrf(req)) {
+    return NextResponse.json({ error: "طلب غير مصرح به" }, { status: 403 });
   }
   try {
     await ensureSeeded();

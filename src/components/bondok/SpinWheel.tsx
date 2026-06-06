@@ -5,16 +5,7 @@ import { X, RefreshCw } from "lucide-react";
 import { useBondokStore } from "@/store/bondok";
 import { useScrollLock } from "@/hooks/useScrollLock";
 
-const PRIZES = [
-  { label: "خصم 10%", code: "BONDOK10" },
-  { label: "30ml هدية", code: "" },
-  { label: "حاول تاني 🔄", code: "" },
-  { label: "بلية هدية ☕", code: "" },
-  { label: "خصم 10%", code: "BONDOK10" },
-  { label: "مخمرية 🫖", code: "" },
-  { label: "حاول تاني 🔄", code: "" },
-  { label: "باقة سامبلز 🧪", code: "" },
-];
+import { PRIZES } from "@/lib/spin-prizes";
 
 const COLORS = ["#A07020", "#4A3224", "#2D1B11", "#4A3224", "#A07020", "#4A3224", "#2D1B11", "#4A3224"];
 

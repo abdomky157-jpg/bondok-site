@@ -125,7 +125,5 @@ export const SURPRISE_REASONS: Record<string, string[]> = {
   ],
 };
 
-export const DISCOUNT_CODES: Record<string, number> = {
-  BONDOK10: 10,
-  SURPRISE20: 20,
-};
+// Re-exported from shared constants for backwards compatibility
+export { DISCOUNT_CODES } from "@/lib/discount-codes";

@@ -72,8 +72,8 @@ export function checkCsrf(req: NextRequest): boolean {
     const hostName = host.split(":")[0].toLowerCase(); // strip port
     const originHost = origin ? extractHost(origin) : null;
     const refererHost = referer ? extractHost(referer) : null;
-    if (originHost && originHost === hostName) return true;
-    if (refererHost && refererHost === hostName) return true;
+    if (originHost !== null && originHost !== undefined && originHost === hostName) return true;
+    if (refererHost !== null && refererHost !== undefined && refererHost === hostName) return true;
   }
 
   // Also allow if no origin config is set (development mode)
@@ -90,6 +90,6 @@ export function checkCsrf(req: NextRequest): boolean {
 export function checkContentType(req: NextRequest): boolean {
   const contentType = req.headers.get("content-type");
   // FormData uploads have multipart/form-data
-  return contentType?.includes("application/json") ||
-         contentType?.includes("multipart/form-data");
+  return !!(contentType?.includes("application/json") ||
+         contentType?.includes("multipart/form-data"));
 }

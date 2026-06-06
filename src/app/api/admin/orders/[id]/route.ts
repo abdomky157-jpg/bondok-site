@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { ensureSeeded } from "@/lib/auto-seed";
 import { isAdminRequest } from "@/lib/admin-auth";
+import { checkCsrf } from "@/lib/csrf";
 
 export const dynamic = "force-dynamic";
 
@@ -18,9 +19,10 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
     return NextResponse.json(order);
-  } catch (e: any) {
-    console.error("[/api/admin/orders/:id] GET error:", e.message);
-    return NextResponse.json({ error: e.message }, { status: 500 });
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : "Unknown error";
+    console.error("[/api/admin/orders/:id] GET error:", message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
@@ -28,6 +30,9 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   if (!isAdminRequest(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  if (!checkCsrf(req)) {
+    return NextResponse.json({ error: "طلب غير مصرح به" }, { status: 403 });
   }
   try {
     await ensureSeeded();
@@ -39,7 +44,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
-    const updateData: Record<string, any> = {};
+    const updateData: Record<string, unknown> = {};
     if (body.status) updateData.status = String(body.status);
     if (body.name) updateData.name = String(body.name);
     if (body.phone) updateData.phone = String(body.phone);
@@ -52,8 +57,9 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     });
 
     return NextResponse.json(order);
-  } catch (e: any) {
-    console.error("[/api/admin/orders/:id] PUT error:", e.message);
-    return NextResponse.json({ error: e.message }, { status: 500 });
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : "Unknown error";
+    console.error("[/api/admin/orders/:id] PUT error:", message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

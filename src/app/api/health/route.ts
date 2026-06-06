@@ -8,7 +8,7 @@ export async function GET() {
   try {
     await db.$queryRaw`SELECT 1`;
     return NextResponse.json({ status: "ok", db: "connected" });
-  } catch (e: any) {
-    return NextResponse.json({ status: "error", db: "disconnected", error: e.message });
+  } catch {
+    return NextResponse.json({ status: "error", db: "disconnected" });
   }
 }

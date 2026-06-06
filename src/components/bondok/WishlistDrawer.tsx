@@ -1,7 +1,8 @@
 "use client";
 
 import { X, Heart, ShoppingCart, Trash2 } from "lucide-react";
-import { products, TYPE_AR } from "@/data/products";
+import { TYPE_AR } from "@/data/products";
+import { useSiteData } from "@/context/SiteContext";
 import { useBondokStore } from "@/store/bondok";
 import { useScrollLock } from "@/hooks/useScrollLock";
 
@@ -12,6 +13,7 @@ export default function WishlistDrawer() {
   const toggleWishlist = useBondokStore((s) => s.toggleWishlist);
   const addToCart = useBondokStore((s) => s.addToCart);
   const setSelectedProduct = useBondokStore((s) => s.setSelectedProduct);
+  const { products } = useSiteData();
 
   // Scroll lock when wishlist drawer is open
   useScrollLock(wishlistOpen);

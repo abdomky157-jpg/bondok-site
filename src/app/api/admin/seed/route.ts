@@ -2,12 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { ensureSeeded } from "@/lib/auto-seed";
 import { isAdminRequest } from "@/lib/admin-auth";
+import { checkCsrf } from "@/lib/csrf";
 
 export const maxDuration = 60;
 
 export async function POST(req: NextRequest) {
   if (!isAdminRequest(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  if (!checkCsrf(req)) {
+    return NextResponse.json({ error: "طلب غير مصرح به" }, { status: 403 });
   }
   try {
     // Support force reset via query param
@@ -24,7 +28,8 @@ export async function POST(req: NextRequest) {
     // Use auto-seed (handles table creation + seeding)
     const seeded = await ensureSeeded();
     return NextResponse.json({ message: seeded ? "Seeded successfully" : "Already seeded" });
-  } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : "Unknown error";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

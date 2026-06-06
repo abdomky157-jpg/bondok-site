@@ -5,14 +5,9 @@ import { isAdminRequest } from "@/lib/admin-auth";
 import { rateLimit, rateLimitKey, STRICT_CONFIG } from "@/lib/rate-limit";
 import { checkCsrf } from "@/lib/csrf";
 import { orderCreateSchema, validateBody } from "@/lib/validators";
+import { DISCOUNT_CODES } from "@/lib/discount-codes";
 
 export const dynamic = "force-dynamic";
-
-// ─── Valid discount codes (server-side) ──────────────────────────
-const VALID_DISCOUNT_CODES: Record<string, number> = {
-  BONDOK10: 10,
-  SURPRISE20: 20,
-};
 
 // GET all orders (admin only)
 export async function GET(req: NextRequest) {
@@ -68,8 +63,8 @@ export async function POST(req: NextRequest) {
     );
 
     // ─── Validate discount code server-side ─────────────────────
-    const discountPct = discountCode && VALID_DISCOUNT_CODES[discountCode.toUpperCase()]
-      ? VALID_DISCOUNT_CODES[discountCode.toUpperCase()]
+    const discountPct = discountCode && DISCOUNT_CODES[discountCode.toUpperCase()]
+      ? DISCOUNT_CODES[discountCode.toUpperCase()]
       : 0;
 
     const serverDiscount = Math.round((serverSubtotal * discountPct) / 100);

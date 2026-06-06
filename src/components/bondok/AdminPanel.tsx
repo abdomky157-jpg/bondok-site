@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { X, Save, Plus, Trash2, Upload, ChevronDown, ChevronUp, Loader2, Image, Palette, Type, Package, Settings, ShoppingBag, Users, Phone, Mail, MapPin, Calendar, Search, Edit3, Eye, UserPlus, TrendingUp, DollarSign, ShoppingCart, Clock, MessageSquare, Star, Crown, ChevronLeft } from "lucide-react";
+import { X, Save, Plus, Trash2, Upload, ChevronDown, ChevronUp, Loader2, Image, Palette, Type, Package, Settings, ShoppingBag, Users, Phone, Mail, MapPin, Calendar, Search, Edit3, Eye, UserPlus, TrendingUp, DollarSign, ShoppingCart, Clock, MessageSquare, Star, Crown } from "lucide-react";
 import { useSiteData } from "@/context/SiteContext";
 
 // ===== Admin Panel Component =====
@@ -21,7 +21,8 @@ export default function AdminPanel({ onClose }: { onClose: () => void }) {
     { id: "general", label: "عام", icon: <Settings size={16} /> },
   ];
 
-  const refresh = useCallback(() => setLoading(!loading), [loading]);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const refresh = useCallback(() => setRefreshKey((k) => k + 1), []);
 
   return (
     <div className="fixed inset-0 z-[2000] flex">
@@ -52,7 +53,7 @@ export default function AdminPanel({ onClose }: { onClose: () => void }) {
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6" key={tab + loading}>
+        <div className="flex-1 overflow-y-auto p-6" key={tab + refreshKey}>
           {tab === "orders" && <OrdersTab />}
           {tab === "customers" && <CustomersTab />}
           {tab === "products" && <ProductsTab onRefresh={refresh} />}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Wine, SlidersHorizontal, Grid3X3, List } from "lucide-react";
+import { Wine, SlidersHorizontal } from "lucide-react";
 import { TYPE_AR, type Product } from "@/data/products";
 import { useSiteData } from "@/context/SiteContext";
 import { useBondokStore } from "@/store/bondok";

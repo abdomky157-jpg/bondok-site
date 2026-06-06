@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { ensureSeeded } from "@/lib/auto-seed";
 import { isAdminRequest } from "@/lib/admin-auth";
 import { bundleCreateSchema, validateBody } from "@/lib/validators";
+import { checkCsrf } from "@/lib/csrf";
 
 // GET all bundles (public)
 export async function GET() {
@@ -24,6 +25,9 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   if (!isAdminRequest(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  if (!checkCsrf(req)) {
+    return NextResponse.json({ error: "طلب غير مصرح به" }, { status: 403 });
   }
   try {
     const body = await req.json();

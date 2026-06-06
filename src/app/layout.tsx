@@ -106,10 +106,10 @@ export default function RootLayout({
     telephone: DEFAULT_WHATSAPP,
     address: {
       "@type": "PostalAddress",
-      addressLocality: "القاهرة",
+      addressLocality: "الاسكندرية",
       addressCountry: "EG",
     },
-    priceRange: "$$",
+    priceRange: "EGP",
     currency: "EGP",
     paymentAccepted: "Cash, Vodafone Cash, Bank Transfer",
     areaServed: {

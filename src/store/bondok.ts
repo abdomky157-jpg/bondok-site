@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { products as defaultProducts, type Product } from "@/data/products";
-import { DISCOUNT_CODES } from "@/data/quiz";
+import { DISCOUNT_CODES } from "@/lib/discount-codes";
 
 export interface CartItem {
   id: number;

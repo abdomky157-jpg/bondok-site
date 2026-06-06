@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { X, Star } from "lucide-react";
 import { quizQuestions, TYPE_DESCRIPTIONS } from "@/data/quiz";
-import { products, TYPE_AR } from "@/data/products";
+import { TYPE_AR } from "@/data/products";
+import { useSiteData } from "@/context/SiteContext";
 import { useBondokStore } from "@/store/bondok";
 import { useScrollLock } from "@/hooks/useScrollLock";
 export default function QuizModal() {
@@ -11,10 +12,11 @@ export default function QuizModal() {
   const setQuizOpen = useBondokStore((s) => s.setQuizOpen);
   const setCategoryFilter = useBondokStore((s) => s.setCategoryFilter);
   const setSelectedProduct = useBondokStore((s) => s.setSelectedProduct);
+  const { products } = useSiteData();
   useScrollLock(quizOpen);
 
   const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState<Record<number, number[]>>({});
+  const [answers, setAnswers] = useState<Record<number, string[]>>({});
   const [selected, setSelected] = useState<number[]>([]);
   const [result, setResult] = useState<string | null>(null);
 
@@ -32,7 +34,7 @@ export default function QuizModal() {
 
   const nextStep = () => {
     if (selected.length === 0) return;
-    const newAnswers = { ...answers, [step]: selected.map((i) => q.o[i].v).flat() };
+    const newAnswers = { ...answers, [step]: selected.map((i) => q.o[i].v).flat().map(String) };
     setAnswers(newAnswers);
     setSelected([]);
     if (step < quizQuestions.length - 1) {
@@ -43,7 +45,7 @@ export default function QuizModal() {
       Object.values(newAnswers)
         .flat()
         .forEach((v) => {
-          if (["woody", "floral", "oriental", "fresh", "spicy", "sweet"].includes(v)) {
+          if (["woody", "floral", "oriental", "fresh", "spicy", "sweet"].includes(String(v))) {
             counts[v] = (counts[v] || 0) + 1;
           }
         });
@@ -57,7 +59,7 @@ export default function QuizModal() {
       setStep(step - 1);
       const prevQ = quizQuestions[step - 1];
       const prevAns = answers[step - 1] || [];
-      const prevSelected = prevQ.o.findIndex((o) => prevAns.includes(o.v[0]));
+      const prevSelected = prevQ.o.findIndex((o) => prevAns.includes(String(o.v[0])));
       setSelected(prevSelected >= 0 ? [prevSelected] : []);
     }
   };

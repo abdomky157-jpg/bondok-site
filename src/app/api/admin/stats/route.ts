@@ -22,11 +22,9 @@ export async function GET(req: NextRequest) {
       ...stats,
       total: stats.products + stats.bundles + stats.settings + stats.customers + stats.orders,
     });
-  } catch (e: unknown) {
-    const message = e instanceof Error ? e.message : "Unknown error";
+  } catch {
     return NextResponse.json({
       connected: false,
-      error: message,
       products: 0,
       bundles: 0,
       settings: 0,

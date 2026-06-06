@@ -1,11 +1,13 @@
 import { createHmac, timingSafeEqual, randomBytes } from "crypto";
 
-// ─── Environment Variables with safe fallbacks ────────────────────
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "160835";
-const TOKEN_SECRET = process.env.ADMIN_TOKEN_SECRET || "bondok-perfumes-default-secret-change-in-production-2026";
+// ─── Environment Variables ────────────────────────────────
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || (process.env.NODE_ENV === "production" ? null : "160835");
+const TOKEN_SECRET = process.env.ADMIN_TOKEN_SECRET || (process.env.NODE_ENV === "production" ? null : "bondok-perfumes-default-secret-change-in-production-2026");
 
-// Note: Set ADMIN_PASSWORD and ADMIN_TOKEN_SECRET env vars in production for security.
-// Defaults are used for development convenience.
+if (process.env.NODE_ENV === "production") {
+  if (!ADMIN_PASSWORD) console.warn("[admin-auth] ADMIN_PASSWORD not set in production");
+  if (!TOKEN_SECRET) console.warn("[admin-auth] ADMIN_TOKEN_SECRET not set in production");
+}
 
 // ─── Rate Limiting for Login Attempts (In-Memory) ──────────────────
 const loginAttempts = new Map<string, { count: number; lastAttempt: number; lockedUntil: number }>();

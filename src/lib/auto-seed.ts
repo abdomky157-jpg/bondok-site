@@ -148,8 +148,9 @@ export async function ensureSeeded(force = false): Promise<boolean> {
     }
 
     return true;
-  } catch (e: any) {
-    console.error("[auto-seed] Error:", e.message);
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : "Unknown error";
+    console.error("[auto-seed] Error:", message);
     return false;
   } finally {
     seeding = false;

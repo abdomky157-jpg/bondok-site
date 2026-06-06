@@ -19,8 +19,9 @@ export async function GET() {
     for (const s of settings) settingsMap[s.key] = s.value;
 
     return NextResponse.json({ products, bundles, settings: settingsMap });
-  } catch (e: any) {
-    console.error("[/api/site] Error:", e.message);
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : "Unknown error";
+    console.error("[/api/site] Error:", message);
     // Return empty data on error so the site doesn't crash
     return NextResponse.json({ products: [], bundles: [], settings: {} });
   }

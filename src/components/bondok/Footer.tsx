@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { useSiteData } from "@/context/SiteContext";
 import { useBondokStore } from "@/store/bondok";
+import { LOGO_URL } from "@/lib/constants";
 import {
   Truck, Shield, RefreshCw, MessageCircle, X,
-  Instagram, Facebook, Twitter, Heart,
+  Heart,
   Phone, MapPin, ChevronUp, ExternalLink,
 } from "lucide-react";
 
@@ -61,7 +62,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-3 mb-4">
               <img
-                src={settings.logoUrl || "https://bondok-perfumes.com/logo.png"}
+                src={settings.logoUrl || LOGO_URL}
                 className="w-10 h-10 rounded-full object-contain"
                 style={{ filter: "drop-shadow(0 0 8px rgba(212,164,76,.4))" }}
                 alt="Bondok"
@@ -74,17 +75,8 @@ export default function Footer() {
             <p className="text-gold-100/40 text-xs leading-relaxed mb-4">
               وجهتك المثالية لعالم العطور الفاخرة. أرقى العطور العالمية بأفضل الأسعار.
             </p>
-            {/* Social Media */}
+            {/* Social Media - WhatsApp only until social accounts are configured */}
             <div className="flex items-center gap-2">
-              <a href="#" className="w-9 h-9 rounded-full border border-gold-500/20 flex items-center justify-center text-gold-400 hover:bg-gold-500/15 hover:border-gold-500/40 transition-all hover:scale-110" aria-label="فيسبوك">
-                <Facebook size={16} />
-              </a>
-              <a href="#" className="w-9 h-9 rounded-full border border-gold-500/20 flex items-center justify-center text-gold-400 hover:bg-gold-500/15 hover:border-gold-500/40 transition-all hover:scale-110" aria-label="انستغرام">
-                <Instagram size={16} />
-              </a>
-              <a href="#" className="w-9 h-9 rounded-full border border-gold-500/20 flex items-center justify-center text-gold-400 hover:bg-gold-500/15 hover:border-gold-500/40 transition-all hover:scale-110" aria-label="تويتر">
-                <Twitter size={16} />
-              </a>
               <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full border border-gold-500/20 flex items-center justify-center text-green-400 hover:bg-green-500/15 hover:border-green-500/40 transition-all hover:scale-110" aria-label="واتساب">
                 <MessageCircle size={16} />
               </a>
