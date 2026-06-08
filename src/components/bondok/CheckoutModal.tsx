@@ -119,6 +119,7 @@ export default function CheckoutModal() {
     try {
       // Build order items from cart (already has qty)
       const orderItems = cart.map((item) => ({
+        id: String(item.id),
         name: item.name,
         size: item.size,
         price: item.price,
