@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bondok Perfumes | عطور بندق</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Tajawal:wght@300;400;500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        wood: {
+                            50: '#FAEBD7',
+                            100: '#F5E6C8',
+                            200: '#E8D5A8',
+                            300: '#D4B87A',
+                            400: '#C5A55A',
+                            500: '#B8860B',
+                            600: '#8B6914',
+                            700: '#5D4037',
+                            800: '#4E342E',
+                            900: '#3E2723',
+                            950: '#2C1810',
+                        },
+                        gold: {
+                            50: '#FFF8E1',
+                            100: '#FFECB3',
+                            200: '#FFE082',
+                            300: '#FFD54F',
+                            400: '#DAA520',
+                            500: '#D4AF37',
+                            600: '#C5A55A',
+                            700: '#B8860B',
+                            800: '#996515',
+                            900: '#8B6914',
+                        }
+                    },
+                    fontFamily: {
+                        'playfair': ['Playfair Display', 'serif'],
+                        'tajawal': ['Tajawal', 'sans-serif'],
+                        'amiri': ['Amiri', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Tajawal', sans-serif; background: #1a0f0a; color: #FAEBD7; }
+
+        /* Wood Texture Background */
+        .wood-bg {
+            background: linear-gradient(135deg, #2C1810 0%, #3E2723 25%, #4E342E 50%, #3E2723 75%, #2C1810 100%);
+            position: relative;
+        }
+        .wood-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 2px,
+                rgba(0,0,0,0.03) 2px,
+                rgba(0,0,0,0.03) 4px
+            );
+            pointer-events: none;
+        }
+        .wood-bg-light {
+            background: linear-gradient(135deg, #5D4037 0%, #6D4C41 25%, #795548 50%, #6D4C41 75%, #5D4037 100%);
+            position: relative;
+        }
+        .wood-bg-light::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                85deg,
+                transparent,
+                transparent 3px,
+                rgba(0,0,0,0.02) 3px,
+                rgba(0,0,0,0.02) 6px
+            );
+            pointer-events: none;
+        }
+        .wood-grain {
+            background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+        }
+
+        /* Gold Shimmer */
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        .gold-shimmer {
+            background: linear-gradient(90deg, #D4AF37, #FFD54F, #DAA520, #FFD54F, #D4AF37);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s linear infinite;
+        }
+
+        /* Gold Border Glow */
+        .gold-border {
+            border: 1px solid rgba(212,175,55,0.2);
+            box-shadow: inset 0 0 15px rgba(212,175,55,0.02), 0 4px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .gold-border:hover {
+            border-color: rgba(212,175,55,0.4);
+            box-shadow: inset 0 0 20px rgba(212,175,55,0.05), 0 10px 30px rgba(0,0,0,0.5), 0 0 15px rgba(212,175,55,0.1);
+        }
+
+        /* Ornamental Divider */
+        .ornament-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .ornament-divider::before,
+        .ornament-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #2C1810; }
+        ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #FFD54F; }
+
+        /* Product Card Hover */
+        .product-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 30px rgba(212,175,55,0.15);
+        }
+        .product-card:hover .product-img {
+            transform: scale(1.05);
+        }
+        .product-card:hover .add-cart-btn {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Category Filter Active */
+        .filter-btn.active {
+            background: linear-gradient(135deg, #D4AF37, #B8860B);
+            color: #2C1810;
+            box-shadow: 0 0 20px rgba(212,175,55,0.3);
+            border-color: transparent;
+        }
+
+        /* Floating particles */
+        @keyframes float-particle {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #D4AF37;
+            border-radius: 50%;
+            animation: float-particle linear infinite;
+            pointer-events: none;
+            box-shadow: 0 0 8px #FFD54F;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(78, 52, 46, 0.9);
+            backdrop-filter: blur(15px);
+            border: 1px solid #D4AF37;
+            color: #FFD54F;
+            padding: 16px 32px;
+            border-radius: 12px;
+            z-index: 99999;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(212,175,55,0.1);
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Hero float */
+        @keyframes heroFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* Navbar scroll */
+        .nav-scrolled {
+            background: rgba(44, 24, 16, 0.85) !important;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4), 0 1px 0 rgba(212,175,55,0.15);
+        }
+
+        /* Smooth scroll */
+        html { scroll-behavior: smooth; }
+
+        /* Modal overlay */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .modal-content {
+            background: linear-gradient(135deg, #3E2723, #2C1810);
+            border: 1px solid rgba(212,175,55,0.3);
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            padding: 40px;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 30px rgba(212,175,55,0.1);
+            position: relative;
+        }
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        /* Corner ornaments */
+        .corner-ornament::before,
+        .corner-ornament::after {
+            content: '✦';
+            position: absolute;
+            color: #D4AF37;
+            font-size: 14px;
+            opacity: 0.6;
+        }
+        .corner-ornament::before { top: 12px; right: 12px; }
+        .corner-ornament::after { bottom: 12px; left: 12px; }
+
+        /* Custom range slider styling */
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #D4AF37;
+            box-shadow: 0 0 10px #FFD54F;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast flex items-center gap-2">
+    <span class="iconify text-gold-400" data-icon="mdi:check-circle" data-width="20"></span>
+    <span id="toast-msg">تمت الإضافة إلى السلة</span>
+</div>
+
+<!-- Quick View Modal -->
+<div id="quickModal" class="modal-overlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal-content corner-ornament relative">
+        <button onclick="closeModal()" class="absolute top-4 left-4 text-gold-400 hover:text-gold-200 transition">
+            <span class="iconify" data-icon="mdi:close" data-width="24"></span>
+        </button>
+        <div id="modalBody" class="text-center">
+            <!-- Filled dynamically -->
+        </div>
+    </div>
+</div>
+
+<!-- ========== CHECKOUT MODAL ========== -->
+<div id="checkoutModal" class="modal-overlay" onclick="if(event.target===this)closeCheckoutModal()">
+    <div class="modal-content corner-ornament relative max-w-lg w-[90%] p-8 rounded-2xl bg-gradient-to-b from-wood-900 to-[#1a0f0a] border border-gold-500/20 shadow-2xl">
+        <button onclick="closeCheckoutModal()" class="absolute top-4 left-4 text-gold-400 hover:text-gold-200 transition">
+            <span class="iconify" data-icon="mdi:close" data-width="24"></span>
+        </button>
+        <div class="text-center mb-6">
+            <span class="iconify text-gold-400 mx-auto mb-2" data-icon="mdi:truck-delivery-outline" data-width="36"></span>
+            <h3 class="font-tajawal text-xl font-bold gold-shimmer">تأكيد طلبك وشحن المنتجات</h3>
+            <p class="font-tajawal text-sm text-gold-200/50 mt-1">يرجى إدخال بياناتك للتوصيل عبر الواتساب</p>
+        </div>
+        <form onsubmit="submitOrder(event)" class="space-y-4 text-right">
+            <div>
+                <label class="block font-tajawal text-gold-300 text-sm mb-1.5">الاسم بالكامل</label>
+                <input type="text" id="custName" required placeholder="مثال: محمد أحمد" class="w-full px-4 py-3 rounded-lg bg-wood-950/50 border border-gold-500/20 text-gold-100 font-tajawal placeholder:text-gold-100/30 focus:border-gold-500/50 focus:outline-none transition">
+            </div>
+            <div>
+                <label class="block font-tajawal text-gold-300 text-sm mb-1.5">رقم الهاتف (الواتساب)</label>
+                <input type="tel" id="custPhone" required placeholder="مثال: 01001234567" class="w-full px-4 py-3 rounded-lg bg-wood-950/50 border border-gold-500/20 text-gold-100 font-tajawal placeholder:text-gold-100/30 focus:border-gold-500/50 focus:outline-none transition">
+            </div>
+            <div>
+                <label class="block font-tajawal text-gold-300 text-sm mb-1.5">العنوان بالتفصيل</label>
+                <textarea id="custAddress" rows="3" required placeholder="مثال: القاهرة، مدينة نصر، شارع عباس العقاد، عمارة 5" class="w-full px-4 py-3 rounded-lg bg-wood-950/50 border border-gold-500/20 text-gold-100 font-tajawal placeholder:text-gold-100/30 focus:border-gold-500/50 focus:outline-none transition resize-none"></textarea>
+            </div>
+            <button type="submit" class="w-full py-3.5 bg-gradient-to-l from-gold-500 to-gold-700 text-wood-950 font-bold rounded-xl font-tajawal text-lg hover:shadow-[0_0_20px_rgba(212,175,55,0.3)] transition-all duration-300">
+                تأكيد وإرسال الطلب (واتساب)
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- ========== SCENT FINDER QUIZ MODAL ========== -->
+<div id="quizModal" class="modal-overlay" onclick="if(event.target===this)closeQuizModal()">
+    <div class="modal-content corner-ornament relative max-w-xl w-[90%] p-8 rounded-2xl bg-gradient-to-b from-wood-900 to-[#1a0f0a] border border-gold-500/20 shadow-2xl">
+        <button onclick="closeQuizModal()" class="absolute top-4 left-4 text-gold-400 hover:text-gold-200 transition">
+            <span class="iconify" data-icon="mdi:close" data-width="24"></span>
+        </button>
+        <div id="quizBody" class="text-center">
+            <!-- Filled dynamically step-by-step -->
+        </div>
+    </div>
+</div>
+
+<!-- ========== CART DRAWER ========== -->
+<div id="cartDrawer" class="fixed inset-0 z-[10000] overflow-hidden hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+    <!-- Backdrop -->
+    <div id="cartBackdrop" class="absolute inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300 opacity-0" onclick="closeCartDrawer()"></div>
+
+    <div class="fixed inset-y-0 left-0 max-w-full flex">
+        <div id="cartPanel" class="w-screen max-w-md transform transition-transform duration-300 ease-out -translate-x-full">
+            <div class="h-full flex flex-col bg-gradient-to-b from-[#25140e] to-[#120906] border-r border-gold-500/20 shadow-2xl relative text-right">
+                <!-- Header -->
+                <div class="p-6 border-b border-gold-500/10 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="iconify text-gold-400" data-icon="mdi:cart-outline" data-width="24"></span>
+                        <h2 class="font-tajawal text-xl font-bold gold-shimmer">سلة المشتريات</h2>
+                    </div>
+                    <button onclick="closeCartDrawer()" class="text-gold-400 hover:text-gold-200 transition">
+                        <span class="iconify" data-icon="mdi:close" data-width="24"></span>
+                    </button>
+                </div>
+
+                <!-- Cart Items List -->
+                <div class="flex-1 overflow-y-auto p-6 space-y-4" id="cartDrawerItems">
+                    <!-- Rendered dynamically -->
+                </div>
+
+                <!-- Footer -->
+                <div class="p-6 border-t border-gold-500/10 bg-wood-950/40 backdrop-blur-md">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="font-tajawal text-gold-300">الإجمالي الفرعي:</span>
+                        <div class="flex items-center gap-1 font-playfair text-gold-400 font-bold text-xl">
+                            <span id="cartSubtotal">0</span>
+                            <span class="font-tajawal text-xs font-normal">ج.م</span>
+                        </div>
+                    </div>
+                    <button id="checkoutBtn" onclick="openCheckoutModal()" class="w-full py-3.5 bg-gradient-to-l from-gold-500 to-gold-700 text-wood-950 font-bold rounded-xl font-tajawal text-lg hover:shadow-[0_0_20px_rgba(212,175,55,0.3)] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                        تأكيد الطلب
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== NAVBAR ========== -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-[1000] transition-all duration-300" style="background: transparent;">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3">
+                <img src="https://z-cdn-media.chatglm.cn/files/6c66da01-4443-40aa-bb7b-d6bd54a7c505.png?auth_key=1880267790-08e21141053d4e15b394e1d4cf01e594-0-affca78eef460c96a99ed6f34f2f8614" alt="Bondok Perfumes" class="h-14 w-14 object-contain rounded-full" style="filter: drop-shadow(0 0 8px rgba(212,175,55,0.4));">
+                <div>
+                    <h1 class="font-playfair text-xl font-bold gold-shimmer">Bondok</h1>
+                    <p class="font-playfair text-xs tracking-[0.2em] text-gold-400 -mt-1">PERFUMES</p>
+                </div>
+            </a>
+
+            <!-- Desktop Nav -->
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#home" class="text-gold-100 hover:text-gold-400 transition font-tajawal text-sm tracking-wide">الرئيسية</a>
+                <a href="#categories" class="text-gold-100 hover:text-gold-400 transition font-tajawal text-sm tracking-wide">التصنيفات</a>
+                <a href="#products" class="text-gold-100 hover:text-gold-400 transition font-tajawal text-sm tracking-wide">المنتجات</a>
+                <a href="#tracker" class="text-gold-100 hover:text-gold-400 transition font-tajawal text-sm tracking-wide">تتبع طلبك</a>
+                <a href="#about" class="text-gold-100 hover:text-gold-400 transition font-tajawal text-sm tracking-wide">من نحن</a>
+                <a href="#contact" class="text-gold-100 hover:text-gold-400 transition font-tajawal text-sm tracking-wide">تواصل معنا</a>
+            </div>
+
+            <!-- Cart & Mobile Menu -->
+            <div class="flex items-center gap-4">
+                <button onclick="toggleCartDrawer()" class="relative text-gold-400 hover:text-gold-200 transition focus:outline-none">
+                    <span class="iconify" data-icon="mdi:cart-outline" data-width="26"></span>
+                    <span id="cartCount" class="absolute -top-2 -right-2 bg-gold-500 text-wood-950 text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold hidden animate-pulse">0</span>
+                </button>
+                <button id="mobileMenuBtn" class="md:hidden text-gold-400 hover:text-gold-200 transition focus:outline-none" onclick="toggleMobileMenu()">
+                    <span class="iconify" data-icon="mdi:menu" data-width="28"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="md:hidden hidden wood-bg border-t border-gold-500/20">
+        <div class="px-6 py-4 space-y-3 text-right">
+            <a href="#home" onclick="toggleMobileMenu()" class="block text-gold-100 hover:text-gold-400 transition py-2 font-tajawal">الرئيسية</a>
+            <a href="#categories" onclick="toggleMobileMenu()" class="block text-gold-100 hover:text-gold-400 transition py-2 font-tajawal">التصنيفات</a>
+            <a href="#products" onclick="toggleMobileMenu()" class="block text-gold-100 hover:text-gold-400 transition py-2 font-tajawal">المنتجات</a>
+            <a href="#tracker" onclick="toggleMobileMenu()" class="block text-gold-100 hover:text-gold-400 transition py-2 font-tajawal">تتبع طلبك</a>
+            <a href="#about" onclick="toggleMobileMenu()" class="block text-gold-100 hover:text-gold-400 transition py-2 font-tajawal">من نحن</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="block text-gold-100 hover:text-gold-400 transition py-2 font-tajawal">تواصل معنا</a>
+        </div>
+    </div>
+</nav>
+
+<!-- ========== HERO SECTION ========== -->
+<section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden wood-bg wood-grain">
+    <!-- Floating Particles -->
+    <div id="particles" class="absolute inset-0 pointer-events-none"></div>
+
+    <!-- Ornamental corners -->
+    <div class="absolute top-8 right-8 text-gold-500/20 text-6xl font-playfair">❧</div>
+    <div class="absolute top-8 left-8 text-gold-500/20 text-6xl font-playfair" style="transform: scaleX(-1);">❧</div>
+    <div class="absolute bottom-8 right-8 text-gold-500/20 text-6xl font-playfair" style="transform: scaleY(-1);">❧</div>
+    <div class="absolute bottom-8 left-8 text-gold-500/20 text-6xl font-playfair" style="transform: scale(-1);">❧</div>
+
+    <!-- Hero Content -->
+    <div class="relative z-10 text-center px-6 max-w-4xl mx-auto" style="animation: heroFloat 6s ease-in-out infinite;">
+        <!-- Logo Large -->
+        <div class="mb-8">
+            <img src="https://z-cdn-media.chatglm.cn/files/6c66da01-4443-40aa-bb7b-d6bd54a7c505.png?auth_key=1880267790-08e21141053d4e15b394e1d4cf01e594-0-affca78eef460c96a99ed6f34f2f8614" alt="Bondok Perfumes" class="w-32 h-32 mx-auto object-contain rounded-full mb-6" style="filter: drop-shadow(0 0 20px rgba(212,175,55,0.5));">
+        </div>
+
+        <h1 class="font-playfair text-5xl sm:text-7xl lg:text-8xl font-bold mb-4">
+            <span class="gold-shimmer">Bondok</span>
+        </h1>
+        <h2 class="font-playfair text-2xl sm:text-3xl lg:text-4xl text-gold-400 tracking-[0.15em] mb-6">PERFUMES</h2>
+
+        <div class="ornament-divider max-w-md mx-auto">
+            <span class="text-gold-500 text-xl">✦</span>
+        </div>
+
+        <p class="font-amiri text-xl sm:text-2xl text-gold-200/80 mb-4 leading-relaxed">
+            رحلة في عالم العطور الفاخرة
+        </p>
+        <p class="font-tajawal text-base sm:text-lg text-gold-100/60 mb-10 max-w-xl mx-auto leading-relaxed">
+            اكتشف تشكيلتنا المميزة من أرقى العطور العالمية التي تأسر الحواس وتترك أثراً لا يُنسى
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="#products" class="px-10 py-4 bg-gradient-to-l from-gold-500 to-gold-700 text-wood-950 font-bold rounded-full text-lg font-tajawal hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-105">
+                تسوق الآن
+            </a>
+            <button onclick="openQuizModal()" class="px-10 py-4 bg-wood-950/40 border-2 border-gold-500 text-gold-400 font-bold rounded-full text-lg font-tajawal hover:bg-gold-500/20 transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2">
+                <span class="iconify text-gold-400 animate-pulse" data-icon="mdi:creation" data-width="22"></span>
+                اكتشف عطرك المثالي ✧
+            </button>
+            <a href="#categories" class="px-10 py-4 border-2 border-gold-500/50 text-gold-400 font-bold rounded-full text-lg font-tajawal hover:bg-gold-500/10 transition-all duration-300">
+                تصفح التصنيفات
+            </a>
+        </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
+        <span class="text-gold-500/50 text-xs font-tajawal">اكتشف المزيد</span>
+        <span class="iconify text-gold-500/50" data-icon="mdi:chevron-down" data-width="24"></span>
+    </div>
+</section>
+
+<!-- ========== CATEGORIES SECTION ========== -->
+<section id="categories" class="relative py-20 wood-bg-light wood-grain">
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Title -->
+        <div class="text-center mb-16">
+            <p class="font-amiri text-gold-400 text-lg mb-2">تصفح حسب</p>
+            <h2 class="font-playfair text-4xl sm:text-5xl font-bold gold-shimmer mb-4">التصنيفات</h2>
+            <div class="ornament-divider max-w-xs mx-auto">
+                <span class="text-gold-500">❖</span>
+            </div>
+        </div>
+
+        <!-- Gender Classification -->
+        <div class="mb-16">
+            <h3 class="font-amiri text-2xl text-gold-300 text-center mb-8">تصنيف حسب النوع</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Men -->
+                <div class="group relative overflow-hidden rounded-2xl gold-border cursor-pointer shadow-lg" onclick="filterByGender('men')">
+                    <div class="aspect-[4/3] relative">
+                        <img src="https://images.unsplash.com/photo-1594035910387-fea081ae7aec?w=600&h=450&fit=crop" alt="عطور رجالية" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-wood-950 via-wood-950/50 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6 text-center">
+                            <span class="iconify text-gold-400 mb-2 mx-auto" data-icon="mdi:gender-male" data-width="36"></span>
+                            <h4 class="font-playfair text-2xl font-bold text-gold-400 mb-1">عطور رجالية</h4>
+                            <p class="text-gold-100/60 font-tajawal text-sm">أناقة وقوة الرجل العصري</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Women -->
+                <div class="group relative overflow-hidden rounded-2xl gold-border cursor-pointer shadow-lg" onclick="filterByGender('women')">
+                    <div class="aspect-[4/3] relative">
+                        <img src="https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=600&h=450&fit=crop" alt="عطور نسائية" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-wood-950 via-wood-950/50 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6 text-center">
+                            <span class="iconify text-gold-400 mb-2 mx-auto" data-icon="mdi:gender-female" data-width="36"></span>
+                            <h4 class="font-playfair text-2xl font-bold text-gold-400 mb-1">عطور نسائية</h4>
+                            <p class="text-gold-100/60 font-tajawal text-sm">جمال وأنوثة لا تقاوم</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Unisex -->
+                <div class="group relative overflow-hidden rounded-2xl gold-border cursor-pointer shadow-lg" onclick="filterByGender('unisex')">
+                    <div class="aspect-[4/3] relative">
+                        <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&h=450&fit=crop" alt="عطور مشتركة" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-wood-950 via-wood-950/50 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6 text-center">
+                            <span class="iconify text-gold-400 mb-2 mx-auto" data-icon="mdi:gender-male-female" data-width="36"></span>
+                            <h4 class="font-playfair text-2xl font-bold text-gold-400 mb-1">عطور مشتركة</h4>
+                            <p class="text-gold-100/60 font-tajawal text-sm">لمسة فريدة للجميع</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scent Type Classification -->
+        <div>
+            <h3 class="font-amiri text-2xl text-gold-300 text-center mb-8">تصنيف حسب العائلة العطرية</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+                <div class="scent-type-card group cursor-pointer rounded-xl gold-border p-6 text-center hover:bg-gold-500/10 transition-all duration-300" onclick="filterByType('woody')">
+                    <span class="iconify text-gold-400 mx-auto mb-3 group-hover:scale-110 transition-transform" data-icon="mdi:tree" data-width="40"></span>
+                    <h5 class="font-playfair text-gold-300 font-semibold text-sm">خشبي</h5>
+                    <p class="text-gold-100/40 text-xs mt-1 font-tajawal">Woody</p>
+                </div>
+                <div class="scent-type-card group cursor-pointer rounded-xl gold-border p-6 text-center hover:bg-gold-500/10 transition-all duration-300" onclick="filterByType('floral')">
+                    <span class="iconify text-gold-400 mx-auto mb-3 group-hover:scale-110 transition-transform" data-icon="mdi:flower-tulip" data-width="40"></span>
+                    <h5 class="font-playfair text-gold-300 font-semibold text-sm">زهري</h5>
+                    <p class="text-gold-100/40 text-xs mt-1 font-tajawal">Floral</p>
+                </div>
+                <div class="scent-type-card group cursor-pointer rounded-xl gold-border p-6 text-center hover:bg-gold-500/10 transition-all duration-300" onclick="filterByType('oriental')">
+                    <span class="iconify text-gold-400 mx-auto mb-3 group-hover:scale-110 transition-transform" data-icon="mdi:mosque" data-width="40"></span>
+                    <h5 class="font-playfair text-gold-300 font-semibold text-sm">شرقي</h5>
+                    <p class="text-gold-100/40 text-xs mt-1 font-tajawal">Oriental</p>
+                </div>
+                <div class="scent-type-card group cursor-pointer rounded-xl gold-border p-6 text-center hover:bg-gold-500/10 transition-all duration-300" onclick="filterByType('fresh')">
+                    <span class="iconify text-gold-400 mx-auto mb-3 group-hover:scale-110 transition-transform" data-icon="mdi:water" data-width="40"></span>
+                    <h5 class="font-playfair text-gold-300 font-semibold text-sm">منعش</h5>
+                    <p class="text-gold-100/40 text-xs mt-1 font-tajawal">Fresh</p>
+                </div>
+                <div class="scent-type-card group cursor-pointer rounded-xl gold-border p-6 text-center hover:bg-gold-500/10 transition-all duration-300" onclick="filterByType('spicy')">
+                    <span class="iconify text-gold-400 mx-auto mb-3 group-hover:scale-110 transition-transform" data-icon="mdi:fire" data-width="40"></span>
+                    <h5 class="font-playfair text-gold-300 font-semibold text-sm">حار</h5>
+                    <p class="text-gold-100/40 text-xs mt-1 font-tajawal">Spicy</p>
+                </div>
+                <div class="scent-type-card group cursor-pointer rounded-xl gold-border p-6 text-center hover:bg-gold-500/10 transition-all duration-300" onclick="filterByType('sweet')">
+                    <span class="iconify text-gold-400 mx-auto mb-3 group-hover:scale-110 transition-transform" data-icon="mdi:candy" data-width="40"></span>
+                    <h5 class="font-playfair text-gold-300 font-semibold text-sm">حلو</h5>
+                    <p class="text-gold-100/40 text-xs mt-1 font-tajawal">Sweet</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== PRODUCTS SECTION ========== -->
+<section id="products" class="relative py-20 wood-bg wood-grain">
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Title -->
+        <div class="text-center mb-12">
+            <p class="font-amiri text-gold-400 text-lg mb-2">تشكيلتنا المميزة</p>
+            <h2 class="font-playfair text-4xl sm:text-5xl font-bold gold-shimmer mb-4">المنتجات</h2>
+            <div class="ornament-divider max-w-xs mx-auto">
+                <span class="text-gold-500">❖</span>
+            </div>
+        </div>
+
+        <!-- Search & Price Filter Panel -->
+        <div class="max-w-5xl mx-auto mb-10 p-6 rounded-2xl gold-border bg-[#3e2723]/30 backdrop-blur-md grid grid-cols-1 md:grid-cols-2 gap-6 text-right">
+            <!-- Price Filter -->
+            <div class="flex flex-col gap-2">
+                <label class="font-tajawal text-gold-300 text-sm flex items-center justify-between">
+                    <span>السعر الأقصى: <span id="priceVal" class="font-playfair font-bold text-gold-400">12,000</span> ج.م</span>
+                    <span class="font-semibold text-gold-400">تصفية بالسعر</span>
+                </label>
+                <input type="range" id="priceRange" min="2000" max="12000" step="500" value="12000" oninput="updatePriceFilter(this.value)" class="w-full h-1 bg-wood-950/50 rounded-lg appearance-none cursor-pointer accent-gold-500">
+                <div class="flex justify-between text-[10px] text-gold-100/30 font-playfair">
+                    <span>12,000 ج.م</span>
+                    <span>2,000 ج.م</span>
+                </div>
+            </div>
+            <!-- Search Bar -->
+            <div class="relative flex flex-col justify-center">
+                <label class="font-tajawal text-gold-300 text-sm mb-1.5 font-semibold text-gold-400">ابحث عن عطرك المفضل</label>
+                <div class="relative">
+                    <input type="text" id="searchInput" oninput="handleSearch(this.value)" placeholder="اكتب اسم العطر أو الماركة..." class="w-full pr-12 pl-4 py-3 rounded-lg bg-wood-950/50 border border-gold-500/20 text-gold-100 font-tajawal placeholder:text-gold-100/30 focus:border-gold-500/50 focus:outline-none transition">
+                    <span class="iconify absolute top-1/2 -translate-y-1/2 right-4 text-gold-500/50" data-icon="mdi:magnify" data-width="20"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="flex flex-wrap items-center justify-center gap-3 mb-12">
+            <button class="filter-btn active px-6 py-2.5 rounded-full border border-gold-500/30 text-sm font-tajawal transition-all duration-300" onclick="filterProducts('all')" data-filter="all">الكل</button>
+            <button class="filter-btn px-6 py-2.5 rounded-full border border-gold-500/30 text-gold-300 text-sm font-tajawal hover:bg-gold-500/10 transition-all duration-300" onclick="filterProducts('men')" data-filter="men">
+                <span class="iconify inline-block ml-1" data-icon="mdi:gender-male" data-width="16"></span> رجالي
+            </button>
+            <button class="filter-btn px-6 py-2.5 rounded-full border border-gold-500/30 text-gold-300 text-sm font-tajawal hover:bg-gold-500/10 transition-all duration-300" onclick="filterProducts('women')" data-filter="women">
+                <span class="iconify inline-block ml-1" data-icon="mdi:gender-female" data-width="16"></span> نسائي
+            </button>
+            <button class="filter-btn px-6 py-2.5 rounded-full border border-gold-500/30 text-gold-300 text-sm font-tajawal hover:bg-gold-500/10 transition-all duration-300" onclick="filterProducts('unisex')" data-filter="unisex">
+                <span class="iconify inline-block ml-1" data-icon="mdi:gender-male-female" data-width="16"></span> مشترك
+            </button>
+            <span class="text-gold-500/30 mx-2">|</span>
+            <button class="filter-btn px-5 py-2.5 rounded-full border border-gold-500/30 text-gold-300 text-sm font-tajawal hover:bg-gold-500/10 transition-all duration-300" onclick="filterProducts('woody')" data-filter="woody">خشبي</button>
+            <button class="filter-btn px-5 py-2.5 rounded-full border border-gold-500/30 text-gold-300 text-sm font-tajawal hover:bg-gold-500/10 transition-all duration-300" onclick="filterProducts('floral')" data-filter="floral">زهري</button>
+            <button class="filter-btn px-5 py-2.5 rounded-full border border-gold-500/30 text-gold-300 text-sm font-tajawal hover:bg-gold-500/10 transition-all duration-300" onclick="filterProducts('oriental')" data-filter="oriental">شرقي</button>
+            <button class="filter-btn px-5 py-2.5 rounded-full border border-gold-500/30 text-gold-300 text-sm font-tajawal hover:bg-gold-500/10 transition-all duration-300" onclick="filterProducts('fresh')" data-filter="fresh">منعش</button>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Products will be rendered by JS -->
+        </div>
+
+        <!-- No results -->
+        <div id="noResults" class="hidden text-center py-16">
+            <span class="iconify text-gold-500/30 mx-auto mb-4" data-icon="mdi:bottle-wine-outline" data-width="64"></span>
+            <p class="font-amiri text-xl text-gold-300/50">لا توجد منتجات في هذا التصنيف حالياً</p>
+        </div>
+    </div>
+</section>
+
+<!-- ========== ORDER TRACKING SECTION ========== -->
+<section id="tracker" class="relative py-20 wood-bg-light wood-grain border-t border-gold-500/10">
+    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Title -->
+        <div class="text-center mb-12">
+            <p class="font-amiri text-gold-400 text-lg mb-2">تابع شحنتك لحظة بلحظة</p>
+            <h2 class="font-playfair text-4xl sm:text-5xl font-bold gold-shimmer mb-4">تتبع حالة الطلب</h2>
+            <div class="ornament-divider max-w-xs mx-auto">
+                <span class="text-gold-500">❖</span>
+            </div>
+        </div>
+
+        <!-- Tracker Card -->
+        <div class="p-8 rounded-2xl gold-border bg-[#3e2723]/30 backdrop-blur-md text-right">
+            <div class="flex flex-col sm:flex-row gap-4 items-end mb-8">
+                <div class="flex-1 w-full">
+                    <label class="block font-tajawal text-gold-300 text-sm mb-2 font-semibold text-gold-400">رقم الطلب</label>
+                    <div class="relative">
+                        <input type="text" id="trackInput" placeholder="أدخل رقم طلبك (مثال: #1024)" class="w-full pr-12 pl-4 py-3.5 rounded-xl bg-wood-950/50 border border-gold-500/20 text-gold-100 font-tajawal placeholder:text-gold-100/30 focus:border-gold-500/50 focus:outline-none transition">
+                        <span class="iconify absolute top-1/2 -translate-y-1/2 right-4 text-gold-500/50" data-icon="mdi:ticket-percent-outline" data-width="20"></span>
+                    </div>
+                </div>
+                <button onclick="trackOrder()" class="px-8 py-3.5 bg-gradient-to-l from-gold-500 to-gold-700 text-wood-950 font-bold rounded-xl font-tajawal text-base hover:shadow-[0_0_20px_rgba(212,175,55,0.3)] transition-all duration-300 w-full sm:w-auto shrink-0 flex items-center justify-center gap-2">
+                    <span class="iconify" data-icon="mdi:magnify" data-width="20"></span>
+                    تتبع الآن
+                </button>
+            </div>
+
+            <!-- Result Timeline Container (Hidden initially) -->
+            <div id="trackerResult" class="hidden border-t border-gold-500/10 pt-8 mt-6">
+                <!-- Header Info -->
+                <div class="flex flex-wrap justify-between items-center gap-4 mb-8 bg-wood-950/30 p-4 rounded-xl border border-gold-500/10">
+                    <div>
+                        <span class="font-tajawal text-gold-100/40 text-xs block">تاريخ الطلب</span>
+                        <span id="trackDate" class="font-playfair text-gold-300 text-sm font-semibold">2026-05-31</span>
+                    </div>
+                    <div>
+                        <span class="font-tajawal text-gold-100/40 text-xs block">اسم العميل</span>
+                        <span id="trackCustomer" class="font-tajawal text-gold-300 text-sm font-semibold">محمد أحمد</span>
+                    </div>
+                    <div>
+                        <span class="font-tajawal text-gold-100/40 text-xs block">رقم الشحنة</span>
+                        <span id="trackNum" class="font-playfair text-gold-400 font-bold text-sm">#1024</span>
+                    </div>
+                </div>
+
+                <!-- Vertical Timeline -->
+                <div class="relative pl-6 pr-8 mr-4 border-r border-gold-500/10 space-y-8 py-2">
+                    <!-- Progress Bar Overlay (Dynamic height) -->
+                    <div id="trackerProgressLine" class="absolute top-0 right-[-1px] w-[1px] bg-gradient-to-b from-gold-400 to-gold-600 transition-all duration-1000 origin-top" style="height: 0%"></div>
+
+                    <!-- Step 1 -->
+                    <div class="relative flex items-start gap-4">
+                        <div id="stepIcon1" class="absolute -right-[41px] top-0 w-6 h-6 rounded-full border border-gold-500/30 bg-[#1a0f0a] flex items-center justify-center text-[10px] text-gold-400 transition-all duration-300">
+                            <span class="iconify" data-icon="mdi:check" data-width="12"></span>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-tajawal text-gold-300 font-bold text-base leading-tight">تم استلام الطلب</h4>
+                            <p class="font-tajawal text-xs text-gold-100/50 mt-1">لقد استلمنا طلبك بنجاح وجاري المراجعة</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="relative flex items-start gap-4">
+                        <div id="stepIcon2" class="absolute -right-[41px] top-0 w-6 h-6 rounded-full border border-gold-500/10 bg-[#1a0f0a] flex items-center justify-center text-[10px] text-gold-500/30 transition-all duration-300">
+                            <span class="iconify" data-icon="mdi:package-variant-closed" data-width="12"></span>
+                        </div>
+                        <div class="flex-1">
+                            <h4 id="stepTitle2" class="font-tajawal text-gold-100/40 font-bold text-base leading-tight">جاري التجهيز والتعبئة</h4>
+                            <p class="font-tajawal text-xs text-gold-100/30 mt-1">يتم الآن تغليف وتجهيز عطورك الفاخرة</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative flex items-start gap-4">
+                        <div id="stepIcon3" class="absolute -right-[41px] top-0 w-6 h-6 rounded-full border border-gold-500/10 bg-[#1a0f0a] flex items-center justify-center text-[10px] text-gold-500/30 transition-all duration-300">
+                            <span class="iconify" data-icon="mdi:truck-fast-outline" data-width="12"></span>
+                        </div>
+                        <div class="flex-1">
+                            <h4 id="stepTitle3" class="font-tajawal text-gold-100/40 font-bold text-base leading-tight">تم تسليم الشحنة لشركة الشحن</h4>
+                            <p class="font-tajawal text-xs text-gold-100/30 mt-1">شحنتك الآن في الطريق إليك مع المندوب</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="relative flex items-start gap-4">
+                        <div id="stepIcon4" class="absolute -right-[41px] top-0 w-6 h-6 rounded-full border border-gold-500/10 bg-[#1a0f0a] flex items-center justify-center text-[10px] text-gold-500/30 transition-all duration-300">
+                            <span class="iconify" data-icon="mdi:home-map-marker" data-width="12"></span>
+                        </div>
+                        <div class="flex-1">
+                            <h4 id="stepTitle4" class="font-tajawal text-gold-100/40 font-bold text-base leading-tight">جاري التوصيل لباب بيتك</h4>
+                            <p class="font-tajawal text-xs text-gold-100/30 mt-1">المندوب في طريقه لتسليمك العطور اليوم</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== BESTSELLER BANNER ========== -->
+<section class="relative py-16 overflow-hidden" style="background: linear-gradient(135deg, #2C1810, #1a0f0a);">
+    <div class="absolute inset-0 opacity-10">
+        <img src="https://images.unsplash.com/photo-1615634260167-c8cdede054de?w=1600&h=600&fit=crop" alt="" class="w-full h-full object-cover animate-pulse">
+    </div>
+    <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
+        <p class="font-amiri text-gold-400 text-lg mb-2">عرض خاص</p>
+        <h2 class="font-playfair text-3xl sm:text-5xl font-bold gold-shimmer mb-6">خصم يصل إلى 30% على مختارات مميزة</h2>
+        <p class="font-tajawal text-gold-100/60 text-lg mb-8 max-w-2xl mx-auto">استمتع بأفضل العطور بأسعار استثنائية لفترة محدودة</p>
+        <a href="#products" class="inline-block px-10 py-4 bg-gradient-to-l from-gold-500 to-gold-700 text-wood-950 font-bold rounded-full text-lg font-tajawal hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-105">
+            تسوق العروض
+        </a>
+    </div>
+</section>
+
+<!-- ========== ABOUT SECTION ========== -->
+<section id="about" class="relative py-20 wood-bg-light wood-grain">
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-12 items-center text-right">
+            <!-- Image -->
+            <div class="relative">
+                <div class="rounded-2xl overflow-hidden gold-border shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1615634260167-c8cdede054de?w=600&h=700&fit=crop" alt="About Bondok Perfumes" class="w-full h-[500px] object-cover transition-transform duration-500 hover:scale-105">
+                </div>
+                <div class="absolute -bottom-4 -left-4 w-24 h-24 border-2 border-gold-500/30 rounded-xl"></div>
+                <div class="absolute -top-4 -right-4 w-24 h-24 border-2 border-gold-500/30 rounded-xl"></div>
+            </div>
+
+            <!-- Text -->
+            <div>
+                <p class="font-amiri text-gold-400 text-lg mb-2">قصتنا</p>
+                <h2 class="font-playfair text-4xl sm:text-5xl font-bold gold-shimmer mb-6">من نحن</h2>
+                <div class="ornament-divider max-w-xs mb-8" style="margin-right: 0;">
+                    <span class="text-gold-500">✦</span>
+                </div>
+                <p class="font-tajawal text-gold-100/70 text-lg leading-relaxed mb-6">
+                    <strong class="text-gold-400">Bondok Perfumes</strong> وجهتك المثالية لعالم العطور الفاخرة. منذ تأسيسنا، نسعى لتقديم أرقى العطور العالمية بأفضل الأسعار، مع الحرص على أصالة كل قطرة عطر نقدمها.
+                </p>
+                <p class="font-tajawal text-gold-100/70 text-lg leading-relaxed mb-8">
+                    نحن نؤمن أن العطر ليس مجرد رائحة، بل هو هوية وتعبير عن الشخصية. لذلك نختار بعناية كل عطر في تشكيلتنا لنضمن لك تجربة استثنائية.
+                </p>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="text-center p-4 rounded-xl gold-border bg-wood-950/20 backdrop-blur-md">
+                        <p class="font-playfair text-3xl font-bold gold-shimmer">+500</p>
+                        <p class="font-tajawal text-gold-100/50 text-sm mt-1">عطر أصلي</p>
+                    </div>
+                    <div class="text-center p-4 rounded-xl gold-border bg-wood-950/20 backdrop-blur-md">
+                        <p class="font-playfair text-3xl font-bold gold-shimmer">+10K</p>
+                        <p class="font-tajawal text-gold-100/50 text-sm mt-1">عميل سعيد</p>
+                    </div>
+                    <div class="text-center p-4 rounded-xl gold-border bg-wood-950/20 backdrop-blur-md">
+                        <p class="font-playfair text-3xl font-bold gold-shimmer">100%</p>
+                        <p class="font-tajawal text-gold-100/50 text-sm mt-1">أصلي ومضمون</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== CONTACT SECTION ========== -->
+<section id="contact" class="relative py-20 wood-bg wood-grain">
+    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <p class="font-amiri text-gold-400 text-lg mb-2">نسعد بتواصلكم</p>
+            <h2 class="font-playfair text-4xl sm:text-5xl font-bold gold-shimmer mb-4">تواصل معنا</h2>
+            <div class="ornament-divider max-w-xs mx-auto">
+                <span class="text-gold-500">❖</span>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 text-right">
+            <!-- Contact Info -->
+            <div class="space-y-6">
+                <div class="flex items-start gap-4 p-6 rounded-xl gold-border bg-wood-950/20 backdrop-blur-md">
+                    <span class="iconify text-gold-400 mt-1 shrink-0" data-icon="mdi:map-marker" data-width="28"></span>
+                    <div>
+                        <h4 class="font-playfair text-gold-300 font-semibold mb-1">العنوان</h4>
+                        <p class="font-tajawal text-gold-100/60">القاهرة، مصر</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 p-6 rounded-xl gold-border bg-wood-950/20 backdrop-blur-md">
+                    <span class="iconify text-gold-400 mt-1 shrink-0" data-icon="mdi:phone" data-width="28"></span>
+                    <div>
+                        <h4 class="font-playfair text-gold-300 font-semibold mb-1">الهاتف</h4>
+                        <p class="font-tajawal text-gold-100/60" dir="ltr">+20 100 123 4567</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 p-6 rounded-xl gold-border bg-wood-950/20 backdrop-blur-md">
+                    <span class="iconify text-gold-400 mt-1 shrink-0" data-icon="mdi:whatsapp" data-width="28"></span>
+                    <div>
+                        <h4 class="font-playfair text-gold-300 font-semibold mb-1">واتساب</h4>
+                        <p class="font-tajawal text-gold-100/60" dir="ltr">+20 100 123 4567</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 p-6 rounded-xl gold-border bg-wood-950/20 backdrop-blur-md">
+                    <span class="iconify text-gold-400 mt-1 shrink-0" data-icon="mdi:clock-outline" data-width="28"></span>
+                    <div>
+                        <h4 class="font-playfair text-gold-300 font-semibold mb-1">مواعيد العمل</h4>
+                        <p class="font-tajawal text-gold-100/60">السبت - الخميس: 10 ص - 10 م</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <form onsubmit="handleContactForm(event)" class="space-y-4 p-8 rounded-2xl gold-border" style="background: rgba(62,39,35,0.4); backdrop-filter: blur(10px);">
+                <div>
+                    <label class="block font-tajawal text-gold-300 text-sm mb-2">الاسم</label>
+                    <input type="text" required placeholder="أدخل اسمك" class="w-full px-4 py-3 rounded-lg bg-wood-950/50 border border-gold-500/20 text-gold-100 font-tajawal placeholder:text-gold-100/30 focus:border-gold-500/50 focus:outline-none transition">
+                </div>
+                <div>
+                    <label class="block font-tajawal text-gold-300 text-sm mb-2">رقم الهاتف</label>
+                    <input type="tel" required placeholder="أدخل رقم هاتفك" class="w-full px-4 py-3 rounded-lg bg-wood-950/50 border border-gold-500/20 text-gold-100 font-tajawal placeholder:text-gold-100/30 focus:border-gold-500/50 focus:outline-none transition">
+                </div>
+                <div>
+                    <label class="block font-tajawal text-gold-300 text-sm mb-2">الرسالة</label>
+                    <textarea rows="4" required placeholder="اكتب رسالتك..." class="w-full px-4 py-3 rounded-lg bg-wood-950/50 border border-gold-500/20 text-gold-100 font-tajawal placeholder:text-gold-100/30 focus:border-gold-500/50 focus:outline-none transition resize-none"></textarea>
+                </div>
+                <button type="submit" class="w-full py-3 bg-gradient-to-l from-gold-500 to-gold-700 text-wood-950 font-bold rounded-lg font-tajawal text-lg hover:shadow-[0_0_20px_rgba(212,175,55,0.3)] transition-all duration-300">
+                    إرسال الرسالة
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="relative py-16 wood-bg wood-grain border-t border-gold-500/10">
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12 text-right">
+            <!-- Logo & About -->
+            <div class="md:col-span-1">
+                <div class="flex items-center gap-3 mb-4">
+                    <img src="https://z-cdn-media.chatglm.cn/files/6c66da01-4443-40aa-bb7b-d6bd54a7c505.png?auth_key=1880267790-08e21141053d4e15b394e1d4cf01e594-0-affca78eef460c96a99ed6f34f2f8614" alt="Bondok Perfumes" class="h-12 w-12 object-contain rounded-full" style="filter: drop-shadow(0 0 6px rgba(212,175,55,0.3));">
+                    <div>
+                        <h3 class="font-playfair text-lg font-bold gold-shimmer">Bondok</h3>
+                        <p class="font-playfair text-xs tracking-[0.15em] text-gold-400">PERFUMES</p>
+                    </div>
+                </div>
+                <p class="font-tajawal text-gold-100/50 text-sm leading-relaxed">وجهتك المثالية لعالم العطور الفاخرة والأصيلة</p>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h4 class="font-playfair text-gold-400 font-semibold mb-4">روابط سريعة</h4>
+                <ul class="space-y-2">
+                    <li><a href="#home" class="font-tajawal text-gold-100/50 hover:text-gold-400 transition text-sm">الرئيسية</a></li>
+                    <li><a href="#categories" class="font-tajawal text-gold-100/50 hover:text-gold-400 transition text-sm">التصنيفات</a></li>
+                    <li><a href="#products" class="font-tajawal text-gold-100/50 hover:text-gold-400 transition text-sm">المنتجات</a></li>
+                    <li><a href="#tracker" class="font-tajawal text-gold-100/50 hover:text-gold-400 transition text-sm">تتبع طلبك</a></li>
+                    <li><a href="#about" class="font-tajawal text-gold-100/50 hover:text-gold-400 transition text-sm">من نحن</a></li>
+                    <li><a href="#contact" class="font-tajawal text-gold-100/50 hover:text-gold-400 transition text-sm">تواصل معنا</a></li>
+                </ul>
+            </div>
+
+            <!-- Categories -->
+            <div>
+                <h4 class="font-playfair text-gold-400 font-semibold mb-4">التصنيفات</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" onclick="filterProducts('men')" class="font-tajawal text-gold-100/50 hover:text-gold-400 transition text-sm">عطور رجالية</a></li>
+                    <li><a href="#" onclick="filterProducts('women')" class="font-tajawal text-gold-100/50 hover:text-gold-400 transition text-sm">عطور نسائية</a></li>
+                    <li><a href="#" onclick="filterProducts('unisex')" class="font-tajawal text-gold-100/50 hover:text-gold-400 transition text-sm">عطور مشتركة</a></li>
+                    <li><a href="#" onclick="filterProducts('woody')" class="font-tajawal text-gold-100/50 hover:text-gold-400 transition text-sm">عطور خشبية</a></li>
+                    <li><a href="#" onclick="filterProducts('oriental')" class="font-tajawal text-gold-100/50 hover:text-gold-400 transition text-sm">عطور شرقية</a></li>
+                </ul>
+            </div>
+
+            <!-- Social -->
+            <div>
+                <h4 class="font-playfair text-gold-400 font-semibold mb-4">تابعنا</h4>
+                <div class="flex gap-3 mb-6 justify-end">
+                    <a href="#" class="w-10 h-10 rounded-full border border-gold-500/30 flex items-center justify-center text-gold-400 hover:bg-gold-500/10 hover:border-gold-500/50 transition">
+                        <span class="iconify" data-icon="mdi:facebook" data-width="20"></span>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-gold-500/30 flex items-center justify-center text-gold-400 hover:bg-gold-500/10 hover:border-gold-500/50 transition">
+                        <span class="iconify" data-icon="mdi:instagram" data-width="20"></span>
+                    </a>
+                    <a href="https://wa.me/201010733294" target="_blank" class="w-10 h-10 rounded-full border border-gold-500/30 flex items-center justify-center text-gold-400 hover:bg-gold-500/10 hover:border-gold-500/50 transition">
+                        <span class="iconify" data-icon="mdi:whatsapp" data-width="20"></span>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-gold-500/30 flex items-center justify-center text-gold-400 hover:bg-gold-500/10 hover:border-gold-500/50 transition">
+                        <span class="iconify" data-icon="mdi:tiktok" data-width="20"></span>
+                    </a>
+                </div>
+                <h4 class="font-playfair text-gold-400 font-semibold mb-3">طرق الدفع</h4>
+                <div class="flex gap-2 justify-end flex-wrap">
+                    <span class="px-3 py-1 rounded border border-gold-500/20 text-gold-100/40 text-xs font-tajawal">كاش عند الاستلام</span>
+                    <span class="px-3 py-1 rounded border border-gold-500/20 text-gold-100/40 text-xs font-tajawal">فودافون كاش</span>
+                    <span class="px-3 py-1 rounded border border-gold-500/20 text-gold-100/40 text-xs font-tajawal">إنستا باي</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom -->
+        <div class="border-t border-gold-500/10 pt-8 text-center">
+            <div class="ornament-divider max-w-lg mx-auto mb-4">
+                <span class="text-gold-500/50 text-sm">✦</span>
+            </div>
+            <p class="font-tajawal text-gold-100/30 text-sm">
+                © 2026 Bondok Perfumes. جميع الحقوق محفوظة
+            </p>
+        </div>
+    </div>
+</footer>
+
+<!-- ========== WHATSAPP FLOATING BUTTON ========== -->
+<a href="https://wa.me/201010733294" target="_blank" class="fixed bottom-6 left-6 z-[999] w-14 h-14 bg-green-600 hover:bg-green-500 rounded-full flex items-center justify-center shadow-lg hover:shadow-green-500/30 transition-all duration-300 hover:scale-110" title="تواصل واتساب">
+    <span class="iconify text-white" data-icon="mdi:whatsapp" data-width="30"></span>
+</a>
+
+<script>
+// ========== PRODUCTS DATA ==========
+const products = [
+    {
+        id: 1,
+        name: "Dior Sauvage",
+        nameAr: "ديور سافاج",
+        brand: "Dior",
+        price: 3500,
+        oldPrice: 4200,
+        gender: "men",
+        type: "fresh",
+        size: "100ml",
+        image: "https://images.unsplash.com/photo-1594035910387-fea081ae7aec?w=400&h=400&fit=crop",
+        badge: "الأكثر مبيعاً",
+        longevity: 5,
+        sillage: 5
+    },
+    {
+        id: 2,
+        name: "Chanel No.5",
+        nameAr: "شانيل نمبر 5",
+        brand: "Chanel",
+        price: 4500,
+        oldPrice: null,
+        gender: "women",
+        type: "floral",
+        size: "100ml",
+        image: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=400&h=400&fit=crop",
+        badge: "كلاسيكي",
+        longevity: 5,
+        sillage: 4
+    },
+    {
+        id: 3,
+        name: "Tom Ford Black Orchid",
+        nameAr: "توم فورد بلاك أوركيد",
+        brand: "Tom Ford",
+        price: 5200,
+        oldPrice: 6000,
+        gender: "unisex",
+        type: "oriental",
+        size: "100ml",
+        image: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=400&fit=crop",
+        badge: "فاخر",
+        longevity: 5,
+        sillage: 5
+    },
+    {
+        id: 4,
+        name: "Creed Aventus",
+        nameAr: "كريد أفنتوس",
+        brand: "Creed",
+        price: 8500,
+        oldPrice: 9500,
+        gender: "men",
+        type: "woody",
+        size: "100ml",
+        image: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=400&h=400&fit=crop",
+        badge: "بريميوم",
+        longevity: 4,
+        sillage: 4
+    },
+    {
+        id: 5,
+        name: "Versace Eros",
+        nameAr: "فرساتشي إيروس",
+        brand: "Versace",
+        price: 2800,
+        oldPrice: 3200,
+        gender: "men",
+        type: "fresh",
+        size: "100ml",
+        image: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=400&h=400&fit=crop",
+        badge: null,
+        longevity: 4,
+        sillage: 4
+    },
+    {
+        id: 6,
+        name: "YSL Libre",
+        nameAr: "إيف سان لوران ليبر",
+        brand: "YSL",
+        price: 3200,
+        oldPrice: null,
+        gender: "women",
+        type: "floral",
+        size: "90ml",
+        image: "https://images.unsplash.com/photo-1587017539504-67cfbddac569?w=400&h=400&fit=crop",
+        badge: "جديد",
+        longevity: 4,
+        sillage: 3
+    },
+    {
+        id: 7,
+        name: "Armani Acqua di Gio",
+        nameAr: "أرماني أكوا دي جيو",
+        brand: "Armani",
+        price: 2900,
+        oldPrice: 3400,
+        gender: "men",
+        type: "fresh",
+        size: "100ml",
+        image: "https://images.unsplash.com/photo-1563170351-be82bc888aa4?w=400&h=400&fit=crop",
+        badge: null,
+        longevity: 3,
+        sillage: 3
+    },
+    {
+        id: 8,
+        name: "Gucci Bloom",
+        nameAr: "غوتشي بلوم",
+        brand: "Gucci",
+        price: 3100,
+        oldPrice: null,
+        gender: "women",
+        type: "floral",
+        size: "100ml",
+        image: "https://images.unsplash.com/photo-1595425964272-fc617fa8e4be?w=400&h=400&fit=crop",
+        badge: null,
+        longevity: 3,
+        sillage: 3
+    },
+    {
+        id: 9,
+        name: "Jean Paul Gaultier Le Male",
+        nameAr: "جان بول غوتييه لو مال",
+        brand: "JPG",
+        price: 2600,
+        oldPrice: 3000,
+        gender: "men",
+        type: "oriental",
+        size: "125ml",
+        image: "https://images.unsplash.com/photo-1594035910387-fea081ae7aec?w=400&h=400&fit=crop&q=80",
+        badge: null,
+        longevity: 4,
+        sillage: 4
+    },
+    {
+        id: 10,
+        name: "Lancôme La Vie Est Belle",
+        nameAr: "لانكوم لا في إست بيل",
+        brand: "Lancôme",
+        price: 3800,
+        oldPrice: 4300,
+        gender: "women",
+        type: "sweet",
+        size: "75ml",
+        image: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=400&h=400&fit=crop&q=80",
+        badge: "الأكثر مبيعاً",
+        longevity: 5,
+        sillage: 4
+    },
+    {
+        id: 11,
+        name: "Oud Wood by Tom Ford",
+        nameAr: "توم فورد عود وود",
+        brand: "Tom Ford",
+        price: 6800,
+        oldPrice: null,
+        gender: "unisex",
+        type: "woody",
+        size: "50ml",
+        image: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=400&fit=crop&q=80",
+        badge: "حصري",
+        longevity: 4,
+        sillage: 3
+    },
+    {
+        id: 12,
+        name: "Bvlgari Man In Black",
+        nameAr: "بولغاري مان إن بلاك",
+        brand: "Bvlgari",
+        price: 2400,
+        oldPrice: 2800,
+        gender: "men",
+        type: "spicy",
+        size: "100ml",
+        image: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=400&h=400&fit=crop&q=80",
+        badge: null,
+        longevity: 4,
+        sillage: 4
+    },
+    {
+        id: 13,
+        name: "Dolce & Gabbana Light Blue",
+        nameAr: "دولتشي آند غابانا لايت بلو",
+        brand: "D&G",
+        price: 2700,
+        oldPrice: null,
+        gender: "women",
+        type: "fresh",
+        size: "100ml",
+        image: "https://images.unsplash.com/photo-1587017539504-67cfbddac569?w=400&h=400&fit=crop&q=80",
+        badge: null,
+        longevity: 3,
+        sillage: 3
+    },
+    {
+        id: 14,
+        name: "Maison Francis Kurkdjian Baccarat Rouge 540",
+        nameAr: "فرانسيس كوركجيان باكارات روز",
+        brand: "MFK",
+        price: 12000,
+        oldPrice: null,
+        gender: "unisex",
+        type: "sweet",
+        size: "70ml",
+        image: "https://images.unsplash.com/photo-1595425964272-fc617fa8e4be?w=400&h=400&fit=crop&q=80",
+        badge: "فاخر جداً",
+        longevity: 5,
+        sillage: 5
+    },
+    {
+        id: 15,
+        name: "Bleu de Chanel",
+        nameAr: "بلو دي شانيل",
+        brand: "Chanel",
+        price: 3900,
+        oldPrice: 4500,
+        gender: "men",
+        type: "woody",
+        size: "100ml",
+        image: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=400&h=400&fit=crop&q=80",
+        badge: "كلاسيكي",
+        longevity: 4,
+        sillage: 4
+    },
+    {
+        id: 16,
+        name: "Oud Ispahan by Dior",
+        nameAr: "ديور عود أصفهان",
+        brand: "Dior",
+        price: 5500,
+        oldPrice: null,
+        gender: "unisex",
+        type: "oriental",
+        size: "250ml",
+        image: "https://images.unsplash.com/photo-1563170351-be82bc888aa4?w=400&h=400&fit=crop&q=80",
+        badge: "شرقي أصيل",
+        longevity: 5,
+        sillage: 5
+    }
+];
+
+// ========== RENDER PRODUCTS ==========
+let currentFilter = 'all';
+let cart = [];
+let searchQuery = '';
+let maxPrice = 12000;
+
+function renderProducts(filter = 'all') {
+    const grid = document.getElementById('productsGrid');
+    const noResults = document.getElementById('noResults');
+
+    // 1. Filter by category
+    let filtered = products;
+    if (filter !== 'all') {
+        filtered = products.filter(p => p.gender === filter || p.type === filter);
+    }
+
+    // 2. Filter by search query
+    if (searchQuery.trim() !== '') {
+        const query = searchQuery.toLowerCase().trim();
+        filtered = filtered.filter(p => 
+            p.name.toLowerCase().includes(query) || 
+            p.nameAr.includes(query) || 
+            p.brand.toLowerCase().includes(query)
+        );
+    }
+
+    // 3. Filter by price
+    filtered = filtered.filter(p => p.price <= maxPrice);
+
+    if (filtered.length === 0) {
+        grid.innerHTML = '';
+        noResults.classList.remove('hidden');
+        return;
+    }
+    noResults.classList.add('hidden');
+
+    grid.innerHTML = filtered.map(p => `
+        <div class="product-card rounded-2xl overflow-hidden gold-border relative group bg-[#3e2723]/30 backdrop-blur-xs" data-gender="${p.gender}" data-type="${p.type}">
+            ${p.badge ? `<span class="absolute top-3 right-3 z-10 px-3 py-1 rounded-full text-xs font-bold font-tajawal" style="background: linear-gradient(135deg, #D4AF37, #B8860B); color: #2C1810;">${p.badge}</span>` : ''}
+            
+            <!-- Image -->
+            <div class="relative overflow-hidden aspect-square bg-wood-950/30">
+                <img src="${p.image}" alt="${p.name}" class="product-img w-full h-full object-cover transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-wood-950/40 to-transparent"></div>
+                
+                <!-- Quick View Button -->
+                <button onclick="quickView(${p.id})" class="absolute top-3 left-3 w-9 h-9 rounded-full bg-wood-950/60 border border-gold-500/30 flex items-center justify-center text-gold-400 hover:bg-gold-500/20 transition opacity-0 group-hover:opacity-100 duration-300" title="عرض سريع">
+                    <span class="iconify" data-icon="mdi:eye-outline" data-width="18"></span>
+                </button>
+
+                <!-- Add to Cart Overlay -->
+                <button onclick="addToCart(${p.id})" class="add-cart-btn absolute bottom-4 left-4 right-4 py-2.5 rounded-xl font-tajawal font-bold text-sm transition-all duration-300 opacity-0 translate-y-4" style="background: linear-gradient(135deg, #D4AF37, #B8860B); color: #2C1810;">
+                    <span class="iconify inline-block ml-1" data-icon="mdi:cart-plus" data-width="18"></span>
+                    أضف للسلة
+                </button>
+            </div>
+            
+            <!-- Info -->
+            <div class="p-5 text-right">
+                <p class="font-playfair text-gold-500/60 text-xs tracking-wider mb-1">${p.brand.toUpperCase()}</p>
+                <h3 class="font-playfair text-gold-300 font-semibold text-base mb-1 leading-tight">${p.name}</h3>
+                <p class="font-tajawal text-gold-100/40 text-sm mb-3">${p.nameAr} - ${p.size}</p>
+                
+                <div class="flex items-center gap-2 mb-3 justify-start">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-tajawal border border-gold-500/20 text-gold-400/60">
+                        ${p.gender === 'men' ? 'رجالي' : p.gender === 'women' ? 'نسائي' : 'مشترك'}
+                    </span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-tajawal border border-gold-500/20 text-gold-400/60">
+                        ${getTypeAr(p.type)}
+                    </span>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="font-playfair text-gold-400 font-bold text-lg">${p.price.toLocaleString()}</span>
+                        <span class="font-tajawal text-gold-400/40 text-xs">ج.م</span>
+                        ${p.oldPrice ? `<span class="font-tajawal text-gold-100/30 text-xs line-through">${p.oldPrice.toLocaleString()}</span>` : ''}
+                    </div>
+                    ${p.oldPrice ? `<span class="text-xs font-bold font-tajawal px-2 py-0.5 rounded" style="background: rgba(212,175,55,0.15); color: #DAA520;">-${Math.round((1 - p.price/p.oldPrice)*100)}%</span>` : ''}
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function getTypeAr(type) {
+    const types = {
+        woody: 'خشبي',
+        floral: 'زهري',
+        oriental: 'شرقي',
+        fresh: 'منعش',
+        spicy: 'حار',
+        sweet: 'حلو'
+    };
+    return types[type] || type;
+}
+
+// ========== FILTER ==========
+function filterProducts(filter) {
+    currentFilter = filter;
+    renderProducts(filter);
+
+    // Update active button
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.filter === filter) {
+            btn.classList.add('active');
+        }
+    });
+
+    // Scroll to products
+    document.getElementById('products').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function filterByGender(gender) {
+    filterProducts(gender);
+}
+
+function filterByType(type) {
+    filterProducts(type);
+}
+
+function handleSearch(val) {
+    searchQuery = val;
+    renderProducts(currentFilter);
+}
+
+function updatePriceFilter(val) {
+    maxPrice = parseInt(val);
+    document.getElementById('priceVal').textContent = maxPrice.toLocaleString();
+    renderProducts(currentFilter);
+}
+
+// ========== CART STATE & FUNCTIONS ==========
+function loadCart() {
+    const stored = localStorage.getItem('bondok_perfumes_cart');
+    if (stored) {
+        try {
+            cart = JSON.parse(stored);
+        } catch(e) {
+            cart = [];
+        }
+    }
+    updateCartUI();
+}
+
+function saveCart() {
+    localStorage.setItem('bondok_perfumes_cart', JSON.stringify(cart));
+    updateCartUI();
+}
+
+function updateCartUI() {
+    const cartCount = document.getElementById('cartCount');
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    
+    if (totalItems > 0) {
+        cartCount.textContent = totalItems;
+        cartCount.classList.remove('hidden');
+    } else {
+        cartCount.classList.add('hidden');
+    }
+    
+    // Subtotal
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    document.getElementById('cartSubtotal').textContent = subtotal.toLocaleString();
+    
+    // Enable/Disable Checkout Button
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    if (cart.length > 0) {
+        checkoutBtn.removeAttribute('disabled');
+    } else {
+        checkoutBtn.setAttribute('disabled', 'true');
+    }
+    
+    // Render Items inside Cart Drawer
+    const drawerContainer = document.getElementById('cartDrawerItems');
+    if (cart.length === 0) {
+        drawerContainer.innerHTML = `
+            <div class="h-full flex flex-col items-center justify-center text-center py-20 opacity-40">
+                <span class="iconify text-gold-500 mb-4" data-icon="mdi:cart-off" data-width="64"></span>
+                <p class="font-tajawal text-gold-300">سلة المشتريات فارغة</p>
+                <p class="font-tajawal text-xs text-gold-100 mt-1">تصفح المنتجات وأضف ما يعجبك</p>
+            </div>
+        `;
+        return;
+    }
+    
+    drawerContainer.innerHTML = cart.map(item => `
+        <div class="flex gap-4 p-4 rounded-xl gold-border bg-wood-950/20 backdrop-blur-md relative group/item text-right">
+            <!-- Delete Button -->
+            <button onclick="removeFromCart(${item.id})" class="absolute top-2 left-2 text-red-400 hover:text-red-300 transition opacity-0 group-hover/item:opacity-100" title="حذف">
+                <span class="iconify" data-icon="mdi:trash-can-outline" data-width="18"></span>
+            </button>
+            
+            <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-lg border border-gold-500/10 shrink-0">
+            
+            <div class="flex-1 min-w-0">
+                <p class="font-playfair text-[10px] text-gold-500/60 tracking-wider">${item.brand.toUpperCase()}</p>
+                <h4 class="font-playfair text-gold-300 text-sm font-semibold truncate leading-tight">${item.name}</h4>
+                <p class="font-tajawal text-gold-100/40 text-xs mb-2 truncate">${item.nameAr} - ${item.size}</p>
+                
+                <div class="flex items-center justify-between">
+                    <!-- Price -->
+                    <div class="flex items-center gap-1">
+                        <span class="font-playfair text-gold-400 font-bold text-sm">${(item.price * item.quantity).toLocaleString()}</span>
+                        <span class="font-tajawal text-gold-400/40 text-[10px]">ج.م</span>
+                    </div>
+                    
+                    <!-- Quantity Selector -->
+                    <div class="flex items-center border border-gold-500/20 rounded-lg overflow-hidden bg-wood-950/40">
+                        <button onclick="changeQty(${item.id}, -1)" class="px-2 py-1 text-gold-400 hover:bg-gold-500/10 hover:text-gold-200 transition focus:outline-none">
+                            <span class="iconify" data-icon="mdi:minus" data-width="12"></span>
+                        </button>
+                        <span class="px-3 text-gold-200 text-xs font-bold font-playfair">${item.quantity}</span>
+                        <button onclick="changeQty(${item.id}, 1)" class="px-2 py-1 text-gold-400 hover:bg-gold-500/10 hover:text-gold-200 transition focus:outline-none">
+                            <span class="iconify" data-icon="mdi:plus" data-width="12"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Add to Cart
+function addToCart(productId) {
+    const prod = products.find(p => p.id === productId);
+    if (!prod) return;
+    
+    const existing = cart.find(item => item.id === productId);
+    if (existing) {
+        existing.quantity++;
+    } else {
+        cart.push({
+            id: prod.id,
+            name: prod.name,
+            nameAr: prod.nameAr,
+            brand: prod.brand,
+            price: prod.price,
+            size: prod.size,
+            image: prod.image,
+            quantity: 1
+        });
+    }
+    
+    saveCart();
+    showToast(`تمت إضافة "${prod.nameAr}" إلى السلة`);
+    
+    // Automatically open drawer
+    openCartDrawer();
+}
+
+function changeQty(productId, delta) {
+    const item = cart.find(i => i.id === productId);
+    if (!item) return;
+    
+    item.quantity += delta;
+    if (item.quantity <= 0) {
+        removeFromCart(productId);
+    } else {
+        saveCart();
+    }
+}
+
+function removeFromCart(productId) {
+    cart = cart.filter(item => item.id !== productId);
+    saveCart();
+    showToast("تم الحذف من السلة");
+}
+
+function toggleCartDrawer() {
+    const drawer = document.getElementById('cartDrawer');
+    if (drawer.classList.contains('hidden')) {
+        openCartDrawer();
+    } else {
+        closeCartDrawer();
+    }
+}
+
+function openCartDrawer() {
+    const drawer = document.getElementById('cartDrawer');
+    const backdrop = document.getElementById('cartBackdrop');
+    const panel = document.getElementById('cartPanel');
+    
+    drawer.classList.remove('hidden');
+    setTimeout(() => {
+        backdrop.classList.add('opacity-100');
+        panel.classList.remove('-translate-x-full');
+    }, 20);
+}
+
+function closeCartDrawer() {
+    const drawer = document.getElementById('cartDrawer');
+    const backdrop = document.getElementById('cartBackdrop');
+    const panel = document.getElementById('cartPanel');
+    
+    backdrop.classList.remove('opacity-100');
+    panel.classList.add('-translate-x-full');
+    
+    setTimeout(() => {
+        drawer.classList.add('hidden');
+    }, 300);
+}
+
+// ========== CHECKOUT FUNCTIONS ==========
+function openCheckoutModal() {
+    closeCartDrawer();
+    document.getElementById('checkoutModal').classList.add('active');
+}
+
+function closeCheckoutModal() {
+    document.getElementById('checkoutModal').classList.remove('active');
+}
+
+function submitOrder(e) {
+    e.preventDefault();
+    
+    const name = document.getElementById('custName').value.trim();
+    const phone = document.getElementById('custPhone').value.trim();
+    const address = document.getElementById('custAddress').value.trim();
+    
+    if (cart.length === 0) {
+        showToast("السلة فارغة حالياً!");
+        return;
+    }
+    
+    // Format WhatsApp Message
+    let msg = `*طلب جديد من متجر Bondok Perfumes ⚜️*\n\n`;
+    msg += `*👤 بيانات العميل:*\n`;
+    msg += `• *الاسم:* ${name}\n`;
+    msg += `• *رقم الهاتف:* ${phone}\n`;
+    msg += `• *العنوان:* ${address}\n\n`;
+    
+    msg += `*🛍️ تفاصيل المنتجات:*\n`;
+    let subtotal = 0;
+    cart.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        subtotal += itemTotal;
+        msg += `${index + 1}. *${item.nameAr}* (${item.name})\n`;
+        msg += `   الكمية: ${item.quantity} | الحجم: ${item.size} | السعر: ${itemTotal.toLocaleString()} ج.م\n`;
+    });
+    
+    msg += `\n*💵 السعر الإجمالي:* *${subtotal.toLocaleString()} ج.م*\n\n`;
+    msg += `شكراً لتسوقكم معنا 🤍`;
+    
+    const encodedMsg = encodeURIComponent(msg);
+    const waUrl = `https://wa.me/201010733294?text=${encodedMsg}`;
+    
+    // Clear Cart
+    cart = [];
+    saveCart();
+    
+    // Close Modal
+    closeCheckoutModal();
+    
+    // Show Success message and redirect
+    showToast("جاري تحويلك لإتمام الطلب عبر واتساب...");
+    
+    setTimeout(() => {
+        window.open(waUrl, '_blank');
+    }, 1500);
+}
+
+// ========== QUIZ STATE & FUNCTIONS ==========
+let quizStep = 1;
+let quizAnswers = {
+    vibe: '',
+    gender: '',
+    budget: ''
+};
+
+function openQuizModal() {
+    quizStep = 1;
+    quizAnswers = { vibe: '', gender: '', budget: '' };
+    renderQuizStep();
+    document.getElementById('quizModal').classList.add('active');
+}
+
+function closeQuizModal() {
+    document.getElementById('quizModal').classList.remove('active');
+}
+
+function selectQuizOption(key, value) {
+    quizAnswers[key] = value;
+    quizStep++;
+    renderQuizStep();
+}
+
+function prevQuizStep() {
+    if (quizStep > 1) {
+        quizStep--;
+        renderQuizStep();
+    }
+}
+
+function renderQuizStep() {
+    const body = document.getElementById('quizBody');
+    
+    if (quizStep === 1) {
+        body.innerHTML = `
+            <span class="iconify text-gold-400 mx-auto mb-2 animate-bounce" data-icon="mdi:creation" data-width="40"></span>
+            <h3 class="font-tajawal text-2xl font-bold gold-shimmer mb-1">مكتشف العطور الذكي</h3>
+            <p class="font-tajawal text-sm text-gold-100/50 mb-6">الخطوة 1 من 3: ما هو طابعك المفضل في الروائح؟</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-right">
+                <button onclick="selectQuizOption('vibe', 'fresh')" class="p-4 rounded-xl border border-gold-500/20 hover:border-gold-500 hover:bg-gold-500/10 transition flex items-center justify-between text-gold-100 font-tajawal focus:outline-none w-full">
+                    <span class="iconify text-gold-400 shrink-0" data-icon="mdi:water" data-width="24"></span>
+                    <div class="text-right flex-1 pr-3">
+                        <p class="font-bold text-sm sm:text-base">منعش وخفيف</p>
+                        <p class="text-[10px] sm:text-xs text-gold-100/40">روائح البحر، الحمضيات، والنشاط</p>
+                    </div>
+                </button>
+                <button onclick="selectQuizOption('vibe', 'floral')" class="p-4 rounded-xl border border-gold-500/20 hover:border-gold-500 hover:bg-gold-500/10 transition flex items-center justify-between text-gold-100 font-tajawal focus:outline-none w-full">
+                    <span class="iconify text-gold-400 shrink-0" data-icon="mdi:flower-tulip" data-width="24"></span>
+                    <div class="text-right flex-1 pr-3">
+                        <p class="font-bold text-sm sm:text-base">زهري ورومانسي</p>
+                        <p class="text-[10px] sm:text-xs text-gold-100/40">روائح الورود الفواحة والأزهار</p>
+                    </div>
+                </button>
+                <button onclick="selectQuizOption('vibe', 'oriental')" class="p-4 rounded-xl border border-gold-500/20 hover:border-gold-500 hover:bg-gold-500/10 transition flex items-center justify-between text-gold-100 font-tajawal focus:outline-none w-full">
+                    <span class="iconify text-gold-400 shrink-0" data-icon="mdi:mosque" data-width="24"></span>
+                    <div class="text-right flex-1 pr-3">
+                        <p class="font-bold text-sm sm:text-base">شرقي ودافئ</p>
+                        <p class="text-[10px] sm:text-xs text-gold-100/40">روائح العود، التوابل والجاذبية</p>
+                    </div>
+                </button>
+                <button onclick="selectQuizOption('vibe', 'woody')" class="p-4 rounded-xl border border-gold-500/20 hover:border-gold-500 hover:bg-gold-500/10 transition flex items-center justify-between text-gold-100 font-tajawal focus:outline-none w-full">
+                    <span class="iconify text-gold-400 shrink-0" data-icon="mdi:tree" data-width="24"></span>
+                    <div class="text-right flex-1 pr-3">
+                        <p class="font-bold text-sm sm:text-base">خشبي وغامض</p>
+                        <p class="text-[10px] sm:text-xs text-gold-100/40">روائح الأخشاب، الصندل، والفخامة</p>
+                    </div>
+                </button>
+            </div>
+        `;
+    } else if (quizStep === 2) {
+        body.innerHTML = `
+            <button onclick="prevQuizStep()" class="absolute top-4 right-4 text-gold-400/50 hover:text-gold-400 transition flex items-center gap-1 font-tajawal text-xs focus:outline-none">
+                <span class="iconify" data-icon="mdi:arrow-right" data-width="16"></span> السابق
+            </button>
+            <span class="iconify text-gold-400 mx-auto mb-2" data-icon="mdi:gender-male-female" data-width="40"></span>
+            <h3 class="font-tajawal text-2xl font-bold gold-shimmer mb-1">مكتشف العطور الذكي</h3>
+            <p class="font-tajawal text-sm text-gold-100/50 mb-6">الخطوة 2 من 3: لمن هذا العطر؟</p>
+            
+            <div class="grid grid-cols-1 gap-4 text-right">
+                <button onclick="selectQuizOption('gender', 'men')" class="p-4 rounded-xl border border-gold-500/20 hover:border-gold-500 hover:bg-gold-500/10 transition flex items-center justify-between text-gold-100 font-tajawal focus:outline-none w-full">
+                    <span class="iconify text-gold-400 shrink-0" data-icon="mdi:gender-male" data-width="24"></span>
+                    <span class="font-bold pr-3">عطر رجالي فاخر</span>
+                </button>
+                <button onclick="selectQuizOption('gender', 'women')" class="p-4 rounded-xl border border-gold-500/20 hover:border-gold-500 hover:bg-gold-500/10 transition flex items-center justify-between text-gold-100 font-tajawal focus:outline-none w-full">
+                    <span class="iconify text-gold-400 shrink-0" data-icon="mdi:gender-female" data-width="24"></span>
+                    <span class="font-bold pr-3">عطر نسائي ساحر</span>
+                </button>
+                <button onclick="selectQuizOption('gender', 'unisex')" class="p-4 rounded-xl border border-gold-500/20 hover:border-gold-500 hover:bg-gold-500/10 transition flex items-center justify-between text-gold-100 font-tajawal focus:outline-none w-full">
+                    <span class="iconify text-gold-400 shrink-0" data-icon="mdi:gender-male-female" data-width="24"></span>
+                    <span class="font-bold pr-3">عطر للجنسين (مشترك)</span>
+                </button>
+            </div>
+        `;
+    } else if (quizStep === 3) {
+        body.innerHTML = `
+            <button onclick="prevQuizStep()" class="absolute top-4 right-4 text-gold-400/50 hover:text-gold-400 transition flex items-center gap-1 font-tajawal text-xs focus:outline-none">
+                <span class="iconify" data-icon="mdi:arrow-right" data-width="16"></span> السابق
+            </button>
+            <span class="iconify text-gold-400 mx-auto mb-2" data-icon="mdi:cash" data-width="40"></span>
+            <h3 class="font-tajawal text-2xl font-bold gold-shimmer mb-1">مكتشف العطور الذكي</h3>
+            <p class="font-tajawal text-sm text-gold-100/50 mb-6">الخطوة 3 من 3: ما هي الميزانية المقترحة؟</p>
+            
+            <div class="grid grid-cols-1 gap-4 text-right">
+                <button onclick="selectQuizOption('budget', 'eco')" class="p-4 rounded-xl border border-gold-500/20 hover:border-gold-500 hover:bg-gold-500/10 transition flex items-center justify-between text-gold-100 font-tajawal focus:outline-none w-full">
+                    <span class="font-playfair text-gold-400 font-bold">حتى 3,500 ج.م</span>
+                    <span class="font-bold pr-3">اقتصادية وممتازة</span>
+                </button>
+                <button onclick="selectQuizOption('budget', 'mid')" class="p-4 rounded-xl border border-gold-500/20 hover:border-gold-500 hover:bg-gold-500/10 transition flex items-center justify-between text-gold-100 font-tajawal focus:outline-none w-full">
+                    <span class="font-playfair text-gold-400 font-bold">من 3,500 إلى 6,000 ج.م</span>
+                    <span class="font-bold pr-3">ميزانية متوسطة</span>
+                </button>
+                <button onclick="selectQuizOption('budget', 'high')" class="p-4 rounded-xl border border-gold-500/20 hover:border-gold-500 hover:bg-gold-500/10 transition flex items-center justify-between text-gold-100 font-tajawal focus:outline-none w-full">
+                    <span class="font-playfair text-gold-400 font-bold">أكثر من 6,000 ج.م</span>
+                    <span class="font-bold pr-3">عطور فاخرة وحصرية</span>
+                </button>
+            </div>
+        `;
+    } else {
+        // Calculate matches
+        let matches = products.filter(p => p.type === quizAnswers.vibe && p.gender === quizAnswers.gender);
+        
+        if (matches.length === 0) {
+            matches = products.filter(p => p.type === quizAnswers.vibe);
+        }
+        if (matches.length === 0) {
+            matches = products.filter(p => p.gender === quizAnswers.gender);
+        }
+        
+        // Filter by budget
+        if (quizAnswers.budget === 'eco') {
+            matches = matches.filter(p => p.price <= 3500);
+        } else if (quizAnswers.budget === 'mid') {
+            matches = matches.filter(p => p.price > 3500 && p.price <= 6000);
+        } else {
+            matches = matches.filter(p => p.price > 6000);
+        }
+        
+        if (matches.length === 0) {
+            matches = [products[0], products[2]]; // default fallback
+        }
+        
+        const finalMatches = matches.slice(0, 2);
+        
+        body.innerHTML = `
+            <span class="iconify text-gold-400 mx-auto mb-2 animate-bounce" data-icon="mdi:gift-outline" data-width="40"></span>
+            <h3 class="font-tajawal text-2xl font-bold gold-shimmer mb-1">عطورك المثالية المقترحة ✧</h3>
+            <p class="font-tajawal text-sm text-gold-100/50 mb-6">لقد وجدنا أفضل العطور التي تناسب شخصيتك تماماً:</p>
+            
+            <div class="grid grid-cols-1 ${finalMatches.length > 1 ? 'sm:grid-cols-2' : ''} gap-4 mb-6">
+                ${finalMatches.map(p => `
+                    <div class="p-4 rounded-xl gold-border bg-wood-950/20 text-center relative group">
+                        <img src="${p.image}" alt="${p.name}" class="w-24 h-24 object-cover rounded-lg mx-auto mb-3 border border-gold-500/10">
+                        <p class="font-playfair text-[9px] text-gold-500/60 tracking-wider">${p.brand.toUpperCase()}</p>
+                        <h4 class="font-playfair text-gold-300 font-bold text-sm truncate">${p.name}</h4>
+                        <p class="font-tajawal text-gold-100/40 text-xs mb-3 truncate">${p.nameAr}</p>
+                        
+                        <div class="flex items-center justify-center gap-1 mb-4">
+                            <span class="font-playfair text-gold-400 font-bold text-base">${p.price.toLocaleString()}</span>
+                            <span class="font-tajawal text-gold-400/40 text-[10px]">ج.م</span>
+                        </div>
+                        
+                        <button onclick="addToCart(${p.id}); closeQuizModal();" class="w-full py-2 bg-gradient-to-l from-gold-500 to-gold-700 text-wood-950 font-bold rounded-lg font-tajawal text-xs hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] transition-all duration-300">
+                            أضف للسلة
+                        </button>
+                    </div>
+                `).join('')}
+            </div>
+            
+            <div class="flex items-center justify-center gap-3">
+                <button onclick="openQuizModal()" class="px-6 py-2.5 border border-gold-500/50 text-gold-400 rounded-full font-tajawal text-sm hover:bg-gold-500/10 transition">
+                    إعادة الاختبار
+                </button>
+                <button onclick="closeQuizModal()" class="px-6 py-2.5 bg-gold-500 text-wood-950 rounded-full font-tajawal font-bold text-sm hover:shadow-[0_0_15px_rgba(212,175,55,0.2)] transition">
+                    تصفح جميع المنتجات
+                </button>
+            </div>
+        `;
+    }
+}
+
+// ========== QUICK VIEW ==========
+function quickView(id) {
+    const p = products.find(pr => pr.id === id);
+    if (!p) return;
+
+    const modal = document.getElementById('quickModal');
+    const body = document.getElementById('modalBody');
+
+    body.innerHTML = `
+        <img src="${p.image}" alt="${p.name}" class="w-40 h-40 object-cover rounded-xl mx-auto mb-4 border border-gold-500/20 shadow-md">
+        <p class="font-playfair text-gold-500/60 text-xs tracking-wider mb-1">${p.brand.toUpperCase()}</p>
+        <h3 class="font-playfair text-gold-300 font-bold text-xl mb-1">${p.name}</h3>
+        <p class="font-tajawal text-gold-100/50 text-base mb-2">${p.nameAr}</p>
+        <div class="flex items-center justify-center gap-2 mb-4">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-tajawal border border-gold-500/20 text-gold-400/60">
+                ${p.gender === 'men' ? '♂ رجالي' : p.gender === 'women' ? '♀ نسائي' : '⚥ مشترك'}
+            </span>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-tajawal border border-gold-500/20 text-gold-400/60">
+                ${getTypeAr(p.type)}
+            </span>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-tajawal border border-gold-500/20 text-gold-400/60">
+                ${p.size}
+            </span>
+        </div>
+
+        <!-- Scent Performance Indicators (Longevity & Sillage) -->
+        <div class="space-y-3 mb-6 text-right border-t border-gold-500/10 pt-4 max-w-xs mx-auto">
+            <h4 class="font-tajawal text-gold-300 font-semibold text-xs mb-1 flex items-center justify-between">
+                <span class="font-playfair text-gold-400 font-bold">${p.longevity}/5</span>
+                <span>⏳ الثبات العطري:</span>
+            </h4>
+            <div class="w-full bg-wood-950/40 rounded-full h-1.5 overflow-hidden border border-gold-500/10">
+                <div class="bg-gradient-to-l from-gold-400 to-gold-600 h-full rounded-full" style="width: ${p.longevity * 20}%"></div>
+            </div>
+            
+            <h4 class="font-tajawal text-gold-300 font-semibold text-xs mb-1 flex items-center justify-between pt-1">
+                <span class="font-playfair text-gold-400 font-bold">${p.sillage}/5</span>
+                <span>💨 قوة الفوحان:</span>
+            </h4>
+            <div class="w-full bg-wood-950/40 rounded-full h-1.5 overflow-hidden border border-gold-500/10">
+                <div class="bg-gradient-to-l from-gold-400 to-gold-600 h-full rounded-full" style="width: ${p.sillage * 20}%"></div>
+            </div>
+        </div>
+
+        <div class="flex items-center justify-center gap-3 mb-2">
+            <span class="font-playfair text-gold-400 font-bold text-2xl">${p.price.toLocaleString()}</span>
+            <span class="font-tajawal text-gold-400/40 text-sm">ج.م</span>
+            ${p.oldPrice ? `<span class="font-tajawal text-gold-100/30 text-sm line-through">${p.oldPrice.toLocaleString()} ج.م</span>` : ''}
+        </div>
+        <button onclick="addToCart(${p.id}); closeModal();" class="px-8 py-3 bg-gradient-to-l from-gold-500 to-gold-700 text-wood-950 font-bold rounded-full font-tajawal text-base hover:shadow-[0_0_20px_rgba(212,175,55,0.3)] transition-all duration-300">
+            <span class="iconify inline-block ml-1" data-icon="mdi:cart-plus" data-width="20"></span>
+            أضف للسلة
+        </button>
+    `;
+
+    modal.classList.add('active');
+}
+
+function closeModal() {
+    document.getElementById('quickModal').classList.remove('active');
+}
+
+// ========== ORDER TRACKER ==========
+function trackOrder() {
+    const input = document.getElementById('trackInput').value.trim();
+    if (input === '') {
+        showToast("يرجى إدخال رقم الطلب!");
+        return;
+    }
+    
+    // Extract clean number
+    const orderNum = input.replace(/#/g, '');
+    if (isNaN(orderNum) || orderNum === '') {
+        showToast("رقم الطلب غير صحيح! يرجى إدخال أرقام فقط.");
+        return;
+    }
+
+    const resultDiv = document.getElementById('trackerResult');
+    resultDiv.classList.remove('hidden');
+    
+    // Set simulated details
+    document.getElementById('trackNum').textContent = `#${orderNum}`;
+    
+    // Seeded random data based on order number
+    const names = ["أحمد محمود", "كريم محمد", "يوسف علي", "رنا مصطفى", "نور حسام", "سارة إبراهيم", "هاني عادل"];
+    const nameIndex = parseInt(orderNum) % names.length;
+    document.getElementById('trackCustomer').textContent = names[nameIndex];
+    
+    // Set date (simulated: few days ago)
+    const orderDate = new Date();
+    orderDate.setDate(orderDate.getDate() - (parseInt(orderNum) % 4));
+    const dateStr = orderDate.toISOString().split('T')[0];
+    document.getElementById('trackDate').textContent = dateStr;
+    
+    // Determine status step (1 to 4) based on order number
+    let activeStep = 1;
+    const rem = parseInt(orderNum) % 4;
+    if (rem === 0) activeStep = 4;
+    else if (rem === 1) activeStep = 3;
+    else if (rem === 2) activeStep = 2;
+    else activeStep = 1;
+    
+    // Reset steps styles
+    for (let i = 1; i <= 4; i++) {
+        const icon = document.getElementById(`stepIcon${i}`);
+        const title = document.getElementById(`stepTitle${i}`);
+        
+        if (i <= activeStep) {
+            icon.classList.remove('border-gold-500/10', 'text-gold-500/30');
+            icon.classList.add('border-gold-500', 'text-gold-400', 'bg-gold-500/10');
+            if (title) {
+                title.classList.remove('text-gold-100/40');
+                title.classList.add('text-gold-300');
+            }
+        } else {
+            icon.classList.add('border-gold-500/10', 'text-gold-500/30');
+            icon.classList.remove('border-gold-500', 'text-gold-400', 'bg-gold-500/10');
+            if (title) {
+                title.classList.add('text-gold-100/40');
+                title.classList.remove('text-gold-300');
+            }
+        }
+    }
+    
+    // Animate progress line height
+    const progressLine = document.getElementById('trackerProgressLine');
+    let targetPercent = 0;
+    if (activeStep === 1) targetPercent = 0;
+    else if (activeStep === 2) targetPercent = 33;
+    else if (activeStep === 3) targetPercent = 66;
+    else targetPercent = 100;
+    
+    progressLine.style.height = '0%';
+    setTimeout(() => {
+        progressLine.style.height = `${targetPercent}%`;
+    }, 100);
+    
+    showToast("تم تحديث حالة تتبع الطلب بنجاح");
+}
+
+// ========== TOAST ==========
+function showToast(msg) {
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toast-msg');
+    toastMsg.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ========== MOBILE MENU ==========
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    menu.classList.toggle('hidden');
+}
+
+// ========== CONTACT FORM ==========
+function handleContactForm(e) {
+    e.preventDefault();
+    showToast('تم إرسال رسالتك بنجاح! سنتواصل معك قريباً');
+    e.target.reset();
+}
+
+// ========== NAVBAR SCROLL ==========
+window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    if (window.scrollY > 50) {
+        nav.classList.add('nav-scrolled');
+    } else {
+        nav.classList.remove('nav-scrolled');
+    }
+});
+
+// ========== FLOATING PARTICLES ==========
+function createParticles() {
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 25; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.bottom = '-10px';
+        particle.style.animationDuration = (8 + Math.random() * 12) + 's';
+        particle.style.animationDelay = Math.random() * 10 + 's';
+        particle.style.width = (2 + Math.random() * 3) + 'px';
+        particle.style.height = particle.style.width;
+        particle.style.opacity = (0.2 + Math.random() * 0.5).toString();
+        container.appendChild(particle);
+    }
+}
+
+// ========== INIT ==========
+document.addEventListener('DOMContentLoaded', () => {
+    renderProducts('all');
+    loadCart();
+    createParticles();
+});
+
+// Close modal on Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeModal();
+        closeCheckoutModal();
+        closeCartDrawer();
+        closeQuizModal();
+    }
+});
+</script>
+
+</body>
+</html>
+
