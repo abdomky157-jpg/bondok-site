@@ -75,11 +75,31 @@ export default function Footer() {
             <p className="text-gold-100/40 text-xs leading-relaxed mb-4">
               وجهتك المثالية لعالم العطور الفاخرة. أرقى العطور العالمية بأفضل الأسعار.
             </p>
-            {/* Social Media - WhatsApp only until social accounts are configured */}
-            <div className="flex items-center gap-2">
-              <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full border border-gold-500/20 flex items-center justify-center text-green-400 hover:bg-green-500/15 hover:border-green-500/40 transition-all hover:scale-110" aria-label="واتساب">
-                <MessageCircle size={16} />
-              </a>
+            {/* Social Media - WhatsApp */}
+            <div className="flex flex-col gap-2">
+              <span className="text-[11px] text-gold-400/60">تواصل مباشر عبر واتساب:</span>
+              <div className="flex flex-wrap items-center gap-2">
+                <a
+                  href="https://wa.me/201067278639"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-2.5 py-1 rounded-full border border-gold-500/20 flex items-center gap-1.5 text-green-400 hover:bg-green-500/15 hover:border-green-500/40 transition-all text-xs"
+                  aria-label="واتساب 1"
+                >
+                  <MessageCircle size={14} />
+                  <span>01067278639</span>
+                </a>
+                <a
+                  href="https://wa.me/201010733294"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-2.5 py-1 rounded-full border border-gold-500/20 flex items-center gap-1.5 text-green-400 hover:bg-green-500/15 hover:border-green-500/40 transition-all text-xs"
+                  aria-label="واتساب 2"
+                >
+                  <MessageCircle size={14} />
+                  <span>01010733294</span>
+                </a>
+              </div>
             </div>
           </div>
 
@@ -161,6 +181,11 @@ export default function Footer() {
               <li className="text-gold-100/40 text-xs flex items-center gap-2">🏦 تحويل بنكي</li>
               <li className="text-gold-100/40 text-xs flex items-center gap-2">💳 بطاقة ائتمان</li>
             </ul>
+            <div className="pt-2 border-t border-gold-500/10 space-y-1 text-gold-100/60 text-xs" dir="ltr">
+              <p className="flex items-center gap-1.5 justify-end">
+                <span>01067278639</span> / <span>01217784049</span> 📞
+              </p>
+            </div>
           </div>
         </div>
 

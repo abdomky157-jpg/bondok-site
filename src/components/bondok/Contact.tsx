@@ -11,36 +11,66 @@ export default function Contact() {
   const [formName, setFormName] = useState("");
   const [formPhone, setFormPhone] = useState("");
   const [formMessage, setFormMessage] = useState("");
+  const [selectedWhatsApp, setSelectedWhatsApp] = useState("201067278639");
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
   const contactCards = [
     {
       icon: <MapPin size={24} className="text-gold-400" />,
       title: "العنوان",
-      value: settings.contactAddress || "أمام فتح الله ماركت - الهانوفيل - العجمي - الاسكندريه",
       color: "rgba(212,164,76,.1)",
-      link: "https://maps.app.goo.gl/iyPNUvuU1c1r54zj9",
+      items: [
+        {
+          label: settings.contactAddress || "أمام فتح الله ماركت - الهانوفيل - العجمي - الاسكندريه",
+          link: "https://maps.app.goo.gl/iyPNUvuU1c1r54zj9",
+        },
+      ],
     },
     {
       icon: <Phone size={24} className="text-gold-400" />,
-      title: "الهاتف",
-      value: settings.contactPhone || "+20 106 727 8639",
+      title: "أرقام الهاتف",
       color: "rgba(212,164,76,.1)",
       dir: "ltr",
+      items: [
+        {
+          label: "+20 106 727 8639",
+          badge: "أساسي",
+          link: "tel:+201067278639",
+        },
+        {
+          label: "+20 121 778 4049",
+          badge: "إضافي",
+          link: "tel:+201217784049",
+        },
+      ],
     },
     {
       icon: <MessageCircle size={24} className="text-green-400" />,
-      title: "واتساب",
-      value: settings.contactWhatsapp || "+20 106 727 8639",
+      title: "واتساب مباشر",
       color: "rgba(34,197,94,.1)",
       dir: "ltr",
-      link: `https://wa.me/${(settings.contactWhatsapp || "+201067278639").replace(/[^0-9+]/g, "")}`,
+      items: [
+        {
+          label: "+20 106 727 8639",
+          badge: "واتساب 1",
+          link: "https://wa.me/201067278639",
+        },
+        {
+          label: "+20 101 073 3294",
+          badge: "واتساب 2",
+          link: "https://wa.me/201010733294",
+        },
+      ],
     },
     {
       icon: <Clock size={24} className="text-gold-400" />,
       title: "مواعيد العمل",
-      value: "السبت - الخميس: 10ص - 10م",
       color: "rgba(212,164,76,.1)",
+      items: [
+        {
+          label: "السبت - الخميس: 10ص - 10م",
+        },
+      ],
     },
   ];
 
@@ -60,38 +90,43 @@ export default function Contact() {
           {/* Contact Cards */}
           <div className="space-y-3">
             {contactCards.map((card, i) => (
-              card.link ? (
-                <a
-                  key={i}
-                  href={card.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-start gap-4 p-4 sm:p-5 rounded-xl gold-border transition-all duration-300 hover:bg-gold-500/5"
-                  style={{ background: "rgba(45,27,17,.3)" }}
-                >
-                  <div className="w-10 h-10 shrink-0 rounded-lg flex items-center justify-center" style={{ background: card.color }}>
-                    {card.icon}
-                  </div>
-                  <div>
-                    <h4 className="font-playfair text-gold-300 font-semibold text-sm mb-0.5">{card.title}</h4>
-                    <p className="text-gold-100/50 text-sm" dir={card.dir || "rtl"}>{card.value}</p>
-                  </div>
-                </a>
-              ) : (
-                <div
-                  key={i}
-                  className="flex items-start gap-4 p-4 sm:p-5 rounded-xl gold-border transition-all duration-300"
-                  style={{ background: "rgba(45,27,17,.3)" }}
-                >
-                  <div className="w-10 h-10 shrink-0 rounded-lg flex items-center justify-center" style={{ background: card.color }}>
-                    {card.icon}
-                  </div>
-                  <div>
-                    <h4 className="font-playfair text-gold-300 font-semibold text-sm mb-0.5">{card.title}</h4>
-                    <p className="text-gold-100/50 text-sm" dir={card.dir || "rtl"}>{card.value}</p>
+              <div
+                key={i}
+                className="flex items-start gap-4 p-4 sm:p-5 rounded-xl gold-border transition-all duration-300 hover:bg-gold-500/5"
+                style={{ background: "rgba(45,27,17,.3)" }}
+              >
+                <div className="w-10 h-10 shrink-0 rounded-lg flex items-center justify-center" style={{ background: card.color }}>
+                  {card.icon}
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-playfair text-gold-300 font-semibold text-sm mb-1.5">{card.title}</h4>
+                  <div className="flex flex-col gap-1.5">
+                    {card.items.map((item, idx) => (
+                      item.link ? (
+                        <a
+                          key={idx}
+                          href={item.link}
+                          target={item.link.startsWith("tel:") ? undefined : "_blank"}
+                          rel="noopener noreferrer"
+                          className="text-gold-100/70 hover:text-gold-400 transition text-sm flex items-center gap-2 group/num"
+                          dir={card.dir || "rtl"}
+                        >
+                          <span className="font-mono group-hover/num:underline">{item.label}</span>
+                          {item.badge && (
+                            <span className="text-[10px] px-2 py-0.5 rounded-full border border-gold-500/25 text-gold-300 bg-gold-500/10">
+                              {item.badge}
+                            </span>
+                          )}
+                        </a>
+                      ) : (
+                        <p key={idx} className="text-gold-100/60 text-sm" dir={card.dir || "rtl"}>
+                          {item.label}
+                        </p>
+                      )
+                    ))}
                   </div>
                 </div>
-              )
+              </div>
             ))}
           </div>
 
@@ -101,9 +136,8 @@ export default function Contact() {
               e.preventDefault();
               setSending(true);
               try {
-                const whatsappNumber = (settings.contactWhatsapp || "+201067278639").replace(/[^0-9+]/g, "");
                 const msg = `📩 رسالة جديدة من موقع Bondok Perfumes\n\n👤 الاسم: ${formName}\n📱 التليفون: ${formPhone}\n💬 الرسالة: ${formMessage}`;
-                const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`;
+                const waUrl = `https://wa.me/${selectedWhatsApp}?text=${encodeURIComponent(msg)}`;
                 window.open(waUrl, "_blank");
                 setSubmitted(true);
                 setFormName("");
@@ -121,6 +155,35 @@ export default function Contact() {
           >
             <h3 className="font-playfair text-gold-300 font-semibold text-lg mb-2">أرسل رسالة</h3>
             
+            {/* Choose WhatsApp recipient */}
+            <div>
+              <label className="block text-xs text-gold-400 mb-1.5">إرسال الرسالة إلى رقم:</label>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setSelectedWhatsApp("201067278639")}
+                  className={`px-3 py-2 rounded-lg text-xs font-semibold border transition text-center ${
+                    selectedWhatsApp === "201067278639"
+                      ? "border-green-500 bg-green-500/20 text-green-300"
+                      : "border-gold-500/20 text-gold-100/60 hover:border-gold-500/40"
+                  }`}
+                >
+                  واتساب 1 (01067278639)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedWhatsApp("201010733294")}
+                  className={`px-3 py-2 rounded-lg text-xs font-semibold border transition text-center ${
+                    selectedWhatsApp === "201010733294"
+                      ? "border-green-500 bg-green-500/20 text-green-300"
+                      : "border-gold-500/20 text-gold-100/60 hover:border-gold-500/40"
+                  }`}
+                >
+                  واتساب 2 (01010733294)
+                </button>
+              </div>
+            </div>
+
             {/* Name Field */}
             <div className="relative">
               <input
