@@ -7,7 +7,6 @@ import { LOGO_URL } from "@/lib/constants";
 import {
   Truck, Shield, RefreshCw, MessageCircle, X,
   Heart,
-  Phone, MapPin, ChevronUp, ExternalLink,
 } from "lucide-react";
 
 export default function Footer() {

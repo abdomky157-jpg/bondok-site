@@ -3,12 +3,9 @@
 import { useState, useEffect } from "react";
 import { MessageCircle, Shuffle, ArrowUp, X, Phone } from "lucide-react";
 import { useBondokStore } from "@/store/bondok";
-import { useSiteData } from "@/context/SiteContext";
-import { DEFAULT_WHATSAPP, DEFAULT_WHATSAPP_2, DEFAULT_PHONE_2 } from "@/lib/constants";
 
 export default function FloatingButtons() {
   const setSurpriseOpen = useBondokStore((s) => s.setSurpriseOpen);
-  const { settings } = useSiteData();
   const [showTop, setShowTop] = useState(false);
   const [showWhatsAppPicker, setShowWhatsAppPicker] = useState(false);
 

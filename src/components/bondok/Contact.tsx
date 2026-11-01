@@ -4,6 +4,20 @@ import { useState } from "react";
 import { MapPin, Phone, MessageCircle, Send, Clock, Mail } from "lucide-react";
 import { useSiteData } from "@/context/SiteContext";
 
+interface ContactCardItem {
+  label: string;
+  badge?: string;
+  link?: string;
+}
+
+interface ContactCard {
+  icon: React.ReactNode;
+  title: string;
+  color: string;
+  dir?: "ltr" | "rtl";
+  items: ContactCardItem[];
+}
+
 export default function Contact() {
   const { settings } = useSiteData();
   const [submitted, setSubmitted] = useState(false);
@@ -14,7 +28,7 @@ export default function Contact() {
   const [selectedWhatsApp, setSelectedWhatsApp] = useState("201067278639");
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
-  const contactCards = [
+  const contactCards: ContactCard[] = [
     {
       icon: <MapPin size={24} className="text-gold-400" />,
       title: "العنوان",
