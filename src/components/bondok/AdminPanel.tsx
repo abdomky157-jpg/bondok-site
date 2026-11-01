@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { X, Save, Plus, Trash2, Upload, ChevronDown, ChevronUp, Loader2, Image, Palette, Type, Package, Settings, ShoppingBag, Users, Phone, Mail, MapPin, Calendar, Search, Edit3, UserPlus, TrendingUp, DollarSign, ShoppingCart, Clock, MessageSquare, Star, Crown, Crop } from "lucide-react";
+import { X, Save, Plus, Trash2, Upload, ChevronDown, ChevronUp, Loader2, Image, Palette, Type, Package, Settings, ShoppingBag, Users, Phone, Mail, MapPin, Calendar, Search, Edit3, UserPlus, TrendingUp, DollarSign, ShoppingCart, Clock, MessageSquare, Star, Crown, Crop, MessageCircle, RefreshCw } from "lucide-react";
 import { useSiteData } from "@/context/SiteContext";
 import ImageCropModal from "@/components/bondok/ImageCropModal";
 
@@ -1105,7 +1105,22 @@ function OrdersTab() {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <span className="text-gold-300">{orders.length} طلب</span>
+        <div className="flex items-center gap-2">
+          <span className="text-gold-300 font-bold text-sm">{orders.length} طلب إجمالي</span>
+          {orders.filter(o => o.status === 'new').length > 0 && (
+            <span className="px-2 py-0.5 rounded-full bg-blue-500/20 border border-blue-500/40 text-blue-400 text-xs font-semibold animate-pulse">
+              {orders.filter(o => o.status === 'new').length} طلب جديد
+            </span>
+          )}
+        </div>
+        <button
+          onClick={load}
+          disabled={loading}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gold-500/20 text-gold-400 hover:bg-gold-500/10 text-xs transition"
+        >
+          <RefreshCw size={13} className={loading ? "animate-spin" : ""} />
+          <span>تحديث الطلبات</span>
+        </button>
       </div>
 
       {orders.length === 0 ? (
@@ -1119,6 +1134,8 @@ function OrdersTab() {
             const items = parseItems(order.items);
             const statusInfo = STATUS_MAP[order.status] || STATUS_MAP.new;
             const isExpanded = expandedId === order.id;
+            const cleanPhone = String(order.phone || "").replace(/[^0-9]/g, "");
+            const waPhone = cleanPhone.startsWith("0") ? "2" + cleanPhone : cleanPhone.startsWith("20") ? cleanPhone : "20" + cleanPhone;
 
             return (
               <div key={order.id} className="rounded-xl border border-gold-500/20 overflow-hidden" style={{ background: "rgba(45,27,17,.5)" }}>
@@ -1128,7 +1145,7 @@ function OrdersTab() {
                     <div className="flex items-center gap-3">
                       <span className="font-playfair text-gold-400 font-bold text-sm">#{order.id}</span>
                       <span className="text-gold-300 text-sm font-semibold">{order.name}</span>
-                      <span className="text-gold-100/40 text-xs" dir="ltr">{order.phone}</span>
+                      <span className="text-gold-100/40 text-xs font-mono" dir="ltr">{order.phone}</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <span className="text-gold-400 font-bold text-sm">{order.total.toLocaleString()} ج.م</span>
@@ -1141,60 +1158,90 @@ function OrdersTab() {
                     {items.map((it: any) => `${it.name} (${it.size}) x${it.qty}`).join(" · ")}
                   </div>
 
-                  {/* Date + Payment */}
-                  <div className="flex items-center gap-3 mt-2 text-xs text-gold-100/30">
+                  {/* Date + Payment + Quick Address */}
+                  <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-gold-100/40">
                     <span>{new Date(order.createdAt).toLocaleDateString("ar-EG", { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}</span>
                     <span>·</span>
                     <span>{PAYMENT_MAP[order.payment] || order.payment}</span>
+                    <span>·</span>
+                    <span className="text-gold-300/80 truncate max-w-[250px]">📍 {order.address}</span>
                   </div>
+                </div>
+
+                {/* Quick Customer Action Buttons */}
+                <div className="px-4 pb-3 flex flex-wrap items-center gap-2">
+                  <a
+                    href={`https://wa.me/${waPhone}?text=${encodeURIComponent(`أهلاً بحضرتك أستاذ ${order.name}، بخصوص طلبك رقم #${order.id} من متجر Bondok Perfumes...`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="px-2.5 py-1 rounded-lg bg-green-600/20 border border-green-500/30 text-green-400 hover:bg-green-600/30 text-xs flex items-center gap-1.5 transition font-medium"
+                  >
+                    <MessageCircle size={13} />
+                    <span>واتساب العميل</span>
+                  </a>
+                  <a
+                    href={`tel:${order.phone}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="px-2.5 py-1 rounded-lg bg-gold-500/10 border border-gold-500/20 text-gold-300 hover:bg-gold-500/20 text-xs flex items-center gap-1.5 transition"
+                  >
+                    <Phone size={13} />
+                    <span>اتصال</span>
+                  </a>
+                  <span className={`inline-flex px-2 py-0.5 rounded-full text-[11px] font-semibold border mr-auto ${statusInfo.bg} ${statusInfo.color}`}>
+                    {statusInfo.label}
+                  </span>
                 </div>
 
                 {/* Expanded Details */}
                 {isExpanded && (
-                  <div className="border-t border-gold-500/10 p-4 space-y-3">
+                  <div className="border-t border-gold-500/10 p-4 space-y-3 bg-wood-950/30">
                     {/* Full Items List */}
                     <div className="space-y-1.5">
                       {items.map((it: any, idx: number) => (
                         <div key={idx} className="flex justify-between text-xs">
-                          <span className="text-gold-100/60">
-                            {it.name} ({it.size}) × {it.qty}
+                          <span className="text-gold-100/70">
+                            🧴 {it.name} ({it.size}) × {it.qty}
                           </span>
-                          <span className="text-gold-300">{(it.price * it.qty).toLocaleString()} ج.م</span>
+                          <span className="text-gold-300 font-mono">{(it.price * it.qty).toLocaleString()} ج.م</span>
                         </div>
                       ))}
-                      <div className="border-t border-gold-500/10 pt-1.5 mt-1.5">
-                        <div className="flex justify-between text-xs">
-                          <span className="text-gold-100/40">المجموع</span>
-                          <span className="text-gold-300">{order.subtotal.toLocaleString()} ج.م</span>
+                      <div className="border-t border-gold-500/10 pt-1.5 mt-1.5 space-y-1 text-xs">
+                        <div className="flex justify-between">
+                          <span className="text-gold-100/40">المجموع الفرعي</span>
+                          <span className="text-gold-300 font-mono">{order.subtotal.toLocaleString()} ج.م</span>
                         </div>
                         {order.discount > 0 && (
-                          <div className="flex justify-between text-xs">
-                            <span className="text-green-400">الخصم</span>
-                            <span className="text-green-400">-{order.discount.toLocaleString()} ج.م</span>
+                          <div className="flex justify-between text-green-400">
+                            <span>الخصم</span>
+                            <span className="font-mono">-{order.discount.toLocaleString()} ج.م</span>
                           </div>
                         )}
-                        <div className="flex justify-between font-bold text-sm">
-                          <span className="text-gold-400">الإجمالي</span>
-                          <span className="text-gold-400">{order.total.toLocaleString()} ج.م</span>
+                        <div className="flex justify-between font-bold text-sm border-t border-gold-500/10 pt-1">
+                          <span className="text-gold-400">الإجمالي النهائي</span>
+                          <span className="text-gold-400 font-mono">{order.total.toLocaleString()} ج.م</span>
                         </div>
                       </div>
                     </div>
 
-                    {/* Address */}
-                    <div className="text-xs text-gold-100/40">
-                      <span className="text-gold-400">📍 العنوان:</span> {order.address}
+                    {/* Full Address */}
+                    <div className="text-xs p-2.5 rounded-lg border border-gold-500/15 bg-wood-950/50 space-y-1">
+                      <p className="text-gold-300 font-semibold flex items-center gap-1">
+                        <MapPin size={13} className="text-gold-400" /> عنوان التوصيل بالتفصيل:
+                      </p>
+                      <p className="text-gold-100/80 pr-4">{order.address}</p>
                     </div>
 
                     {/* Notes */}
                     {order.notes && (
-                      <div className="text-xs text-gold-100/40">
-                        <span className="text-gold-400">📝 ملاحظات:</span> {order.notes}
+                      <div className="text-xs p-2 rounded-lg border border-gold-500/10 bg-wood-950/30">
+                        <span className="text-gold-400 font-semibold">📝 ملاحظات العميل:</span> {order.notes}
                       </div>
                     )}
 
                     {/* Status Selector */}
-                    <div className="flex items-center gap-3 pt-2 border-t border-gold-500/10">
-                      <span className="text-gold-400 text-xs font-semibold">الحالة:</span>
+                    <div className="pt-2 border-t border-gold-500/10">
+                      <p className="text-gold-400 text-xs font-semibold mb-2">تحديث حالة الطلب والشحن:</p>
                       <div className="flex flex-wrap gap-2">
                         {Object.entries(STATUS_MAP).map(([key, info]) => {
                           const isActive = order.status === key;
@@ -1208,8 +1255,8 @@ function OrdersTab() {
                               disabled={updatingId === order.id}
                               className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition ${
                                 isActive
-                                  ? `${info.bg} ${info.color} border-current`
-                                  : "border-gold-500/10 text-gold-100/30 hover:border-gold-500/30 hover:text-gold-100/50"
+                                  ? `${info.bg} ${info.color} border-current ring-1 ring-gold-500/30`
+                                  : "border-gold-500/10 text-gold-100/40 hover:border-gold-500/30 hover:text-gold-100/70"
                               }`}
                             >
                               {updatingId === order.id && !isActive ? (
@@ -1224,13 +1271,6 @@ function OrdersTab() {
                     </div>
                   </div>
                 )}
-
-                {/* Status Badge (always visible) */}
-                <div className="px-4 pb-3">
-                  <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-semibold border ${statusInfo.bg} ${statusInfo.color}`}>
-                    {statusInfo.label}
-                  </span>
-                </div>
               </div>
             );
           })}

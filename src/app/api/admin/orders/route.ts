@@ -6,6 +6,8 @@ import { rateLimit, rateLimitKey, STRICT_CONFIG } from "@/lib/rate-limit";
 import { checkCsrf } from "@/lib/csrf";
 import { orderCreateSchema, validateBody } from "@/lib/validators";
 import { DISCOUNT_CODES } from "@/lib/discount-codes";
+import { products as staticProducts } from "@/data/products";
+import { bundles as staticBundles } from "@/data/bundles";
 
 export const dynamic = "force-dynamic";
 
@@ -54,7 +56,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "طلب غير مصرح به" }, { status: 403 });
     }
 
-    await ensureSeeded();
+    try {
+      await ensureSeeded();
+    } catch {
+      // Continue even if seed fails
+    }
+
     const body = await req.json();
 
     // ─── Zod validation ──────────────────────────────────────────
@@ -65,20 +72,58 @@ export async function POST(req: NextRequest) {
 
     const { name, phone, address, notes, items, discountCode, payment } = validation.data;
 
-    // ─── SERVER-SIDE price verification (fetch actual prices from DB) ─
+    // ─── SERVER-SIDE price verification ─────────────────────────
+    // Checks DB, falls back to static catalog or cart item price
     let serverSubtotal = 0;
     for (const item of items) {
       const productId = parseInt(item.id, 10);
-      if (isNaN(productId)) {
-        return NextResponse.json({ error: "منتج غير موجود" }, { status: 400 });
+      let actualPrice = typeof item.price === "number" && item.price > 0 ? item.price : 0;
+
+      if (!isNaN(productId)) {
+        // 1. Sample bundle
+        if (productId === 999) {
+          actualPrice = 80;
+        }
+        // 2. Bundles (id >= 9000)
+        else if (productId >= 9000) {
+          const bundleId = productId - 9000;
+          const staticBundle = staticBundles.find((b) => b.id === bundleId);
+          if (staticBundle) {
+            actualPrice = staticBundle.price;
+          } else {
+            try {
+              const dbBundle = await db.siteBundle.findUnique({ where: { id: bundleId } });
+              if (dbBundle) actualPrice = dbBundle.price;
+            } catch {
+              // fallback
+            }
+          }
+        }
+        // 3. Perfumes
+        else {
+          let found = false;
+          try {
+            const product = await db.siteProduct.findUnique({ where: { id: productId } });
+            if (product) {
+              const sizes = JSON.parse(product.sizes as string) as Array<{ s: string; p: number }>;
+              const sizeObj = sizes.find((sz) => sz.s === item.size) || sizes[0];
+              actualPrice = sizeObj?.p ?? actualPrice;
+              found = true;
+            }
+          } catch {
+            // DB lookup failed, check static
+          }
+
+          if (!found) {
+            const staticProd = staticProducts.find((p) => p.id === productId);
+            if (staticProd) {
+              const sizeObj = staticProd.sz.find((sz) => sz.s === item.size) || staticProd.sz[0];
+              actualPrice = sizeObj?.p ?? actualPrice;
+            }
+          }
+        }
       }
-      const product = await db.siteProduct.findUnique({ where: { id: productId } });
-      if (!product) {
-        return NextResponse.json({ error: "منتج غير موجود" }, { status: 400 });
-      }
-      const sizes = JSON.parse(product.sizes as string) as Array<{ s: string; p: number }>;
-      const sizeObj = sizes.find((sz) => sz.s === item.size);
-      const actualPrice = sizeObj?.p ?? sizes[0]?.p ?? 0;
+
       serverSubtotal += actualPrice * item.qty;
     }
 
@@ -88,37 +133,33 @@ export async function POST(req: NextRequest) {
       : 0;
 
     const serverDiscount = Math.round((serverSubtotal * discountPct) / 100);
-    const serverTotal = serverSubtotal - serverDiscount;
+    const serverTotal = Math.max(0, serverSubtotal - serverDiscount);
 
-    // ─── Sanity check total (must be >= 0) ──────────────────────
-    if (serverTotal < 0) {
-      return NextResponse.json({ error: "خطأ في حساب الأسعار" }, { status: 400 });
-    }
-
-    // ─── Create order + update customer in a transaction ─────────
+    // ─── Create order + update customer record ─────────────────
     const cleanPhone = phone.trim();
     const addressParts = address.trim().split(",").map(s => s.trim()).filter(Boolean);
     const governorate = addressParts[0] || "";
 
-    const order = await db.$transaction(async (tx) => {
-      const newOrder = await tx.siteOrder.create({
-        data: {
-          name: name.trim(),
-          phone: cleanPhone,
-          address: address.trim(),
-          notes: notes.trim(),
-          items: JSON.stringify(items),
-          subtotal: serverSubtotal,
-          discount: serverDiscount,
-          total: serverTotal,
-          payment: payment,
-        },
-      });
+    const newOrder = await db.siteOrder.create({
+      data: {
+        name: name.trim(),
+        phone: cleanPhone,
+        address: address.trim(),
+        notes: notes.trim(),
+        items: JSON.stringify(items),
+        subtotal: serverSubtotal,
+        discount: serverDiscount,
+        total: serverTotal,
+        payment: payment,
+        status: "new",
+      },
+    });
 
-      // Auto-create or update customer record within the transaction
-      const existingCustomer = await tx.siteCustomer.findUnique({ where: { phone: cleanPhone } });
+    // Customer record (graceful update)
+    try {
+      const existingCustomer = await db.siteCustomer.findUnique({ where: { phone: cleanPhone } });
       if (existingCustomer) {
-        await tx.siteCustomer.update({
+        await db.siteCustomer.update({
           where: { phone: cleanPhone },
           data: {
             name: name.trim(),
@@ -130,7 +171,7 @@ export async function POST(req: NextRequest) {
           },
         });
       } else {
-        await tx.siteCustomer.create({
+        await db.siteCustomer.create({
           data: {
             name: name.trim(),
             phone: cleanPhone,
@@ -142,14 +183,39 @@ export async function POST(req: NextRequest) {
           },
         });
       }
+    } catch (custErr) {
+      console.warn("[/api/admin/orders] Customer update skipped:", custErr);
+    }
 
-      return newOrder;
-    });
+    console.log(`[ORDER CREATED #${newOrder.id}] Customer: ${name.trim()} (${cleanPhone}) | Address: ${address.trim()} | Total: ${serverTotal} EGP`);
 
-    return NextResponse.json(order, { status: 201 });
+    // Optional webhook notification (e.g. Discord, Telegram or Webhook)
+    const webhookUrl = process.env.ORDER_WEBHOOK_URL;
+    if (webhookUrl) {
+      try {
+        fetch(webhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            event: "new_order",
+            orderId: newOrder.id,
+            name: name.trim(),
+            phone: cleanPhone,
+            address: address.trim(),
+            total: serverTotal,
+            payment,
+            items,
+          }),
+        }).catch(() => {});
+      } catch {
+        // ignore
+      }
+    }
+
+    return NextResponse.json(newOrder, { status: 201 });
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : "Unknown error";
     console.error("[/api/admin/orders] POST error:", message);
-    return NextResponse.json({ error: "فشل تقديم الطلب" }, { status: 500 });
+    return NextResponse.json({ error: "فشل تقديم الطلب. يرجى المحاولة مرة أخرى." }, { status: 500 });
   }
 }
